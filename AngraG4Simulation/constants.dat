@@ -1,0 +1,541 @@
+CheckForCollisions	0	# 1 to "check" and 0 to "Don't check"
+
+ExpHall_X 10000			# please comment on meaning, units and uncertainty
+ExpHall_Y 10000 		#
+ExpHall_Z 10000 		#
+
+Shield_Struc_Thick	10.0	# Thickness of the external PP structure (mm).
+Shield_X		1290.	# Half of the internal X dimension of the Shield (mm). X is Wide
+Shield_Y		835.	# Half of the internal Y dimension of the Shield (mm). Y is Height.
+Shield_Z		995.	# Half of the internal Z dimension of the Shield (mm). Z is Depth
+
+Wall_Half_Thickness          1000.0     # half thickness of reactor wall in mm
+Wall_Half_Length             3000.0     # half length of reactor wall in mm
+Wall_Half_Height             3000.0     # half height of reacto wall in mm
+Wall_Distance                 500.0     # distance of the wall from the shield in mm
+Ground_Thickness             1000.0     # thickness of the ground volume     
+
+
+Inner_Struc_Thick1 	20.0 	# Thickness of the inner veto PP structure (mm).
+Inner_Struc_Thick2 	10.0 	# Thickness of the inner veto PP structure (mm).
+Inner_X 1000.			# Half of the internal X dimension of the Inner Veto (mm).
+Inner_Y 785.			# Half of the internal Y dimension of the Inner Veto (mm).
+Inner_Z 740.			# Half of the internal Z dimension of the Inner Veto (mm).
+Inner_Y_Offset		-30.0	# Inner Veto Z offset (mm).
+
+Target_Struc_Thick 	10.0 	# Thickness of the external PP structure (mm).
+Target_X 710.5			# Half of the internal X dimension of the Central Target (mm).
+Target_Y 523.0			# Half of the internal Y dimension of the Central Target (mm).
+Target_Z 500.0			# Half of the internal Z dimension of the Central Target (mm).
+
+Pmt_R			100.	# PMT equatorial radius (mm).
+Pmt_H			80.	# PMT Height (mm).
+Pmt_T			1.	# PMT glass thickness (mm).
+
+Box_Height		142.	# Half Upper and Bottom boxes height (mm).
+
+PmtN_Inner_R 50 		#
+PmtN_Outer_R 80 		#
+PmtN_Height  72.5 		#
+
+N_Pmt_Bins	23	# number of data points
+OpPMT_0 	200  	# wavelenght in nm
+OpPMT_1 	259  	#
+OpPMT_2 	260  	#
+OpPMT_3 	280  	# 
+OpPMT_4 	300  	#
+OpPMT_5 	320  	#
+OpPMT_6 	340  	#
+OpPMT_7 	360  	#
+OpPMT_8 	380  	#
+OpPMT_9 	400  	#
+OpPMT_10 	420  	#
+OpPMT_11	440  	#
+OpPMT_12 	460  	#
+OpPMT_13 	480  	#
+OpPMT_14 	500  	#
+OpPMT_15 	520  	#
+OpPMT_16 	540  	#
+OpPMT_17 	560  	#
+OpPMT_18 	580	#
+OpPMT_19 	600	#
+OpPMT_20 	620	#
+OpPMT_21 	621	#
+OpPMT_22 	1000	#
+QuantumEff_0 	0.0 	# quantum efficiency 0 - 100%
+QuantumEff_1 	0.0 	# 
+QuantumEff_2 	2.5 	#
+QuantumEff_3 	8.8 	#
+QuantumEff_4 	18.4 	#
+QuantumEff_5 	22.8 	#
+QuantumEff_6 	24.4 	#
+QuantumEff_7 	25.5 	#
+QuantumEff_8 	25.8 	#
+QuantumEff_9 	25.3 	#
+QuantumEff_10	24.4 	#
+QuantumEff_11	23.4 	#
+QuantumEff_12 	21.3 	#
+QuantumEff_13 	18.6 	#
+QuantumEff_14 	17.0 	#
+QuantumEff_15 	13.3 	#
+QuantumEff_16 	8.4 	#
+QuantumEff_17 	6.2 	#
+QuantumEff_18 	4.5 	#
+QuantumEff_19 	2.8 	#
+QuantumEff_20 	1.4 	#
+QuantumEff_21 	0.0 	#
+QuantumEff_22 	0.0 	#
+
+N_Gore_Bins	20
+OpGore_0	200	# wavelenght in nm
+OpGore_1	259	#
+OpGore_2	260	#
+OpGore_3	400	#
+OpGore_4	425	#
+OpGore_5	450	#
+OpGore_6	475	#
+OpGore_7	500	#
+OpGore_8	525	#
+OpGore_9	550	#
+OpGore_10	575	#
+OpGore_11	600	#
+OpGore_12	625	#
+OpGore_13	650	#
+OpGore_14	675	#
+OpGore_15	700	#
+OpGore_16	725	#
+OpGore_17	750	#
+OpGore_18	751	#
+OpGore_19	1000	#
+ReflGore_0	1.000	# Reflectivity 0.- 1. (from Gore Datasheet)
+ReflGore_1	1.000	# 
+ReflGore_2	0.999	# 
+ReflGore_3	0.994	# 
+ReflGore_4	0.991	#
+ReflGore_5	0.988	#
+ReflGore_6	0.987	#
+ReflGore_7	0.986	#
+ReflGore_8	0.984	#
+ReflGore_9	0.983	#
+ReflGore_10	0.981	#
+ReflGore_11	0.980	#
+ReflGore_12	0.978	#
+ReflGore_13	0.977	#
+ReflGore_14	0.975	#
+ReflGore_15	0.974	#
+ReflGore_16	0.973	#
+ReflGore_17	0.972	#
+ReflGore_18	0.000	#
+ReflGore_19	0.000	#
+EffGore_0	0.0	# Efficiency (0 to 1) If only EffGore_0 is given, then it is constant. 
+EffGore_1	0.0	#
+EffGore_2	0.0	#
+EffGore_3	0.0	#
+EffGore_4	0.0	#
+EffGore_5	0.0	#
+EffGore_6	0.0	#
+EffGore_7	0.0	#
+EffGore_8	0.0	#
+EffGore_9	0.0	#
+EffGore_10	0.0	#
+EffGore_11	0.0	#
+EffGore_12	0.0	#
+EffGore_13	0.0	#
+EffGore_14	0.0	#
+EffGore_15	0.0	#
+EffGore_16	0.0	#
+EffGore_17	0.0	#
+EffGore_18	0.0	#
+EffGore_19	0.0	#
+SLbGore_0	0.0	# Specular Lobe
+SLbGore_1	0.0	#
+SLbGore_2	0.0	#
+SLbGore_3	0.0	#
+SLbGore_4	0.0	#
+SLbGore_5	0.0	#
+SLbGore_6	0.0	#
+SLbGore_7	0.0	#
+SLbGore_8	0.0	#
+SLbGore_9	0.0	#
+SLbGore_10	0.0	#
+SLbGore_11	0.0	#
+SLbGore_12	0.0	#
+SLbGore_13	0.0	#
+SLbGore_14	0.0	#
+SLbGore_15	0.0	#
+SLbGore_16	0.0	#
+SLbGore_17	0.0	#
+SLbGore_18	0.0	#
+SLbGore_19	0.0	#
+BScGore_0	0.0	# Backscatter
+BScGore_1	0.0	#
+BScGore_2	0.0	#
+BScGore_3	0.0	#
+BScGore_4	0.0	#
+BScGore_5	0.0	#
+BScGore_6	0.0	#
+BScGore_7	0.0	#
+BScGore_8	0.0	#
+BScGore_9	0.0	#
+BScGore_10	0.0	#
+BScGore_11	0.0	#
+BScGore_12	0.0	#
+BScGore_13	0.0	#
+BScGore_14	0.0	#
+BScGore_15	0.0	#
+BScGore_16	0.0	#
+BScGore_17	0.0	#
+BScGore_18	0.0	#
+BScGore_19	0.0	#
+LbtGore_0	1.0	#
+LbtGore_1	1.0	#
+LbtGore_2	1.0	#
+LbtGore_3	1.0	#
+LbtGore_4	1.0	#
+LbtGore_5	1.0	#
+LbtGore_6	1.0	#
+LbtGore_7	1.0	#
+LbtGore_8	1.0	#
+LbtGore_9	1.0	#
+LbtGore_10	1.0	#
+LbtGore_11	1.0	#
+LbtGore_12	1.0	#
+LbtGore_13	1.0	#
+LbtGore_14	1.0	#
+LbtGore_15	1.0	#
+LbtGore_16	1.0	#
+LbtGore_17	1.0	#
+LbtGore_18	1.0	#
+LbtGore_19	1.0	#
+
+N_Water_Bins	19
+OpWater_0	200.	# wavelenght in nm	
+OpWater_1	249.	#
+OpWater_2	250.	#
+OpWater_3	300.	#
+OpWater_4	350.	#
+OpWater_5	400.	#
+OpWater_6	450.	#
+OpWater_7	500.	#
+OpWater_8	550.	#
+OpWater_9	600.	#
+OpWater_10	650.	#
+OpWater_11	700.	#
+OpWater_12	750.	#
+OpWater_13	800.	#
+OpWater_14	850.	#
+OpWater_15	900.	#
+OpWater_16	950.	#
+OpWater_17	951.	#
+OpWater_18	1000.	#
+RefIndx_0       1.42487 # Refractive Index www.iapws.org/relguide/rindex.pdf
+RefIndx_1       1.37883
+RefIndx_2       1.3783
+RefIndx_3       1.35977
+RefIndx_4       1.34999
+RefIndx_5       1.34405
+RefIndx_6       1.34009
+RefIndx_7       1.33727
+RefIndx_8       1.33516
+RefIndx_9       1.33349
+RefIndx_10      1.33214
+RefIndx_11      1.33099
+RefIndx_12      1.32998
+RefIndx_13      1.32908
+RefIndx_14      1.32824
+RefIndx_15      1.32744
+RefIndx_16      1.32668
+RefIndx_17      1.32666
+RefIndx_18      1.32592
+AbsLength_0	0.0	# Absorption Length (Attenuation) in m
+AbsLength_1	0.0	#
+AbsLength_2	0.8	#
+AbsLength_3	1.5	#
+AbsLength_4	5.7	#
+AbsLength_5	11.8	#
+AbsLength_6	25.3	#
+AbsLength_7	20.5	#
+AbsLength_8	13.6	#
+AbsLength_9	7.8	#
+AbsLength_10	1.0	#
+AbsLength_11	1.0	#
+AbsLength_12	1.0	#
+AbsLength_13	0.0	#
+AbsLength_14	0.0	#
+AbsLength_15	0.0	#
+AbsLength_16	0.0	#
+AbsLength_17	0.0	#
+AbsLength_18	0.0	#
+
+N_Photon_Bins 2
+PEnergy_0 1.24	# Optical Photon Energy, in eV
+PEnergy_1 6.20	#
+
+PMTSurface_Reflectivity_0  0.00
+PMTSurface_Reflectivity_1  0.00
+PMTSurface_SpecularLobe_0  0.00
+PMTSurface_SpecularLobe_1  0.00
+PMTSurface_Backscatter_0   0.00
+PMTSurface_Backscatter_1   0.00
+PMTSurface_SpecularSpike_0 1.00
+PMTSurface_SpecularSpike_1 1.00
+TyvekSurface_Reflectivity_0	0.975
+TyvekSurface_Reflectivity_1	0.975
+TyvekSurface_Efficiency_0	0.00
+TyvekSurface_Efficiency_1	0.00
+TyvekSurface_SpecularLobe_0	0.05
+TyvekSurface_SpecularLobe_1	0.05
+TyvekSurface_Backscatter_0	0.05
+TyvekSurface_Backscatter_1	0.05
+TyvekSurface_Lambertian_0	0.90
+TyvekSurface_Lambertian_1	0.90
+GoreSurface_Efficiency_0	0.00
+GoreSurface_Efficiency_1	0.00
+GoreSurface_SpecularLobe_0	0.00
+GoreSurface_SpecularLobe_1	0.00
+GoreSurface_Backscatter_0	0.00
+GoreSurface_Backscatter_1	0.00
+GoreSurface_Lambertian_0	1.00
+GoreSurface_Lambertian_1	1.00
+
+BowlBoxVetoAngle_1   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
+BowlBoxVetoAngle_2   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
+BowlBoxVetoAngle_3   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
+BowlBoxVetoAngle_4   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
+
+BowlInVetoX_U_1 -842.00	# Inner Veto PMTs UP face
+BowlInVetoY_U_1  500.00	#
+BowlInVetoZ_U_1  616.00	#
+BowlInVetoX_U_2  842.00	#
+BowlInVetoY_U_2  500.00	#
+BowlInVetoZ_U_2  616.00	#
+BowlInVetoX_U_3  842.00	#
+BowlInVetoY_U_3  500.00	#
+BowlInVetoZ_U_3 -616.00	#
+BowlInVetoX_U_4 -842.00	#
+BowlInVetoY_U_4  500.00	#
+BowlInVetoZ_U_4 -616.00	#
+
+BowlInVetoX_D_1 -842.00	# Inner Veto PMTs DOWN face
+BowlInVetoY_D_1 -500.00	#
+BowlInVetoZ_D_1  616.00	#
+BowlInVetoX_D_2  842.00	#
+BowlInVetoY_D_2 -500.00	#
+BowlInVetoZ_D_2  616.00	#
+BowlInVetoX_D_3  842.00	#
+BowlInVetoY_D_3 -500.00	#
+BowlInVetoZ_D_3 -616.00	#
+BowlInVetoX_D_4 -842.00	#
+BowlInVetoY_D_4 -500.00	#
+BowlInVetoZ_D_4 -616.00	#
+
+N_pmt_U 16	 		# Number of PMTs on the UP face
+BowlX_U_1 -536.75	 	# 
+BowlY_U_1  500.00	 	#
+BowlZ_U_1  351.26	 	#
+BowlX_U_2 -229.75	 	#
+BowlY_U_2  500.00	 	#
+BowlZ_U_2  351.26	 	#
+BowlX_U_3   77.25	 	#
+BowlY_U_3  500.00	 	#
+BowlZ_U_3  351.26	 	#
+BowlX_U_4  384.25	 	#
+BowlY_U_4  500.00	 	#
+BowlZ_U_4  351.26	 	#
+BowlX_U_5 -383.25	 	#
+BowlY_U_5  500.00	 	#
+BowlZ_U_5  117.09	 	#
+BowlX_U_6  -76.25	 	#
+BowlY_U_6  500.00	 	#
+BowlZ_U_6  117.09	 	#
+BowlX_U_7  230.75	 	#
+BowlY_U_7  500.00	 	#
+BowlZ_U_7  117.09	 	#
+BowlX_U_8  537.75	 	#
+BowlY_U_8  500.00	 	#
+BowlZ_U_8  117.09	 	#
+BowlX_U_9  -536.75	 	#
+BowlY_U_9  500.00	 	#
+BowlZ_U_9  -117.09	 	#
+BowlX_U_10 -229.75	 	#
+BowlY_U_10  500.00	 	#
+BowlZ_U_10 -117.09	 	#
+BowlX_U_11   77.25	 	#
+BowlY_U_11  500.00	 	#
+BowlZ_U_11 -117.09	 	#
+BowlX_U_12  384.25	 	#
+BowlY_U_12  500.00	 	#
+BowlZ_U_12 -117.09	 	#
+BowlX_U_13 -383.25	 	#
+BowlY_U_13  500.00	 	#
+BowlZ_U_13 -351.26	 	#
+BowlX_U_14  -76.25	 	#
+BowlY_U_14  500.00	 	#
+BowlZ_U_14 -351.26	 	#
+BowlX_U_15  230.75	 	#
+BowlY_U_15  500.00	 	#
+BowlZ_U_15 -351.26	 	#
+BowlX_U_16  537.75	 	#
+BowlY_U_16  500.00	 	#
+BowlZ_U_16 -351.26	 	#
+
+N_pmt_D 16	 		# Number of PMTs on the UP face
+BowlX_D_1 -383.25	 	#
+BowlY_D_1 -500.00	 	#
+BowlZ_D_1  351.26	 	#
+BowlX_D_2  -76.25	 	#
+BowlY_D_2 -500.00	 	#
+BowlZ_D_2  351.26	 	#
+BowlX_D_3  230.75	 	#
+BowlY_D_3 -500.00	 	#
+BowlZ_D_3  351.26	 	#
+BowlX_D_4  537.75	 	#
+BowlY_D_4 -500.00	 	#
+BowlZ_D_4  351.26	 	#
+BowlX_D_5 -536.75	 	#
+BowlY_D_5 -500.00	 	#
+BowlZ_D_5  117.09	 	#
+BowlX_D_6 -229.75	 	#
+BowlY_D_6 -500.00	 	#
+BowlZ_D_6  117.09	 	#
+BowlX_D_7   77.25	 	#
+BowlY_D_7 -500.00	 	#
+BowlZ_D_7  117.09	 	#
+BowlX_D_8  384.25	 	#
+BowlY_D_8 -500.00	 	#
+BowlZ_D_8  117.09	 	#
+BowlX_D_9 -383.25	 	#
+BowlY_D_9 -500.00	 	#
+BowlZ_D_9 -117.09	 	#
+BowlX_D_10  -76.25	 	#
+BowlY_D_10 -500.00	 	#
+BowlZ_D_10 -117.09	 	#
+BowlX_D_11  230.75	 	#
+BowlY_D_11 -500.00	 	#
+BowlZ_D_11 -117.09	 	#
+BowlX_D_12  537.75	 	#
+BowlY_D_12 -500.00	 	#
+BowlZ_D_12 -117.09	 	#
+BowlX_D_13 -536.75	 	#
+BowlY_D_13 -500.00	 	#
+BowlZ_D_13 -351.26	 	#
+BowlX_D_14 -229.75	 	#
+BowlY_D_14 -500.00	 	#
+BowlZ_D_14 -351.26	 	#
+BowlX_D_15   77.25	 	#
+BowlY_D_15 -500.00	 	#
+BowlZ_D_15 -351.26	 	#
+BowlX_D_16  384.25	 	#
+BowlY_D_16 -500.00	 	#
+BowlZ_D_16 -351.26	 	#
+
+VetoThickness 50 		#
+VetoBoxThickness 3 		#
+VetoServiceSpace 90 		#
+VetoTop_Y 1150 	 		#
+VetoTop_X 1690 	 		#
+VetoTopUNum 45 			#
+VetoTopVNum 63 			#
+VetoLeftUNum 43 		#
+VetoLeftVNum 51 		#
+VetoRightUNum 43 		#
+VetoRightVNum 51 		#
+VetoFrontUNum 43 		#
+VetoFrontVNum 39 		#
+VetoBackUNum 43 		#
+VetoBackVNum 39 		#
+VetoBarThickness 5 		#
+VetoBarWidth 25  		#
+VetoBottom_Y 993  		#
+VetoBottom_X 1690 		#
+VetoBottomUNum 39 		#
+VetoBottomVNum 63 		#
+
+ScintillatorWhitethickness 0.5 	#
+ScintillatorHoleDiameter 1 	#
+Density_LS 0.88 	 	#
+Content_Carbon_LS 9 		#
+Content_Hidrogen_LS 12 		#
+Content_Carbon_GDLS 426 	#
+Content_Hidrogen_GDLS 569 	#
+Content_Gadolinium_GDLS 5 	# 0.5% 
+Density_Water 	1.0 		#
+Density_PP	0.855		# polypropylene density g/cm^3
+Content_Hidrogen_H2O 2 		#
+Content_Oxigen_H2O 1  		#
+Frac_Water_GDW 99.7  		#
+Frac_Gd_GDW 0.3 		#
+Frac_Water_BW 99 		#
+Frac_B_BW 1   			#
+Density_Acrilic 1.19 		#
+Content_Carbon_Acrilic 5 	#
+Content_Hidrogen_Acrilic 8 	#
+Content_Oxigen_Acrilic  2 	#
+Density_Mineral_Oil 0.8 	#
+Content_Carbon_MO 1 		#
+Content_Hidrogen_MO 2 		#
+Absorption 24.00    		#
+
+N_Acrilic_Bins 	23
+OpAcrilic_0 	200  	# wavelenth in nm
+OpAcrilic_1 	259  	# 
+OpAcrilic_2 	260  	# 
+OpAcrilic_3 	280  	# 
+OpAcrilic_4 	300  	#
+OpAcrilic_5 	320  	#
+OpAcrilic_6 	340  	#
+OpAcrilic_7 	360  	#
+OpAcrilic_8 	380  	#
+OpAcrilic_9 	400  	#
+OpAcrilic_10 	420  	#
+OpAcrilic_11 	440  	#
+OpAcrilic_12 	460  	#
+OpAcrilic_13 	480  	#
+OpAcrilic_14 	500  	#
+OpAcrilic_15 	520  	#
+OpAcrilic_16 	540  	#
+OpAcrilic_17 	560  	#
+OpAcrilic_18 	580  	#
+OpAcrilic_19 	600  	#
+OpAcrilic_20 	620  	#
+OpAcrilic_21 	621  	#
+OpAcrilic_22 	1000  	#
+
+AbsAcrilic_0 	0.0	#
+AbsAcrilic_1 	0.0	#
+AbsAcrilic_2 	0.8	#
+AbsAcrilic_3 	1.0	#
+AbsAcrilic_4 	1.5	#
+AbsAcrilic_5 	2.6	#
+AbsAcrilic_6 	5.7	#
+AbsAcrilic_7 	6.8	#
+AbsAcrilic_8 	8.4	#
+AbsAcrilic_9 	11.8	#
+AbsAcrilic_10 	20.7	#
+AbsAcrilic_11 	24.2	#
+AbsAcrilic_12 	25.3	#
+AbsAcrilic_13 	23.9	#
+AbsAcrilic_14 	20.5	#
+AbsAcrilic_15 	16.8	#
+AbsAcrilic_16 	13.7	#
+AbsAcrilic_17 	13.6	#
+AbsAcrilic_18 	10.0	#
+AbsAcrilic_19 	7.8	#
+AbsAcrilic_20 	5.7	#
+AbsAcrilic_21 	0.0	#
+AbsAcrilic_22 	0.0	#
+
+AcrilicRIndex 	1.5  		# Acrilic Refractive Index 
+AcrilicScint_Fast 0.5 		#
+AcrilicScint_Slow 0.5 		#
+Scint_Eff 0. 			#
+Scint_Res 1. 			#
+Scint_Fast 1. 			#
+Scint_Slow 10. 			#
+Scint_Ratio 0.8 		#
+Air_RIndex 1.00 		#
+Water_RIndex 1.33 		#
+
+StepLimit	1000000		# max step length in mm
+TrackLimit	1000000		# max track length in mm
+TimeLimit	1000000		# max time limit in ns

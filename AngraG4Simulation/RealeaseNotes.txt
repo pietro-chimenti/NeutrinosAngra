@@ -1,0 +1,44 @@
+28/20/2011
+	AngraSimulations.cc : change default for trajectory output
+	constants.dat : many definitions removed from include files and added to constants
+		format modified to allow for comments 
+	include/AngraDetectorConstruction.h : clean comments
+	include/AngraMCLog.hh : commnets cleaned
+	include/AngraPhysicsList.hh : same
+	include/AngraPrimaryGeneratorAction.hh : inverse beta generator removed
+	src/AngraConstantMgr.cc : modification to allow for comments in constant file
+	src/AngraDetectorConstruction.cc : removed definitions to use constantMGR
+	src/AngraPrimaryGeneratorAction.cc : removed interface to invbeta generator
+	src/AngraWaterBox1.cc : removed definitions to use constantMGR
+	src/pEnergy.cc : file removed (it was an interface to "wrong" custom invBeta generator) 
+
+
+
+24-5-2008  V0.011 
+	   Improvements on Geometry
+
+   	   modified Files:
+
+	   --->  Definitions.hh : better geometry and materials descriptions
+	   --->  AngraDetectorConstruction.cc : D-Chooz geometry + Copo de Caipirinha
+	   --->  AngraDetectorConstruction.hh : as above
+
+
+30-4-2008  V0.01  
+	   First version of visualization
+	   First version of geometry
+
+	   modified Files:
+	   
+	   --->  AngraSimulation.cc : v0.01 main file of simulation, mandatory classes definitions and basic visualization
+	   --->  GNUmakefile: basic structure
+	   --->  README: nothing yet
+	   --->  vis.mac: two tested visualization options: OpenGL or HepRep
+	   --->  AngraDetectorConstruction.hh: basic two cilinders definition
+	   --->  AngraPhysicsList.hh: basic defs
+	   --->  AngraPrimaryGeneratorAction.hh: basic defs
+	   --->  Definitions.hh: numerical definitions
+	   --->  AngraDetectorConstruction.cc : two cylinders geometry
+	   --->  AngraPhysicsList.cc: basic defs
+	   --->  AngraPrimaryGeneratorAction.cc: basic defs
+

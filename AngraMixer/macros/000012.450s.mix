@@ -1,0 +1,102 @@
+# Macro for the newmixer()
+
+RUN_ID		20131012	# Serial number for future identification
+RUN_TIME	450		# Total run time (s)
+AVERAGE_JUMP	2001		# Average size of the random jump. An Odd number will use Poisson
+DARK_NOISE	4.8E+04		# Dark-noise frequency (all PMTs)
+FILTER_NOHIT	1		# Set to filter events that did not produce any p.e.
+OUTPUT_LOCATION	/home/drc01/kemp/angra/data/Mixed/  	# Folder where Output will be saved
+INPUT_LOCATION	/home/drc01/kemp/angra/data/Pulses/  	# Folder where Input files are located.
+OUTPUT_CLASS	MCPULSE         # Which class to use in the output tree.
+OUTPUT_FILE	000012.mixed_450s_20131012_MCPULSE.root	# Main output file.
+OUTPUT_TIME	Times/000012.times.dat	# Intermediary time-file used on mixing.
+#OUTPUT_PLOT     MIXED_10ms_BGD.root	# Optional file with histograms for each source.
+
+SRC		1		# first SRC source
+SRC_NAME	photons 	# SRC name
+SRC_FREQ	6.3E+06 	# SRC Frequency (Hz)
+SRC_RATIO	1.28571E-01	# SRC ratio of hits/(total events)
+SRC_FILE	000001.photons_v1_1M_20131000_PULSES.root	#
+
+SRC		2		#
+SRC_NAME	electrons 	# 
+SRC_FREQ	2.6E+06 	# 
+SRC_RATIO	3.0834E-02	# 
+SRC_FILE	000002.electrons_v1_1M_20131000_PULSES.root  #
+
+SRC		3		#
+SRC_NAME	positrons 	# 
+SRC_FREQ	4.7E+05 	# 
+SRC_RATIO	7.68203E-02	# 
+SRC_FILE	000003.positrons_v1_621000_20131000_PULSES.root  #
+
+SRC		4		#
+SRC_NAME	muons 		# 
+SRC_FREQ	4.2E+03 	# 
+SRC_RATIO	7.2712E-02	# 
+SRC_FILE	000011.muons_v1_250k_20131001_PULSES.root  #
+
+SRC             5               #
+SRC_NAME        muons           #
+SRC_FREQ        1.05E+03         # 4.2E+03/4 = 1.05E+03
+SRC_RATIO       7.2712E-02     #
+SRC_FILE        000012.muons_v1_250k_20131002_PULSES.root  #
+
+SRC             6               #
+SRC_NAME        muons           #
+SRC_FREQ        1.05E+03         #
+SRC_RATIO       7.2712E-02     #
+SRC_FILE        000013.muons_v1_250k_20131003_PULSES.root  #
+
+SRC             7               #
+SRC_NAME        muons           #
+SRC_FREQ        1.05E+03         #
+SRC_RATIO       7.24528E-02     #
+SRC_FILE        000014.muons_v1_250k_20131004_PULSES.root  #
+
+SRC		8		#
+SRC_NAME	protons		# 
+SRC_FREQ	6.8E+02 	# 
+SRC_RATIO	6.515E-02	# 
+SRC_FILE	000005.protons_v1_20k_20131000_PULSES.root  #
+
+SRC		9		#
+SRC_NAME	pions 		# 
+SRC_FREQ	1.3E+01 	# 
+SRC_RATIO	2.90821E-01	# 
+SRC_FILE	000006.pions_v1_10300_20131000_PULSES.root  #
+
+SRC		10		#
+SRC_NAME	neutrons	# 
+SRC_FREQ	1.9E+03 	# 
+SRC_RATIO	5.988E-02	# 
+SRC_FILE	000007.neutrons_v1_50k_20131000_PULSES.root  #
+
+SRC		11		#
+SRC_NAME	neutrinos	# 
+SRC_FREQ	0.053E5 	# 
+SRC_RATIO	9.9773E-01	# 
+SRC_FILE	000009.neutrinos_v1_71800_20131000_PULSES.root  #
+
+# FileName		Frequency (Hz)
+#../Data/photons.root	6.3E+06
+#../Data/electrons.root	2.6E+06
+#../Data/positrons.root	4.7E+05
+#../Data/muons.root	4.2E+03
+#../Data/protons.root	6.8E+02
+#../Data/pions.root	1.3E+01
+#../Data/neutrons.root	1.9E+03
+#../Data/gammas.root	5.6E+05
+
+
+
+
+
+
+
+
+
+
+
+
+
