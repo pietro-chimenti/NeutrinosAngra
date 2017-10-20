@@ -1,9 +1,9 @@
 #include "electromagnetic/electrons.cpp"
 
-gen_electrons(){
+void gen_electrons(){
 
-  Int_t N        = 8e6;
-  Int_t numFiles = 1e2;
+  Int_t N        = 1000;
+  Int_t numFiles = 2;
   Int_t seed     = 20131000;
   Int_t localseed;
   
