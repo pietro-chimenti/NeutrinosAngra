@@ -1,6 +1,6 @@
 #include "neutrinos/AngraNuGen.cpp"
 
-gen_neutrinos(){
+void gen_neutrinos(){
 
   Double_t Target_X = 2* 710.5;
   Double_t Target_Y = 2* 523.0;
