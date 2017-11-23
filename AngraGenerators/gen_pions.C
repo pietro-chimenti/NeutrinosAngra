@@ -1,6 +1,6 @@
 #include "hadrons/pions.cpp"
 
-gen_pions(){
+void gen_pions(){
 
   Int_t N        = 3.4e4;
   Int_t numFiles = 1e0;

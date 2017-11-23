@@ -1,9 +1,9 @@
 #include "hadrons/protons.cpp"
 
-gen_protons(){
+void gen_protons(){
 
-  Int_t N        = 2.1e4;
-  Int_t numFiles = 1e1;
+  Int_t N        = 2.1e3;
+  Int_t numFiles = 2;
   Int_t seed     = 20131000;
   Int_t localseed;
   

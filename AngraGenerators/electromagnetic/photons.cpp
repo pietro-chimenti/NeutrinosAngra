@@ -140,7 +140,7 @@ void photons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
   }
 
   // now set histo
-  histoFlux =new TH1F ("PhotonFlux","PhotonFlux",nbins,xMomentum);
+  TH1F * histoFlux =new TH1F ("PhotonFlux","PhotonFlux",nbins,xMomentum);
   for(int i=0; i<nbins; i++){
     histoFlux->SetBinContent(i+1,yFlux[i]);
   }
@@ -160,14 +160,10 @@ void photons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
   // start generating 
   int ievent=0;
 //   ROOT::Math::XYZVector v1();// why that? Misteries of cint!
-    XYZVector iv(); // y is vertical, x and z horizonthal 
-    RotationX rx();
-    RotationY ry();
-    XYZVector fv();
-    XYZVector iposition();
-    XYZVector fposition();
+    TVector3  momentum3d;
+    TVector3  position;
     Double_t  momentum, ltheta, phi, initX,initY,initZ, photonEnergy;
-  
+
   for(;ievent<MAXEVENTS; ievent++){
 
     outfile << ievent << " " << 1 << endl;
@@ -180,30 +176,29 @@ void photons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
 
     // generate verticla particle and then rotates
     // momentum first
-    iv = XYZVector(0.0, -1.0*momentum, 0.0); // y is vertical, x and z horizonthal 
-    rx = RotationX(ltheta);
-    ry = RotationY(phi);
-    fv = XYZVector(ry*rx*iv);
-    
+    momentum3d = TVector3(0.0, -1.0*momentum, 0.0); // y is vertical, x and z horizonthal 
+    momentum3d.RotateX(ltheta);
+    momentum3d.RotateY(phi);
+
     // position
     initX = gRandom->Uniform(-1.*SURF_HALF_LEN,SURF_HALF_LEN);
     initZ = gRandom->Uniform(-1.*SURF_HALF_LEN,SURF_HALF_LEN);
     initY = SURF_DIST;
-    iposition = XYZVector(initX,initY,initZ);
-    fposition = XYZVector(ry*rx*iposition);
-    
+    position = TVector3(initX,initY,initZ);
+    position.RotateX(ltheta);
+    position.RotateY(phi);
+
     // energy
     photonEnergy = sqrt(momentum*momentum);
     
     outfile << 1 << " " << 22  << " " //
 	    << 0  << " " << 0  << " "//
 	    << 0  << " " << 0  << " "//
-	    << fv.X()  << " " << fv.Y()  << " " //
-	    << fv.Z()  << " " << photonEnergy  << " " //
-	    << 0  << " " << fposition.X()*1000  << " " // position in mm
-	    << fposition.Y()*1000  << " " << fposition.Z()*1000 << " " // position in mm
-	    << 0 << endl;
-        
+            << momentum3d.X()  << " " << momentum3d.Y()  << " " //
+            << momentum3d.Z()  << " " << photonEnergy  << " " //
+            << 0 << " " << position.X()*1000  << " " // position in mm
+            << position.Y()*1000  << " " << position.Z()*1000 << " " //
+            << 0 << endl;
   }
   
   delete histoFlux;

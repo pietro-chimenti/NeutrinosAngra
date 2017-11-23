@@ -85,12 +85,8 @@ void neutrons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
   // start generating
   int ievent=0;
 //   ROOT::Math::XYZVector v1();// why that? Misteries of cint!
-    XYZVector iv(); // y is vertical, x and z horizonthal 
-    RotationX rx();
-    RotationY ry();
-    XYZVector fv();
-    XYZVector iposition();
-    XYZVector fposition();
+    TVector3  momentum3d;
+    TVector3  position;
     Double_t  momentum, ltheta, phi, initX,initY,initZ, neutronEnergy;
   
   for(;ievent<MAXEVENTS; ievent++){
@@ -105,17 +101,17 @@ void neutrons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
 
     // generate verticla particle and then rotates
     // momentum first
-    iv = XYZVector(0.0, -1.0*momentum, 0.0); // y is vertical, x and z horizonthal 
-    rx = RotationX(ltheta);
-    ry = RotationY(phi);
-    fv = XYZVector(ry*rx*iv);
+    momentum3d = TVector3(0.0, -1.0*momentum, 0.0); // y is vertical, x and z horizonthal 
+    momentum3d.RotateX(ltheta);
+    momentum3d.RotateY(phi);
     
     // position
     initX = gRandom->Uniform(-1.*SURF_HALF_LEN,SURF_HALF_LEN);
     initZ = gRandom->Uniform(-1.*SURF_HALF_LEN,SURF_HALF_LEN);
     initY = SURF_DIST;
-    iposition = XYZVector(initX,initY,initZ);
-    fposition = XYZVector(ry*rx*iposition);
+    position = TVector3(initX,initY,initZ);
+    position.RotateX(ltheta);
+    position.RotateY(phi);
     
     // energy
     neutronEnergy = sqrt(momentum*momentum+neutronMass*neutronMass);
@@ -123,10 +119,10 @@ void neutrons(int INI_RAND=9999,int MAXEVENTS=10000, TString file="event.hepev")
         outfile << 1 << " " << 2112  << " " //
 	    << 0  << " " << 0  << " "//
 	    << 0  << " " << 0  << " "//
-	    << fv.X()  << " " << fv.Y()  << " " //
-	    << fv.Z()  << " " << neutronEnergy  << " " //
-	    << neutronMass  << " " << fposition.X()*1000  << " " // position in mm
-	    << fposition.Y()*1000  << " " << fposition.Z()*1000 << " " //
+	    << momentum3d.X()  << " " << momentum3d.Y()  << " " //
+	    << momentum3d.Z()  << " " << neutronEnergy  << " " //
+	    << neutronMass  << " " << position.X()*1000  << " " // position in mm
+	    << position.Y()*1000  << " " << position.Z()*1000 << " " //
 	    << 0 << endl;
         
   }

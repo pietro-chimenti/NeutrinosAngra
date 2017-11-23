@@ -1,9 +1,9 @@
 #include "electromagnetic/positrons.cpp"
 
-gen_positrons(){
+void gen_positrons(){
 
-  Int_t N        = 2e6;
-  Int_t numFiles = 1e2;
+  Int_t N        = 2e3;
+  Int_t numFiles = 2;
   Int_t seed     = 20131000;
   Int_t localseed;
   

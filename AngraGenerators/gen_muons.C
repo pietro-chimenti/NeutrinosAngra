@@ -1,6 +1,6 @@
 #include "muons/muons.cpp"
 
-gen_muons(){
+void gen_muons(){
 
   Int_t N        = 1.3e5;
   Int_t numFiles = 1e1;

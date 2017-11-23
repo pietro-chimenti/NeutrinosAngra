@@ -1,6 +1,6 @@
 #include "hadrons/neutrons.cpp"
 
-gen_neutrons(){
+void gen_neutrons(){
 
   Int_t N        = 5.7e4;
   Int_t numFiles = 1e1;
