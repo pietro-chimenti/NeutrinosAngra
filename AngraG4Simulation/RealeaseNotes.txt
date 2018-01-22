@@ -1,3 +1,7 @@
+22/01/2018
+        Full review of the code for new Geant4 package
+        Major modification: new physics list (QGSP_BIC_HP)
+
 28/20/2011
 	AngraSimulations.cc : change default for trajectory output
 	constants.dat : many definitions removed from include files and added to constants

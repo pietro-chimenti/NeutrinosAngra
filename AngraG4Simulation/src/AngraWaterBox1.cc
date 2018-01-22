@@ -50,7 +50,7 @@
 #include <vector>
 
 using namespace std;
-
+using namespace CLHEP;
 
 G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   
@@ -125,7 +125,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     binName = "QuantumEff_";
     binName += numStr;
     G4double  binEff = AngraConstantMgr::Instance().GetValue(binName);   // reads bin efficiency
-    PMTEfficiency->AddElement(binEn,binEff/100.);
+    PMTEfficiency->InsertValues(binEn,binEff/100.);
   }
   
   // Gore Table (from Gore Datasheet).
@@ -146,27 +146,27 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     binName = "ReflGore_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    GoreReflectivity->AddElement(binEn,binProp);
+    GoreReflectivity->InsertValues(binEn,binProp);
 
     binName = "EffGore_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    GoreEfficiency->AddElement(binEn,binProp);
+    GoreEfficiency->InsertValues(binEn,binProp);
 
     binName = "SLbGore_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    GoreSpecularLobe->AddElement(binEn,binProp);
+    GoreSpecularLobe->InsertValues(binEn,binProp);
 
     binName = "BScGore_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    GoreBackscatter->AddElement(binEn,binProp);
+    GoreBackscatter->InsertValues(binEn,binProp);
 
     binName = "LbtGore_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    GoreLambertian->AddElement(binEn,binProp);
+    GoreLambertian->InsertValues(binEn,binProp);
   }
 
 
@@ -380,47 +380,47 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     binName = "PMTSurface_Reflectivity_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    PMTReflectivity -> AddElement(binEnergy*eV,binProp);
+    PMTReflectivity -> InsertValues(binEnergy*eV,binProp);
 
     binName = "PMTSurface_SpecularLobe_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    PMTSpecularLobe -> AddElement(binEnergy*eV,binProp);
+    PMTSpecularLobe -> InsertValues(binEnergy*eV,binProp);
     
     binName = "PMTSurface_SpecularSpike_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    PMTSpecularSpike -> AddElement(binEnergy*eV,binProp);
+    PMTSpecularSpike -> InsertValues(binEnergy*eV,binProp);
 
     binName = "PMTSurface_Backscatter_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    PMTBackscatter -> AddElement(binEnergy*eV,binProp);
+    PMTBackscatter -> InsertValues(binEnergy*eV,binProp);
 
     binName = "TyvekSurface_Reflectivity_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    TyvekReflectivity -> AddElement(binEnergy*eV,binProp);
+    TyvekReflectivity -> InsertValues(binEnergy*eV,binProp);
 
     binName = "TyvekSurface_Efficiency_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    TyvekEfficiency -> AddElement(binEnergy*eV,binProp);
+    TyvekEfficiency -> InsertValues(binEnergy*eV,binProp);
 
     binName = "TyvekSurface_SpecularLobe_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    TyvekSpecularLobe -> AddElement(binEnergy*eV,binProp);
+    TyvekSpecularLobe -> InsertValues(binEnergy*eV,binProp);
 
     binName = "TyvekSurface_Backscatter_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    TyvekBackscatter -> AddElement(binEnergy*eV,binProp);
+    TyvekBackscatter -> InsertValues(binEnergy*eV,binProp);
 
     binName = "TyvekSurface_Lambertian_";
     binName += num.str();    
     binProp = AngraConstantMgr::Instance().GetValue(binName);
-    TyvekLambertian -> AddElement(binEnergy*eV,binProp);
+    TyvekLambertian -> InsertValues(binEnergy*eV,binProp);
   }
 
   G4OpticalSurface *OpGore = new G4OpticalSurface("GoreSurface");

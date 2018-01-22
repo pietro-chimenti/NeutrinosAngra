@@ -46,6 +46,7 @@
 #include <vector>
 
 using namespace std;
+using namespace CLHEP;
 
 //this is constructor lets you choose 
 AngraDetectorConstruction::AngraDetectorConstruction():trackingLimit(0){;}
@@ -155,19 +156,19 @@ void AngraDetectorConstruction::ConstructMaterials()
 
     binName = "AbsAcrilic_";
     binName += num.str();        
-    AcrilicAbsLength->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
+    AcrilicAbsLength->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
 
     binName = "AcrilicRIndex";
     binName += num.str();        
-    AcrilicRefractive->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName));
+    AcrilicRefractive->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
 
     binName = "AcrilicScint_Fast";
     binName += num.str();        
-    AcrilicScintilFast->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName));
+    AcrilicScintilFast->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
     
     binName = "AcrilicScint_Slow";
     binName += num.str();        
-    AcrilicScintilSlow->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName));
+    AcrilicScintilSlow->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
   }
 
 
@@ -184,8 +185,8 @@ void AngraDetectorConstruction::ConstructMaterials()
 
   //Air
   G4MaterialPropertyVector *AirRefractive = new G4MaterialPropertyVector();
-  AirRefractive->AddElement(1240./1000.*eV, AngraConstantMgr::Instance().GetValue("Air_RIndex"));
-  AirRefractive->AddElement(1240./200.*eV,  AngraConstantMgr::Instance().GetValue("Air_RIndex"));
+  AirRefractive->InsertValues(1240./1000.*eV, AngraConstantMgr::Instance().GetValue("Air_RIndex"));
+  AirRefractive->InsertValues(1240./200.*eV,  AngraConstantMgr::Instance().GetValue("Air_RIndex"));
   G4MaterialPropertiesTable* AirProp = new G4MaterialPropertiesTable();
   AirProp->AddProperty("RINDEX", AirRefractive);
   Air->SetMaterialPropertiesTable(AirProp);
@@ -210,11 +211,11 @@ void AngraDetectorConstruction::ConstructMaterials()
 
     binName = "RefIndx_";
     binName += num.str();        
-    WaterRefractive->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName));
+    WaterRefractive->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
 
     binName = "AbsLength_";
     binName += num.str();        
-    WaterAbsLength->AddElement(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
+    WaterAbsLength->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
   }
 
   G4MaterialPropertiesTable* OpWaterProperties = new G4MaterialPropertiesTable();

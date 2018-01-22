@@ -16,6 +16,8 @@
 
 #include "AngraMCLog.hh"
 
+using namespace CLHEP;
+
 bool AngraMCLog::setup=false;
 
 bool AngraMCLog::Init()

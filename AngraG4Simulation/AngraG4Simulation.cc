@@ -14,13 +14,13 @@
 #include "G4UImanager.hh"
 #include "G4UIterminal.hh"
 #include "G4UItcsh.hh"
+#include "QGSP_BIC_HP.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
 #endif
 
 #include "AngraDetectorConstruction.hh"
-#include "AngraPhysicsList.hh"
 #include "AngraPrimaryGeneratorAction.hh"
 #include "AngraEventAction.hh"
 #include "AngraTrackingAction.hh"
@@ -200,7 +200,8 @@ int main(int argc,char** argv)
   G4RunManager* runManager = new G4RunManager;
   G4VUserDetectorConstruction* detector = new AngraDetectorConstruction(geometryEnum(confs.Geometry));
   runManager->SetUserInitialization(detector);
-  G4VUserPhysicsList* physics = new AngraPhysicsList;
+//  G4VUserPhysicsList* physics = new AngraPhysicsList;
+  G4VModularPhysicsList* physics = new QGSP_BIC_HP;
   runManager->SetUserInitialization(physics);
   G4VUserPrimaryGeneratorAction* gen_action = new AngraPrimaryGeneratorAction(primaryEnum(confs.Primary),outFile);
   runManager->SetUserAction(gen_action);

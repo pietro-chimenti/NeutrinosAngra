@@ -16,6 +16,9 @@
 #include "G4PrimaryVertex.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4Event.hh"
+#include "CLHEP/Units/PhysicalConstants.h"
+
+using namespace CLHEP;
 
 #define SPEEDOL 299792458  // m/s
 

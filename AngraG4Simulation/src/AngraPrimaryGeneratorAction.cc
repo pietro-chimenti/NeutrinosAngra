@@ -29,6 +29,8 @@
 #include "AngraConstantMgr.hh"
 #include "AngraMCLog.hh"
 
+using namespace CLHEP;
+
 #define PHOTONENERGY 3.1
 
 AngraPrimaryGeneratorAction::AngraPrimaryGeneratorAction()
