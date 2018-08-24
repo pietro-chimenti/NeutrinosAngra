@@ -15,6 +15,7 @@
 #include "G4UIterminal.hh"
 #include "G4UItcsh.hh"
 #include "QGSP_BIC_HP.hh"
+#include "G4OpticalPhysics.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -202,6 +203,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(detector);
 //  G4VUserPhysicsList* physics = new AngraPhysicsList;
   G4VModularPhysicsList* physics = new QGSP_BIC_HP;
+  physics->RegisterPhysics( new G4OpticalPhysics(0) );
   runManager->SetUserInitialization(physics);
   G4VUserPrimaryGeneratorAction* gen_action = new AngraPrimaryGeneratorAction(primaryEnum(confs.Primary),outFile);
   runManager->SetUserAction(gen_action);
