@@ -42,11 +42,8 @@ target_link_libraries(AngraG4Simulation ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(ANGRAG4SIMULATION_SCRIPTS
-  AngraG4Simulation.in
-  AngraG4Simulation.out
-  init_vis.mac
+  constants.dat
   run1.mac
-  run2.mac
   vis.mac
   )
 
