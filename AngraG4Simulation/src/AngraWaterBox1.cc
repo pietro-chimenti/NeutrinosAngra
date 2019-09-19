@@ -510,7 +510,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   // Physical PMTs will be stored douring loops 9 to 12.
   
   vector<G4LogicalBorderSurface*> logialBorderSurface;
-  logialBorderSurface.push_back(targetGore);
+  logialBorderSurface.push_back(targetTyvek);
   logialBorderSurface.push_back(shieldTyvek1);
   logialBorderSurface.push_back(shieldTyvek2);
   logialBorderSurface.push_back(innerVTyvek1);
