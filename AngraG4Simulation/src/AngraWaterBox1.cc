@@ -466,7 +466,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
    OpTyvek -> SetMaterialPropertiesTable(OpTyvekSurfaceProperty);
   
   // Applying Border Surfaces to logial volumes.
-  G4LogicalBorderSurface *targetGore   = new G4LogicalBorderSurface("TargetGore",targetWater_phys,targetStruc_phys,OpGore);
+  G4LogicalBorderSurface *targetTyvek   = new G4LogicalBorderSurface("TargetTyvek",targetWater_phys,targetStruc_phys,OpTyvek);
   G4LogicalBorderSurface *shieldTyvek1 = new G4LogicalBorderSurface("shieldTyvek1",shieldWater_phys,shieldStruc_phys,OpTyvek);
   G4LogicalBorderSurface *shieldTyvek2 = new G4LogicalBorderSurface("shieldTyvek2",shieldWater_phys,innerVetoStruc_phys,OpTyvek);
   G4LogicalBorderSurface *innerVTyvek1 = new G4LogicalBorderSurface("innerVTyvek1",innerVetoWater_phys,innerVetoStruc_phys,OpTyvek);
