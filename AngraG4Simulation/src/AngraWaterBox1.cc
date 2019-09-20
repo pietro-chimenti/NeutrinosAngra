@@ -212,8 +212,6 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   G4LogicalVolume   *thinWallShort_log;
   G4LogicalVolume   *uBoxVetoStruc_log;
   G4LogicalVolume   *uBoxVetoWater_log;
-  G4LogicalVolume   *bBoxVetoStruc_log;
-  G4LogicalVolume   *bBoxVetoWater_log;
   G4VPhysicalVolume *experimentalHall_phys;
   G4VPhysicalVolume *wall_phys;
   G4VPhysicalVolume *ground_phys;
@@ -229,8 +227,6 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   G4VPhysicalVolume *thinWallDB_phys;
   G4VPhysicalVolume *uBoxVetoStruc_phys;
   G4VPhysicalVolume *uBoxVetoWater_phys;
-  G4VPhysicalVolume *bBoxVetoStruc_phys;
-  G4VPhysicalVolume *bBoxVetoWater_phys;
   
   
   // Constructing the Geometry
@@ -265,7 +261,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
 
   G4Box *ground_box = new G4Box("ground_box",wall_x,ground_y,shield_Z+shield_T+wall_d);
   ground_log = new G4LogicalVolume(ground_box,man->FindOrBuildMaterial("G4_CONCRETE"),"ground_log",0,0,0);
-  ground_phys = new G4PVPlacement(0,G4ThreeVector(0,-1.*(shield_Y+shield_T+ground_y+2.*box_Y+2.*shield_T),0),ground_log,"ground_phys",experimentalHall_log,false,0,check);
+  ground_phys = new G4PVPlacement(0,G4ThreeVector(0,-1.*(shield_Y+shield_T+ground_y+box_Y+shield_T)+150,0),ground_log,"ground_phys",experimentalHall_log,false,0,check);
 
 
   // 1. External Shield
@@ -323,24 +319,14 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   uBoxVetoWater_phys = new G4PVPlacement (0,G4ThreeVector(0.,0.,0.),uBoxVetoWater_log,"uBoxVetoWater_phys",uBoxVetoStruc_log,false,0,check);
   uBoxVetoWater_log -> SetVisAttributes(waterVisAttr);
 
-  // 6. Bottom Box Veto
-  G4Box *bBoxVetoStruc_box = new G4Box("bBoxVetoStruc_box", shield_X+shield_T, box_Y+shield_T, shield_Z+shield_T);
-  bBoxVetoStruc_log  = new G4LogicalVolume(bBoxVetoStruc_box,man->FindOrBuildMaterial("PP"),"dBoxVetoStruc_log",0,0,0);  
-  bBoxVetoStruc_phys = new G4PVPlacement (0,G4ThreeVector(0.,-box_Y_pos,0.),bBoxVetoStruc_log,"dBoxVetoStruc_phys",experimentalHall_log,false,0,check);
-
-  G4Box *bBoxVetoWater_box = new G4Box("bBoxVetoWater_box", shield_X, box_Y, shield_Z);
-  bBoxVetoWater_log  = new G4LogicalVolume(bBoxVetoWater_box,man->FindOrBuildMaterial("G4_WATER"),"dBoxVetoWater_log",0,0,0);  
-  bBoxVetoWater_phys = new G4PVPlacement (0,G4ThreeVector(0.,0.,0.),bBoxVetoWater_log,"dBoxVetoWater_phys",bBoxVetoStruc_log,false,0,check);
-  bBoxVetoWater_log -> SetVisAttributes(waterVisAttr);
-
-  // 7. PMT's Bowl - Upper glass shell
+  // 6. PMT's Bowl - Upper glass shell
   G4Ellipsoid *pmtGlass  = new G4Ellipsoid ("pmtGlass" ,pmt_R, pmt_R, pmt_H, -0.1*mm, pmt_H);
   G4Ellipsoid *pmtVacuum = new G4Ellipsoid ("pmtVacuum",pmt_R-pmt_T, pmt_R-pmt_T,pmt_H-pmt_T,-0.2*mm,pmt_H-pmt_T);
   G4SubtractionSolid * pmtBowl = new G4SubtractionSolid("pmtBowl",pmtGlass,pmtVacuum);
   G4LogicalVolume* pmtBowl_log = new G4LogicalVolume(pmtBowl,man->FindOrBuildMaterial("G4_GLASS_PLATE"),"pmtBowl_log",0,0,0);
   pmtBowl_log -> SetVisAttributes(bowlVisAttr);
   
-  // 8. PMT's Dome and Neck - Bottom support
+  // 7. PMT's Dome and Neck - Bottom support
   G4Ellipsoid *pmtDome  = new G4Ellipsoid ("pmtDome" ,pmt_R, pmt_R, pmt_H, -pmt_H,0.1*mm); 
   G4Tubs* pmtDomeNeck   = new G4Tubs("pmtDomeNeck", pmtN_InnerR, pmtN_OuterR, pmtN_Height,0*deg,360*deg);
   G4UnionSolid* pmtBody = new G4UnionSolid("pmtDome",pmtDome, pmtDomeNeck,0,G4ThreeVector(0,0,pmtN_Offset));
@@ -480,13 +466,12 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
    OpTyvek -> SetMaterialPropertiesTable(OpTyvekSurfaceProperty);
   
   // Applying Border Surfaces to logial volumes.
-  G4LogicalBorderSurface *targetGore   = new G4LogicalBorderSurface("TargetGore",targetWater_phys,targetStruc_phys,OpGore);
+  G4LogicalBorderSurface *targetTyvek   = new G4LogicalBorderSurface("TargetTyvek",targetWater_phys,targetStruc_phys,OpTyvek);
   G4LogicalBorderSurface *shieldTyvek1 = new G4LogicalBorderSurface("shieldTyvek1",shieldWater_phys,shieldStruc_phys,OpTyvek);
   G4LogicalBorderSurface *shieldTyvek2 = new G4LogicalBorderSurface("shieldTyvek2",shieldWater_phys,innerVetoStruc_phys,OpTyvek);
   G4LogicalBorderSurface *innerVTyvek1 = new G4LogicalBorderSurface("innerVTyvek1",innerVetoWater_phys,innerVetoStruc_phys,OpTyvek);
   G4LogicalBorderSurface *innerVTyvek2 = new G4LogicalBorderSurface("innerVTyvek2",innerVetoWater_phys,targetStruc_phys,OpTyvek);  
   G4LogicalBorderSurface *uBoxVTyvek = new G4LogicalBorderSurface("uBoxVTyvek",uBoxVetoWater_phys,uBoxVetoStruc_phys,OpTyvek);
-  G4LogicalBorderSurface *bBoxVTyvek = new G4LogicalBorderSurface("bBoxVTyvek",bBoxVetoWater_phys,bBoxVetoStruc_phys,OpTyvek);
 
   G4LogicalBorderSurface *thinWallDFTyvek = new G4LogicalBorderSurface("thinWallDFTyvek",innerVetoWater_phys,thinWallDF_phys,OpTyvek);
   G4LogicalBorderSurface *thinWallDBTyvek = new G4LogicalBorderSurface("thinWallDBTyvek",innerVetoWater_phys,thinWallDB_phys,OpTyvek);
@@ -504,8 +489,6 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   logicalVolumesVector.push_back(targetWater_log);
   logicalVolumesVector.push_back(uBoxVetoStruc_log);
   logicalVolumesVector.push_back(uBoxVetoWater_log);
-  logicalVolumesVector.push_back(bBoxVetoStruc_log);
-  logicalVolumesVector.push_back(bBoxVetoWater_log);
   logicalVolumesVector.push_back(pmtBowl_log);
   logicalVolumesVector.push_back(pmtDome_log);
   logicalVolumesVector.push_back(thinWallWide_log);
@@ -520,8 +503,6 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   physicalVolumesVector.push_back(targetWater_phys);
   physicalVolumesVector.push_back(uBoxVetoStruc_phys);
   physicalVolumesVector.push_back(uBoxVetoWater_phys);
-  physicalVolumesVector.push_back(bBoxVetoStruc_phys);
-  physicalVolumesVector.push_back(bBoxVetoWater_phys);
   physicalVolumesVector.push_back(thinWallDF_phys);
   physicalVolumesVector.push_back(thinWallDB_phys);
   physicalVolumesVector.push_back(thinWallDL_phys);
@@ -529,19 +510,18 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   // Physical PMTs will be stored douring loops 9 to 12.
   
   vector<G4LogicalBorderSurface*> logialBorderSurface;
-  logialBorderSurface.push_back(targetGore);
+  logialBorderSurface.push_back(targetTyvek);
   logialBorderSurface.push_back(shieldTyvek1);
   logialBorderSurface.push_back(shieldTyvek2);
   logialBorderSurface.push_back(innerVTyvek1);
   logialBorderSurface.push_back(innerVTyvek2);
   logialBorderSurface.push_back(uBoxVTyvek);
-  logialBorderSurface.push_back(bBoxVTyvek);
   logialBorderSurface.push_back(thinWallDFTyvek);
   logialBorderSurface.push_back(thinWallDBTyvek);
   logialBorderSurface.push_back(thinWallDLTyvek);
   logialBorderSurface.push_back(thinWallDRTyvek);
   
-  // 9. Placing the UPPER PMT's inside the target.
+  // 8. Placing the UPPER PMT's inside the target.
   if (iUmax!=0)
   for(int i = 1; i<=iUmax; i++){
     std::ostringstream oss;
@@ -577,7 +557,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), targetWater_phys,pmtTarget_phys,OpPMTSurface);    
   }
   
-  // 10. Placing the BOTTOM PMT's inside the target.
+  // 9. Placing the BOTTOM PMT's inside the target.
   if (iDmax!=0)
   for(int i = 1; i<=iDmax; i++){
     std::ostringstream oss;
@@ -615,7 +595,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   
   
   
-  // 11. Placing the UPPER PMT's inside the inner veto. 
+  // 10. Placing the UPPER PMT's inside the inner veto. 
   for(int i = 1; i<=4; i++){
     std::ostringstream oss;
     oss << i;
@@ -651,44 +631,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     
   }
 
-  // 12. Placing the BOTTOM PMT's inside the inner veto.
-  for(int i = 1; i<=4; i++){
-    std::ostringstream oss;
-    oss << i;
-    std::string numstr=oss.str();
-
-    std::string coord_x_name("BowlInVetoX_D_");
-    std::string coord_z_name("BowlInVetoZ_D_");
-    coord_x_name+=numstr;
-    coord_z_name+=numstr;
-
-    G4double xpos=AngraConstantMgr::Instance().GetValue(coord_x_name.c_str())*mm;    
-    G4double zpos=AngraConstantMgr::Instance().GetValue(coord_z_name.c_str())*mm;
-    G4double yposD= -iv_Y - pmtN_Offset + pmtN_Height+0.2*mm;
-    G4double yposB= -iv_Y - pmtN_Offset + pmtN_Height;
- 
-    std::string name("pmtInnerVeto_D");
-    name+=numstr;
-    name+="_phys";
-    G4VPhysicalVolume *pmtBowl_phys  = new G4PVPlacement(rotBowlDown,G4ThreeVector(xpos,yposD,zpos),pmtBowl_log,name.c_str(),innerVetoWater_log,false,0,check);
-
-    name = "pmtInnerVetoDome_D";
-    name+=numstr;
-    name+="_phys";
-    G4VPhysicalVolume *pmtDome_phys  = new G4PVPlacement(rotBowlDown,G4ThreeVector(xpos,yposB,zpos),pmtDome_log,name.c_str(),innerVetoWater_log,false,0,check);
-
-    physicalVolumesVector.push_back(pmtDome_phys);
-    physicalVolumesVector.push_back(pmtBowl_phys);
-
-    std::string surfaceName("ivPMTsurface_D");
-    surfaceName+=numstr;
-    G4LogicalBorderSurface* PMTSurface;
-    PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), innerVetoWater_phys,pmtBowl_phys,OpPMTSurface);
-    
-  }
-
-
-  // 13. Placing the PMTs inside the UPPER box veto.
+  // 11. Placing the PMTs inside the UPPER box veto.
   for(int i = 1; i<=4; i++){
     std::ostringstream oss;
     oss << i;
@@ -710,32 +653,32 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
 
 	switch(i){
       case 1:
-	thetaY = theta - pmtBoxAngle;
-	xposB = -xposB + rposB*cos(thetaY);	  
-	zposB = -zposB + rposB*sin(thetaY);	  
-	xposD = -xposD + rposD*cos(thetaY);	  
-	zposD = -zposD + rposD*sin(thetaY);	  
+	thetaY =  0*deg;
+	xposB  = -1080.00;	  
+	zposB  =  0.00;	  
+	xposD  = -1080.00;	  
+	zposD  =  0.00;	  
 	break;
       case 2:
-	thetaY = M_PI - theta - pmtBoxAngle;
-	xposB =  xposB + rposB*cos(thetaY);	  
-	zposB = -zposB + rposB*sin(thetaY);	  
-	xposD =  xposD + rposD*cos(thetaY);	  
-	zposD = -zposD + rposD*sin(thetaY);	  
+	thetaY =  90*deg;
+	xposB  =  0.00;
+	zposB  = -795.00;	  
+	xposD  =  0.00;  
+	zposD  = -795.00;  
 	break;
       case 3:
-	thetaY = M_PI + theta - pmtBoxAngle;
-	xposB =  xposB + rposB*cos(thetaY);	  
-	zposB =  zposB + rposB*sin(thetaY);	  
-	xposD =  xposD + rposD*cos(thetaY);	  
-	zposD =  zposD + rposD*sin(thetaY);	  
+	thetaY =  180*deg;
+	xposB  =  1080.00;
+	zposB  =  0.00;
+	xposD  =  1080.00;
+	zposD  =  0.00;
 	break;
       case 4:
-	thetaY = 2.*M_PI -theta + pmtBoxAngle;
-	xposB = -xposB + rposB*cos(thetaY);	  
-	zposB =  zposB + rposB*sin(thetaY);	  
-	xposD = -xposD + rposD*cos(thetaY);	  
-	zposD =  zposD + rposD*sin(thetaY);	  
+	thetaY =  270*deg;
+	xposB  =  0.00;
+	zposB  =  795;	  
+	xposD  =  0.00;	  
+	zposD  =  795;	  
 	break;
     }
     
@@ -761,77 +704,6 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     
   }
 
-  // 14. Placing the PMTs inside the BOTTOM box veto.
-  for(int i = 1; i<=4; i++){
-    std::ostringstream oss;
-    oss << i;
-    std::string numstr=oss.str();
-
-    std::string pmt_a_name("BowlBoxVetoA_");
-    pmt_a_name+=numstr;    
-    G4double pmtBoxAngle = AngraConstantMgr::Instance().GetValue(pmt_a_name)*deg;
-
-    G4double rposD = -pmtN_Offset+2.*pmtN_Height;
-    G4double rposB = rposD+0.2*mm;
-    G4double dpos = pmt_R+0.1*mm;
-    
-    G4double thetaY;
-    G4double xposB = shield_X - dpos;
-    G4double zposB = shield_Z - dpos;;
-    G4double xposD = xposB;
-    G4double zposD = zposB;
-
-	switch(i){
-      case 1:
-	thetaY = theta - pmtBoxAngle;
-	xposB = -xposB + rposB*cos(thetaY);	  
-	zposB = -zposB + rposB*sin(thetaY);	  
-	xposD = -xposD + rposD*cos(thetaY);	  
-	zposD = -zposD + rposD*sin(thetaY);	  
-	break;
-      case 2:
-	thetaY = M_PI - theta - pmtBoxAngle;
-	xposB =  xposB + rposB*cos(thetaY);	  
-	zposB = -zposB + rposB*sin(thetaY);	  
-	xposD =  xposD + rposD*cos(thetaY);	  
-	zposD = -zposD + rposD*sin(thetaY);	  
-	break;
-      case 3:
-	thetaY = M_PI + theta - pmtBoxAngle;
-	xposB =  xposB + rposB*cos(thetaY);	  
-	zposB =  zposB + rposB*sin(thetaY);	  
-	xposD =  xposD + rposD*cos(thetaY);	  
-	zposD =  zposD + rposD*sin(thetaY);	  
-	break;
-      case 4:
-	thetaY = 2.*M_PI -theta + pmtBoxAngle;
-	xposB = -xposB + rposB*cos(thetaY);	  
-	zposB =  zposB + rposB*sin(thetaY);	  
-	xposD = -xposD + rposD*cos(thetaY);	  
-	zposD =  zposD + rposD*sin(thetaY);	  
-	break;
-    }
-    
-    std::string name("pmtBoxVeto_D");
-    name+=numstr;
-    name+="_phys";
-    G4VPhysicalVolume *pmtBowl_phys  = new G4PVPlacement(rotVector[i-1],G4ThreeVector(xposB,0.,zposB),pmtBowl_log,name.c_str(),bBoxVetoWater_log,false,0,check);
-
-    name = "pmtBoxVetoDome_D";
-    name+=numstr;
-    name+="_phys";
-    G4VPhysicalVolume *pmtDome_phys  = new G4PVPlacement(rotVector[i-1],G4ThreeVector(xposD,0.,zposD),pmtDome_log,name.c_str(),bBoxVetoWater_log,false,0,check);
-
-    physicalVolumesVector.push_back(pmtDome_phys);
-    physicalVolumesVector.push_back(pmtBowl_phys);
-
-    std::string surfaceName("BoxVetoPMTsurface_D");
-    surfaceName+=numstr;
-    G4LogicalBorderSurface* PMTSurface;
-    PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), bBoxVetoWater_phys,pmtBowl_phys,OpPMTSurface);
-    
-  }
-  
   // Setting PMTBowl as Sensitive Detectors
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
 

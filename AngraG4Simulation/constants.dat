@@ -303,18 +303,18 @@ BowlBoxVetoAngle_2   0	# Rotation angle (clockwise) to shift PMT from the center
 BowlBoxVetoAngle_3   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
 BowlBoxVetoAngle_4   0	# Rotation angle (clockwise) to shift PMT from the center diraction (deg)
 
-BowlInVetoX_U_1 -842.00	# Inner Veto PMTs UP face
+BowlInVetoX_U_1 -859.00	# Inner Veto PMTs UP face
 BowlInVetoY_U_1  500.00	#
-BowlInVetoZ_U_1  616.00	#
-BowlInVetoX_U_2  842.00	#
+BowlInVetoZ_U_1  0.00	#
+BowlInVetoX_U_2  859.00	#
 BowlInVetoY_U_2  500.00	#
-BowlInVetoZ_U_2  616.00	#
-BowlInVetoX_U_3  842.00	#
+BowlInVetoZ_U_2  0.00	#
+BowlInVetoX_U_3  0.00	#
 BowlInVetoY_U_3  500.00	#
-BowlInVetoZ_U_3 -616.00	#
-BowlInVetoX_U_4 -842.00	#
+BowlInVetoZ_U_3 -623.00	#
+BowlInVetoX_U_4  0.00	#
 BowlInVetoY_U_4  500.00	#
-BowlInVetoZ_U_4 -616.00	#
+BowlInVetoZ_U_4  623.00	#
 
 BowlInVetoX_D_1 -842.00	# Inner Veto PMTs DOWN face
 BowlInVetoY_D_1 -500.00	#
