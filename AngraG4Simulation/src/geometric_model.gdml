@@ -1,0 +1,3005 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gdml xmlns:gdml="http://cern.ch/2001/Schemas/GDML"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="GDMLSchema/gdml.xsd">
+
+<!-- Atualizacao do Modelo Geometrico Computacional do Experimento Neutrinos Angra
+
+Arquivo GDML com a descricao de:
+
+- Materiais
+- Dimensoes
+- Geometria
+
+Manual GDML Manual em: http://gdml.web.cern.ch/GDML/doc/GDMLmanual.pdf
+
+versao 1.0 desenvolvida por: mribeiros@furnas.com.br -->
+
+<!-- Definicoes Globais -->
+
+
+<define>
+<constant name="eD" value="1e-5"/>
+<constant name="ExpHall" value="10000"/>
+<constant name="Inner_X" value="2000."/> 
+<constant name="Inner_Y" value="1570."/>
+<constant name="Inner_Z" value="1480."/>
+<constant name="Inner_T" value="20."/>
+<constant name="Inner_Y_Offset" value="-30."/>
+<constant name="veto_X" value="2580."/>
+<constant name="veto_Y" value="280."/>
+<constant name="veto_Z" value="1990."/>
+<constant name="veto_T" value="20."/>
+<constant name="veto_Xe" value="veto_X +2*veto_T"/>
+<constant name="veto_Ye" value="veto_Y +2*veto_T"/>
+<constant name="veto_Ze" value="veto_Z +2*veto_T"/>
+<constant name="shield_X" value="2580."/>
+<constant name="shield_Y" value="1670."/>
+<constant name="shield_Z" value="1990."/>
+<constant name="shield_T" value="20."/>
+<constant name="shield_steel" value="1."/>
+<constant name="shield_Xe" value=" shield_X+2*shield_T"/>
+<constant name="shield_Ye" value="shield_Y+2*shield_T"/>
+<constant name="shield_Ze" value="shield_Z +2*shield_T"/>
+<constant name="Target_X" value="1421."/>
+<constant name="Target_Y" value="1046."/>
+<constant name="Target_Z" value="1000."/>
+<constant name="Target_TX" value="40."/>
+<constant name="Target_TY" value="40."/>
+<constant name="Target_TZ" value="25."/>
+<constant name="Target_Space" value="132."/>
+<constant name="Target_Xe" value="Target_X+2*Target_TX"/>
+<constant name="Target_Ye" value="Target_Y+2*(Target_TY+Target_Space)"/>
+<constant name="Target_Ze" value="Target_Z+2*Target_TZ"/>
+<constant name="GridTargetV_X" value="Target_Xe+2*Target_TZ"/>
+<constant name="GridTargetV_Y" value="Target_Y"/>
+<constant name="GridTargetV_Z" value="Target_TZ"/>
+<constant name="Reforco_X" value="300."/>
+<constant name="Reforco_Z" value="200."/>
+<constant name="GridTargetH_X" value="Target_Xe+2*Target_TZ"/>
+<constant name="GridTargetH_Y" value="Target_Ye+2*Target_TZ"/>
+<constant name="GridTargetH_Z" value="Target_Ze+2*Target_TZ"/>
+<constant name="Reforco_Y" value="300."/>
+<constant name="BaseTarget_Xe" value="1930."/>
+<constant name="BaseTarget_Ye" value="30."/>
+<constant name="BaseTarget_Ze" value="1435."/>
+<constant name="GridshieldV_X" value="shield_Xe+2*shield_T"/>
+<constant name="GridshieldV_Y" value="shield_T"/>
+<constant name="GridshieldV_Z" value="shield_T"/>
+<constant name="Reforco_X" value="300."/>
+<constant name="Reforco_Z" value="200."/>
+<constant name="Reforco_XS" value="Reforco_X*(shield_Xe/Target_Xe)"/>
+<constant name="Reforco_ZS" value="Reforco_Z*(shield_Ze/Target_Ze)"/>
+<constant name="GridshieldH_X" value="shield_Xe+2*shield_T"/>
+<constant name="GridshieldH_Y" value="shield_Ye+2*shield_T"/>
+<constant name="GridshieldH_Z" value="shield_Ze+2*shield_T"/>
+<constant name="Reforco_Y" value="300."/>
+<constant name="Reforco_YS" value="Reforco_Y*(shield_Ye/Target_Ye)"/>
+<constant name="BowlInVetoX_U_1" value="-842."/>
+<constant name="BowlInVetoY_U_1" value="500."/>
+<constant name="BowlInVetoZ_U_1" value="616."/>
+<constant name="BowlInVetoX_U_2" value="842."/>
+<constant name="BowlInVetoY_U_2" value="500."/>
+<constant name="BowlInVetoZ_U_2" value="616."/>
+<constant name="BowlInVetoX_U_3" value="842."/>
+<constant name="BowlInVetoY_U_3" value="500."/>
+<constant name="BowlInVetoZ_U_3" value="-616."/>
+<constant name="BowlInVetoX_U_4" value="-842."/>
+<constant name="BowlInVetoY_U_4" value="500."/>
+<constant name="BowlInVetoZ_U_4" value="-616."/>
+<constant name="BowlInVetoX_D_1" value="-842."/>
+<constant name="BowlInVetoY_D_1" value="-500."/>
+<constant name="BowlInVetoZ_D_1" value="616."/> 
+<constant name="BowlInVetoX_D_2" value="842."/>
+<constant name="BowlInVetoY_D_2" value="-500."/>
+<constant name="BowlInVetoZ_D_2" value="616."/>
+<constant name="BowlInVetoX_D_3" value="842."/>
+<constant name="BowlInVetoY_D_3" value="-500."/>
+<constant name="BowlInVetoZ_D_3" value="-616."/>
+<constant name="BowlInVetoX_D_4" value="-842."/>
+<constant name="BowlInVetoY_D_4" value="-500."/>
+<constant name="BowlInVetoZ_D_4" value="-616."/>
+<constant name="BowlVetoX_S_1" value="(shield_X/2)-162."/>
+<constant name="BowlVetoY_S_1" value="(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_S_1" value="0."/>
+<constant name="BowlVetoX_S_2" value="-(shield_X/2-162.)"/>
+<constant name="BowlVetoY_S_2" value="(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_S_2" value="0."/>
+<constant name="BowlVetoX_S_3" value="0."/>
+<constant name="BowlVetoY_S_3" value="(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_S_3" value="(shield_Z/2-162.)"/>
+<constant name="BowlVetoX_S_4" value="0."/>
+<constant name="BowlVetoY_S_4" value="(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_S_4" value="-(shield_Z/2-162.)"/>
+<constant name="BowlVetoX_I_1" value="(shield_X/2)-162."/>
+<constant name="BowlVetoY_I_1" value="-(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_I_1" value="0."/>                 
+<constant name="BowlVetoX_I_2" value="-(shield_X/2-162.)"/>
+<constant name="BowlVetoY_I_2" value="-(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_I_2" value="0."/>
+<constant name="BowlVetoX_I_3" value="0."/>
+<constant name="BowlVetoY_I_3" value="-(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_I_3" value="(shield_Z/2-162.)"/>
+<constant name="BowlVetoX_I_4" value="0."/>
+<constant name="BowlVetoY_I_4" value="-(shield_Ye+veto_Y)/2"/>
+<constant name="BowlVetoZ_I_4" value="-(shield_Z/2-162.)"/>
+<constant name="pmtPlaneY" value="Target_Y/2."/>
+<constant name="pmtRegua1Z" value="351.26"/>
+<constant name="pmtRegua2Z" value="117.09"/>
+<constant name="pmtRegua13X" value="-536.75"/>
+<constant name="pmtRegua24X" value="-383.25"/>
+<constant name="pmtDistX" value="307"/>
+<constant name="BowlX_U_1" value="pmtRegua13X"/>
+<constant name="BowlY_U_1" value="pmtPlaneY"/>
+<constant name="BowlZ_U_1" value="pmtRegua1Z"/>
+<constant name="BowlX_U_2" value="pmtRegua13X+pmtDistX"/>
+<constant name="BowlY_U_2" value="pmtPlaneY"/>
+<constant name="BowlZ_U_2" value="pmtRegua1Z"/>
+<constant name="BowlX_U_3" value="pmtRegua13X+2*pmtDistX"/>
+<constant name="BowlY_U_3" value="pmtPlaneY"/>
+<constant name="BowlZ_U_3" value="pmtRegua1Z"/>
+<constant name="BowlX_U_4" value="pmtRegua13X+3*pmtDistX"/>
+<constant name="BowlY_U_4" value="pmtPlaneY"/>
+<constant name="BowlZ_U_4" value="pmtRegua1Z"/>
+<constant name="BowlX_U_5" value="pmtRegua24X"/>
+<constant name="BowlY_U_5" value="pmtPlaneY"/>
+<constant name="BowlZ_U_5" value="pmtRegua2Z"/>
+<constant name="BowlX_U_6" value="pmtRegua24X+pmtDistX"/>
+<constant name="BowlY_U_6" value="pmtPlaneY"/>
+<constant name="BowlZ_U_6" value="pmtRegua2Z"/>
+<constant name="BowlX_U_7" value="pmtRegua24X+2*pmtDistX"/>
+<constant name="BowlY_U_7" value="pmtPlaneY"/>
+<constant name="BowlZ_U_7" value="pmtRegua2Z"/>
+<constant name="BowlX_U_8" value="pmtRegua24X+3*pmtDistX"/>
+<constant name="BowlY_U_8" value="pmtPlaneY"/>
+<constant name="BowlZ_U_8" value="pmtRegua2Z"/>
+<constant name="BowlX_U_9" value="pmtRegua13X"/>
+<constant name="BowlY_U_9" value="pmtPlaneY"/>
+<constant name="BowlZ_U_9" value="-pmtRegua2Z"/>
+<constant name="BowlX_U_10"  value="pmtRegua13X+pmtDistX"/>
+<constant name="BowlY_U_10" value="pmtPlaneY"/>
+<constant name="BowlZ_U_10" value="-pmtRegua2Z"/>
+<constant name="BowlX_U_11" value="pmtRegua13X+2*pmtDistX"/>
+<constant name="BowlY_U_11" value="pmtPlaneY"/>
+<constant name="BowlZ_U_11" value="-pmtRegua2Z"/>
+<constant name="BowlX_U_12" value="pmtRegua13X+3*pmtDistX"/>
+<constant name="BowlY_U_12" value="pmtPlaneY"/>
+<constant name="BowlZ_U_12" value="-pmtRegua2Z"/>
+<constant name="BowlX_U_13" value="pmtRegua24X"/>
+<constant name="BowlY_U_13" value="pmtPlaneY"/>
+<constant name="BowlZ_U_13" value="-pmtRegua1Z"/>
+<constant name="BowlX_U_14" value="pmtRegua24X+pmtDistX"/>
+<constant name="BowlY_U_14" value="pmtPlaneY"/>
+<constant name="BowlZ_U_14" value="-pmtRegua1Z"/>
+<constant name="BowlX_U_15" value="pmtRegua24X+2*pmtDistX"/>
+<constant name="BowlY_U_15" value="pmtPlaneY"/>
+<constant name="BowlZ_U_15" value="-pmtRegua1Z"/>
+<constant name="BowlX_U_16" value="pmtRegua24X+3*pmtDistX"/>
+<constant name="BowlY_U_16" value="pmtPlaneY"/>
+<constant name="BowlZ_U_16" value="-pmtRegua1Z"/>
+<constant name="BowlX_D_1" value="pmtRegua24X"/>
+<constant name="BowlY_D_1" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_1" value="pmtRegua1Z"/>
+<constant name="BowlX_D_2" value="pmtRegua24X+pmtDistX"/>
+<constant name="BowlY_D_2" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_2" value="pmtRegua1Z"/>
+<constant name="BowlX_D_3" value="pmtRegua24X+2*pmtDistX"/>
+<constant name="BowlY_D_3" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_3" value="pmtRegua1Z"/>
+<constant name="BowlX_D_4" value="pmtRegua24X+3*pmtDistX"/>
+<constant name="BowlY_D_4" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_4" value="pmtRegua1Z"/>
+<constant name="BowlX_D_5" value="pmtRegua13X"/>
+<constant name="BowlY_D_5" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_5" value="pmtRegua2Z"/>
+<constant name="BowlX_D_6" value="pmtRegua13X+pmtDistX"/>
+<constant name="BowlY_D_6" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_6" value="pmtRegua2Z"/>
+<constant name="BowlX_D_7" value="pmtRegua13X+2*pmtDistX"/>
+<constant name="BowlY_D_7" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_7" value="pmtRegua2Z"/>
+<constant name="BowlX_D_8" value="pmtRegua13X+3*pmtDistX"/>
+<constant name="BowlY_D_8" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_8" value="pmtRegua2Z"/>
+<constant name="BowlX_D_9" value="pmtRegua24X"/>
+<constant name="BowlY_D_9" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_9" value="-pmtRegua2Z"/>
+<constant name="BowlX_D_10" value="pmtRegua24X+pmtDistX"/>
+<constant name="BowlY_D_10" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_10" value="-pmtRegua2Z"/>
+<constant name="BowlX_D_11" value="pmtRegua24X+2*pmtDistX"/>
+<constant name="BowlY_D_11" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_11" value="-pmtRegua2Z"/>
+<constant name="BowlX_D_12" value="pmtRegua24X+3*pmtDistX"/>
+<constant name="BowlY_D_12" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_12" value="-pmtRegua2Z"/>
+<constant name="BowlX_D_13" value="pmtRegua13X"/>
+<constant name="BowlY_D_13" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_13" value="-pmtRegua1Z"/>
+<constant name="BowlX_D_14" value="pmtRegua13X+pmtDistX"/>
+<constant name="BowlY_D_14" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_14" value="-pmtRegua1Z"/>
+<constant name="BowlX_D_15" value="pmtRegua13X+2*pmtDistX"/>
+<constant name="BowlY_D_15" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_15" value="-pmtRegua1Z"/>
+<constant name="BowlX_D_16" value="pmtRegua13X+3*pmtDistX"/>
+<constant name="BowlY_D_16" value="-pmtPlaneY"/>
+<constant name="BowlZ_D_16" value="-pmtRegua1Z"/>
+<constant name="Pmt_R" value="100."/>
+<constant name="Pmt_H" value="80."/>
+<constant name="Pmt_T" value="1."/>       
+<constant name="pmtBaseX" value="62."/>
+<constant name="pmtBaseY" value="62."/>
+<constant name="pmtBaseZ" value="84.5"/>
+<position name="posTarget_e" unit="mm" x="0" y="0" z="0"/>
+<position name="posTarget" unit="mm" x="0" y="0" z="0"/>
+<position name="posInner" unit=" mm " x="0" y="0" z="0"/>
+<position name="posVeto" unit="mm" x="0" y="0" z="0"/>
+<position name="posShield" unit="mm" x="0" y="0" z="0"/>
+<position name="posGridTargetV1" unit="mm" x="(Target_Xe+Target_TZ)/2" y="0." z="Reforco_Z"/>
+<position name="posGridTargetV2" unit="mm" x="-(Target_Xe+Target_TZ)/2" y="0." z="Reforco_Z"/>
+<position name="posGridTargetV3" unit="mm" x="(Target_Xe+Target_TZ)/2" y="0." z="-Reforco_Z"/>
+<position name="posGridTargetV4" unit="mm" x="-(Target_Xe+Target_TZ)/2" y="0." z="-Reforco_Z"/>
+<position name="posGridTargetV5" unit="mm" x="(Target_Xe+Target_TZ)/2" y="0." z="2.5*Reforco_Z"/>
+<position name="posGridTargetV6" unit="mm" x="-(Target_Xe+Target_TZ)/2" y="0." z="2.5*Reforco_Z"/>
+<position name="posGridTargetV7" unit="mm" x="(Target_Xe+Target_TZ)/2" y="0." z="-2.5*Reforco_Z"/>
+<position name="posGridTargetV8" unit="mm" x="-(Target_Xe+Target_TZ)/2" y="0." z="-2.5*Reforco_Z"/>
+<position name="posGridTargetV9" unit="mm" x="Reforco_Z" y="0." z="(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV10" unit="mm" x="Reforco_Z" y="0." z="-(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV11" unit="mm" x="-Reforco_Z" y="0." z="(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV12" unit="mm" x="-Reforco_Z" y="0." z="-(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV13" unit="mm" x="2.5*Reforco_Z" y="0." z="(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV14" unit="mm" x="2.5*Reforco_Z" y="0." z="-(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV15" unit="mm" x="-2.5*Reforco_Z" y="0." z="(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetV16" unit="mm" x="-2.5*Reforco_Z" y="0." z="-(Target_Ze+Target_TZ)/2"/>
+<position name="posGridTargetH1" unit="mm" x="0." y="Reforco_Y" z="Target_Ze/2"/>
+<position name="posGridTargetH2" unit="mm" x="0." y="Reforco_Y" z="-Target_Ze/2"/>
+<position name="posGridTargetH3" unit="mm" x="0." y="-Reforco_Y" z="Target_Ze/2"/>
+<position name="posGridTargetH4" unit="mm" x="0." y="-Reforco_Y" z="-Target_Ze/2"/>
+<position name="posGridTargetH5" unit="mm" x="Target_Xe/2" y="Reforco_Y" z="0."/>
+<position name="posGridTargetH6" unit="mm" x="Target_Xe/2" y="-Reforco_Y" z="0."/>
+<position name="posGridTargetH7" unit="mm" x="-Target_Xe/2" y="Reforco_Y" z="0."/>
+<position name="posGridTargetH8" unit="mm" x="-Target_Xe/2" y="-Reforco_Y" z="0."/>
+<position name="posGridTargetH9" unit="mm" x="0." y="Target_Ye/2+Target_TY/2" z="Target_Ze/2-Target_TZ"/>
+<position name="posGridTargetH10" unit="mm" x="0." y="Target_Ye/2+Target_TY/2" z="-(Target_Ze/2-Target_TZ)"/>
+<position name="posGridTargetH11" unit="mm" x="0." y="Target_Ye /2+Target_TY/2" z="Reforco_Z"/>
+<position name="posGridTargetH12" unit="mm" x="0." y="Target_Ye/2+Target_TY/2" z="-Reforco_Z"/>
+<position name="posGridTargetH13" unit="mm" x="Reforco_Z" y="Target_Ye/2+Target_TY/2" z="0."/>
+<position name="posGridTargetH14" unit="mm" x="-Reforco_Z" y="Target_Ye/2+Target_TY/2" z="0."/>
+<position name="posGridTargetH15" unit="mm" x="2.5*Reforco_Z" y="Target_Ye/2+Target_TY/2" z="0."/>
+<position name="posGridTargetH16" unit="mm" x="-2.5*Reforco_Z" y="Target_Ye/2+Target_TY/2" z="0."/>
+<position name="posBaseTarget_e" unit="mm" x="0." y="-530+5*Inner_Y_Offset" z="0."/>
+<position name="posGridshieldV1" unit="mm" x="(shield_Xe+2*shield_T)/2" y="0." z="Reforco_ZS"/>
+<position name="posGridshieldV2" unit="mm" x="-(shield_Xe+shield_T)/2" y="0." z="Reforco_ZS"/>
+<position name="posGridshieldV3" unit="mm" x="(shield_Xe+shield_T)/2" y="0." z="-Reforco_ZS"/>
+<position name="posGridshieldV4" unit="mm" x="-(shield_Xe+shield_T)/2" y="0." z="-Reforco_ZS"/>
+<position name="posGridshieldV5" unit="mm" x="(shield_Xe+shield_T)/2" y="0." z="2.5*Reforco_ZS"/>
+<position name="posGridshieldV6" unit="mm" x="-(shield_Xe+shield_T)/2" y="0." z="2.5*Reforco_ZS"/>
+<position name="posGridshieldV7" unit="mm" x="(shield_Xe+shield_T)/2" y="0." z="-2.5*Reforco_ZS"/>  
+<position name="posGridshieldV8" unit="mm " x="-(shield_Xe+shield_T)/2" y="0." z="-2.5*Reforco_ZS"/>
+<position name="posGridshieldV9" unit="mm" x="Reforco_ZS" y="0." z="(shield_Ze+shield_T )/2"/>
+<position name="posGridshieldV10" unit="mm" x="Reforco_ZS" y="0." z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV11" unit="mm" x="-Reforco_ZS" y="0." z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV12" unit="mm" x="-Reforco_ZS" y="0." z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV13" unit="mm" x="2.5*Reforco_ZS" y="0." z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV14" unit="mm" x="2.5*Reforco_ZS" y="0." z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV15" unit="mm" x="-2.5*Reforco_ZS" y="0." z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV16" unit="mm" x="-2.5*Reforco_ZS" y="0." z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV17" unit="mm" x="(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="Reforco_ZS"/>
+<position name="posGridshieldV18" unit="mm" x="-(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="Reforco_ZS"/>
+<position name="posGridshieldV19" unit="mm" x="(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="-Reforco_ZS"/>
+<position name="posGridshieldV20" unit="mm" x="-(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="-Reforco_ZS"/>
+<position name="posGridshieldV21" unit="mm" x="(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="2.5*Reforco_ZS"/>
+<position name="posGridshieldV22" unit="mm" x="-(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="2.5*Reforco_ZS"/>
+<position name="posGridshieldV23" unit="mm" x="(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="-2.5*Reforco_ZS"/>
+<position name="posGridshieldV24" unit="mm" x="-(shield_Xe+shield_T)/2" y="shield_Ye/2+3*Target_TY" z="-2.5*Reforco_ZS"/>
+<position name="posGridshieldV25" unit="mm" x="Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV26" unit="mm" x="Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV27" unit="mm" x="-Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV28" unit="mm" x="-Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV29" unit="mm" x="2.5*Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV30" unit="mm" x="2.5*Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV31" unit="mm" x="-2.5*Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV32" unit="mm" x="-2.5*Reforco_ZS" y="shield_Ye/2+3*Target_TY" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV33" unit="mm" x="(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="Reforco_ZS"/>
+<position name="posGridshieldV34" unit="mm" x="-(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="Reforco_ZS"/>
+<position name="posGridshieldV35" unit="mm" x="(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="-Reforco_ZS"/>
+<position name="posGridshieldV36" unit="mm" x="-(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="-Reforco_ZS"/>
+<position name="posGridshieldV37" unit="mm" x="(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="2.5*Reforco_ZS"/>	
+<position name="posGridshieldV38" unit="mm" x="-(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="2.5*Reforco_ZS"/>
+<position name="posGridshieldV39" unit="mm" x="(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="-2.5*Reforco_ZS"/>
+<position name="posGridshieldV40" unit="mm" x="-(shield_Xe+shield_T)/2" y="-(shield_Ye/2+3*Target_TY)" z="-2.5*Reforco_ZS"/>
+<position name="posGridshieldV41" unit="mm" x="Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV42" unit="mm" x="Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV43" unit="mm" x="-Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV44" unit="mm" x="-Reforco_ZS" y="-(shield_Ye /2+3*Target_TY)" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV45" unit="mm" x="2.5*Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV46" unit="mm" x="2.5*Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV47" unit="mm" x="-2.5*Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldV48" unit="mm" x="-2.5*Reforco_ZS" y="-(shield_Ye/2+3*Target_TY)" z="-(shield_Ze+shield_T)/2"/>
+<position name="posGridshieldH1"  unit="mm" x="0." y="Reforco_YS" z="shield_Ze/2"/>
+<position name="posGridshieldH2" unit="mm" x="0." y="Reforco_YS" z="-shield_Ze/2"/>
+<position name="posGridshieldH3" unit="mm" x="0." y="-Reforco_YS" z="shield_Ze/2"/>
+<position name="posGridshieldH4" unit="mm" x="0." y="-Reforco_YS" z="-shield_Ze/2"/>
+<position name="posGridshieldH5" unit="mm" x="shield_Xe/2" y="Reforco_YS" z="0."/>
+<position name="posGridshieldH6" unit="mm" x="shield_Xe/2" y="-Reforco_YS" z="0."/>
+<position name="posGridshieldH7" unit="mm" x="-shield_Xe/2" y="Reforco_YS" z="0."/>
+<position name="posGridshieldH8" unit="mm" x="-shield_Xe/2" y="-Reforco_YS" z="0."/>
+<position name="posGridshieldH9" unit="mm" x="0." y="shield_Ye/2+shield_T/2" z="shield_Ze/2-shield_T"/>
+<position name="posGridshieldH10" unit="mm" x="0." y="shield_Ye/2+shield_T/2" z="-(shield_Ze/2-shield_T)"/>
+<position name="posGridshieldH11" unit="mm" x="0." y="shield_Ye/2+shield_T/2" z="Reforco_ZS"/>
+<position name="posGridshieldH12" unit="mm" x="0." y="shield_Ye/2+shield_T/2" z="-Reforco_ZS"/>
+<position name="posGridshieldH13" unit="mm" x="Reforco_ZS" y="shield_Ye/2+shield_T/2" z="0."/>
+<position name="posGridshieldH14" unit="mm" x="-Reforco_ZS" y="shield_Ye/2+shield_T/2" z="0."/>
+<position name="posGridshieldH15" unit="mm" x="2.5*Reforco_ZS" y="shield_Ye/2+shield_T/2" z="0."/>
+<position name="posGridshieldH16" unit="mm" x="-2.5*Reforco_ZS" y="shield_Ye/2+shield_T/2" z="0."/>
+<position name="posGridshieldH17" unit="mm" x="shield_Xe/2+shield_T" y="shield_Ye/2-shield_T" z="0."/>
+<position name="posGridshieldH18" unit="mm" x="-(shield_Xe/2+shield_T)" y="shield_Ye/2-shield_T" z="0."/>
+<position name="posGridshieldH19" unit="mm" x="shield_Xe/2+shield_T" y="-(shield_Ye/2-shield_T)" z="0."/>
+<position name="posGridshieldH20" unit="mm" x="-(shield_Xe/2+shield_T)" y="-(shield_Ye/2-shield_T)" z="0."/>
+<position name="posGridshieldH21" unit="mm" x="0." y="shield_Ye/2-shield_T" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH22" unit="mm" x="0." y="shield_Ye/2-shield_T" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH23" unit="mm" x="0." y="-(shield_Ye/2-shield_T)" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH24" unit="mm" x="0." y="-(shield_Ye/2-shield_T)" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH25" unit="mm" x="0." y="shield_Ye/2+shield_T" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH26" unit="mm" x="0." y="shield_Ye/2+shield_T" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH27" unit="mm" x="0." y="(shield_Ye/2+shield_T+veto_Y)" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH28" unit="mm" x="0." y="(shield_Ye/2+shield_T+veto_Y)" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH29" unit="mm" x="shield_Xe/2+shield_T" y="shield_Ye/2+shield_T" z="0."/>
+<position name="posGridshieldH30" unit="mm" x="-(shield_Xe/2+shield_T)" y="shield_Ye/2+shield_T" z="0."/>
+<position name="posGridshieldH31" unit="mm" x="shield_Xe/2+shield_T" y="(shield_Ye/2+shield_T+veto_Y)" z="0."/>
+<position name="posGridshieldH32" unit="mm" x="-(shield_Xe/2+shield_T)" y="(shield_Ye/2+shield_T+veto_Y)" z="0."/>
+<position name="posGridshieldH33" unit="mm" x="0." y="-(shield_Ye/2+shield_T)" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH34" unit="mm" x="0." y="-(shield_Ye/2+shield_T)" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH35" unit="mm" x="0." y="-(shield_Ye/2+shield_T+veto_Y)" z="shield_Ze/2+shield_T"/>
+<position name="posGridshieldH36" unit="mm" x="0." y="-(shield_Ye/2+shield_T+veto_Y)" z="-(shield_Ze/2+shield_T)"/>
+<position name="posGridshieldH37" unit="mm" x="shield_Xe/2+shield_T" y="-(shield_Ye/2+shield_T)" z="0."/>
+<position name="posGridshieldH38" unit="mm" x="-(shield_Xe/2+shield_T)" y="-(shield_Ye/2+shield_T)" z="0."/>
+<position name="posGridshieldH39" unit="mm" x="shield_Xe/2+shield_T" y="-(shield_Ye/2+shield_T+veto_Y)" z="0."/>
+<position name="posGridshieldH40" unit="mm" x="-(shield_Xe/2+shield_T)" y="-(shield_Ye/2+shield_T+veto_Y)" z="0."/>
+<position name="posBowl" unit="mm" x="0" y="0" z="0"/>
+<rotation name="rotateXP90" unit="deg" x="90" y="0" z="0"/>
+<rotation name="rotateXN90" unit="deg" x="-90" y="0" z="0"/>
+<rotation name="rotateXP180" unit="deg" x="180" y="0" z="0"/>
+<rotation name="rotateXN180" unit="deg" x="-180 " y="0" z="0"/>
+<rotation name="rotateYP90" unit="deg" x="0" y="90" z="0"/>
+<rotation name="rotateYN90" unit="deg" x="0" y="-90" z="0"/>
+<rotation name="rotateZP90" unit="deg" x="0" y="0" z="90"/>
+<rotation name="rotateZN90" unit="deg" x="0" y="0" z="-90"/>
+</define>
+
+<!--Definicoes dos Materiais-->
+
+<materials>
+<element name="hydrogen" formula="H" Z="1"><atom value="1.0079"/></element>
+<element name="nitrogen" formula="N" Z="7"><atom value="14.0067"/></element>
+<element name="oxygen" formula="O" Z="8"><atom value="15.999"/></element>
+<element name="argon" formula="Ar" Z="18"><atom value="39.9480"/></element>
+<element name="carbon" formula="C" Z="6"><atom value="12.0107"/></element>
+<element name="silicio" formula="Si" Z="14"><atom value="28.0855"/></element>
+<element name="chlorine" formula="Cl" Z="17"><atom value="35.453"/></element>
+<element name="gadolinium" formula="Gd" Z="64"><atom value="157.25"/></element>
+<element name="chromium" formula="Cr" Z="24"><atom value="51.9961"/></element>
+<element name="iron" formula="Fe" Z="26"><atom value="55.8450"/></element>
+<element name="nickel" formula="Ni" Z="28"><atom value="58.6934"/></element>
+<element name="sodium" formula="Na" Z="11"><atom value="22.989769"/></element>
+<element name="magnesium" formula="Mg" Z="12"><atom value="24.305"/></element>
+<element name="aluminum" formula="Al" Z="13"><atom value="26.981539"/></element>
+<element name="phosphorous" formula="P" Z="15"><atom value="30.974"/></element>
+<element name="sulfur" formula="S" Z="16"><atom value="32.06"/></element>
+<element name="argon" formula="Ar" Z="18"><atom value="39.948"/></element>
+<element name="potassium" formula="K" Z="19"><atom value="39.0983"/></element>
+<element name="calcium" formula="Ca" Z="20"><atom value="40.078"/></element>
+<element name="titanium" formula="Ti" Z="22"><atom value="47.867"/></element>
+<element name="vanadium" formula="V" Z="23"><atom value="50.9415"/></element>
+<element name="manganese" formula="Mn" Z="25"><atom value="54.938"/></element>
+<element name="copper" formula="Cu" Z="29"><atom value="63.546"/></element>
+<element name="bromine" formula="Br" Z="35"><atom value="79.904"/></element>
+<element name="niobium" formula="Nb" Z="41"><atom value="92.906"/></element>
+<element name="molybdenum" formula="Mo" Z="42"><atom value="95.95"/></element>
+
+<material Z="1" formula=" " name="Vacuum">
+<D value="1.e-25" unit="g/cm3"/>
+<atom value="1.0079"/>
+</material>
+
+<material name="Glass">
+<D value="2.74351" unit="g/cm3"/>
+<fraction n="0.600" ref="SiO2"/>
+<fraction n="0.118" ref="Al2O3"/>
+<fraction n="0.001" ref="Fe2O3"/>
+<fraction n="0.224" ref="CaO"/>
+<fraction n="0.034" ref="MgO"/>
+<fraction n="0.010" ref="Na2O"/>
+<fraction n="0.013" ref="TiO2"/>
+</material>
+
+<material formula=" " name="Air">
+<D value="0.001205" unit="g/cm3"/>
+<fraction n="0.781154" ref="nitrogen"/>
+<fraction n="0.209476" ref="oxygen"/>
+<fraction n="0.00937" ref="argon"/>
+</material>
+
+<material formula="H2O" name="Water">
+<D value="1.0" unit="g/cm3"/>
+<composite n="2" ref="hydrogen"/>
+<composite n="1" ref="oxygen"/>
+</material>
+
+<material formula="GdCl3" name="Gd"> 
+<D value="1.0" unit="g/cm3"/>
+<composite n="1" ref="gadolinium"/>
+<composite n="3" ref="chlorine"/>
+</material>
+
+<material formula="GdW" name="GdW">
+<D value="1.0" unit="g/cm3"/>
+<fraction n="0.997" ref="Water"/>
+<fraction n="0.003" ref="Gd"/>
+</material>
+
+<material name="Polypropylene">
+<D value="0.946" unit="g/cm3"/>
+<fraction n="0.333333" ref="hydrogen"/>
+<fraction n="0.666667" ref="carbon"/>
+</material>
+
+<material name="STEEL_STAINLESS_Fe7Cr2Ni" formula="STEEL_STAINLESS_Fe7Cr2Ni">
+<D value="7.9300" unit="g/cm3"/>
+<fraction n="0.0010" ref="carbon"/>
+<fraction n="0.1792" ref="chromium"/>
+<fraction n="0.7298" ref="iron"/>
+<fraction n="0.0900" ref="nickel"/>
+</material>
+
+<material name="STEEL_STRUCTURAL_S460L" formula="S460L">
+<D value="3.8321" unit="g/cm3"/>
+<fraction n="0.95380" ref="iron"/>
+<fraction n="0.01700" ref="manganese"/>
+<fraction n="0.00800" ref="nickel"/>
+<fraction n="0.00600" ref="silicon"/>
+<fraction n="0.00550" ref="copper"/>
+<fraction n="0.00300" ref="chromium"/>
+<fraction n="0.00200" ref="molybdenum"/>
+<fraction n="0.00160" ref="carbon"/>
+<fraction n="0.00120" ref="vanadium"/>
+<fraction n="0.00050" ref="niobium"/>
+<fraction n="0.00050" ref="titanium"/>
+<fraction n="0.00025" ref="phosphorous"/>
+<fraction n="0.00025" ref="nitrogen"/>
+<fraction n="0.00020" ref="sulfur"/>
+<fraction n="0.00020" ref="aluminum"/>
+</material>
+
+</materials>
+
+<!--Alvo do Detector-->
+
+<solids>
+<box name="boxWorld" lunit="mm" x="ExpHall" y="ExpHall" z="ExpHall"/>
+<box name="boxTarget" lunit="mm" x="Target_X" y="Target_Y" z="Target_Z"/>
+<box name="boxBaseTarget" lunit="mm" x="BaseTarget_Xe" y="BaseTarget_Ye" z="BaseTarget_Ze"/>
+<box name="boxGridTargetV" lunit="mm" x="Target_TX" y="Target_Ye" z="Target_TX"/>
+<box name="boxGridTargetH" lunit="mm" x="Target_Xe" y="Target_TY" z="Target_TZ"/>
+<box name="boxGridTargetH1" lunit="mm" x="Target_TX" y="Target_TY" z="Target_Ze"/>
+<box name="boxGridTargetH2" lunit="mm" x="Target_Xe+2*Target_TX" y="Target_TY" z="Target_TY"/>
+<box name="boxGridTargetH3" lunit="mm" x="Target_TY" y="Target_TY" z="Target_Ze+2*Target_TZ"/>
+<box name="boxTarget_e" lunit="mm" x="Target_Xe" y="Target_Ye" z="Target_Ze"/>
+
+<subtraction name="Alvo">
+<first ref="boxTarget_e"/>
+<second ref="boxTarget"/>
+<position name="posAlvo" unit="mm" x="0" y="0" z="0"/>
+</subtraction>
+
+<ellipsoid name="ellipBowl" ax="Pmt_R" by="Pmt_R" cz="Pmt_H" zcut1="0."/>
+<ellipsoid name="ellipVacuum" ax="Pmt_R-Pmt_T" by="Pmt_R-Pmt_T" cz="Pmt_H-Pmt_T" zcut1="0."/>
+
+<subtraction name="pmtBowlTargetIn">
+<first ref="ellipBowl"/>
+<second ref="ellipVacuum"/>
+<position name="pospmtBowl" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+
+<subtraction name="pmtBowlTargetIn">
+<first ref="ellipBowl"/>
+<second ref="ellipVacuum"/>
+<position name="pospmtBowl" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+
+<ellipsoid name="ellipBowlinf" ax="Pmt_R" by="Pmt_R" cz="Pmt_H" zcut2="0."/>
+<ellipsoid name="ellipVacuuminf" ax="Pmt_R-Pmt_T" by="Pmt_R-Pmt_T" cz="Pmt_H-Pmt_T" zcut2="0."/>
+
+<subtraction name="pmtBowl_inf">
+<first ref="ellipBowlinf"/>
+<second ref="ellipVacuuminf"/>
+<position name="posVaccumPMT" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+
+<eltube name="BasePMT_full" dx="pmtBaseX" dy="pmtBaseY" dz="pmtBaseZ" lunit="mm"/>
+<eltube name ="eltubeVacuum" dx="pmtBaseX-Pmt_T" dy="pmtBaseY-Pmt_T" dz="pmtBaseZ-Pmt_T" lunit="mm"/>
+
+<subtraction name="BasePMT">
+<first ref="BasePMT_full"/>
+<second ref="eltubeVacuum"/>
+<position name="posVaccumPMT" unit="mm" x="0" y="0" z="0"/>
+</subtraction>
+
+<union name="pmtBowlTargetOut">
+<first ref="pmtBowl_inf"/>
+<second ref="BasePMT"/>
+<position name="posBaseBowl_inf" unit="mm" x="0" y="0" z="-84.5"/>
+</union>
+
+<box name="boxVetoExternal" lunit="mm" x="Inner_X+Inner_T" y="Inner_Y" z="Inner_Z+Inner_T"/>
+<box name="boxVetoVoid" lunit ="mm" x="Inner_X" y="Inner_Y" z="Inner_Z"/>
+
+<subtraction name="boxInnerVeto">
+<first ref="boxVetoExternal"/>
+<second ref="boxVetoVoid"/>
+<position name="posInner" unit="mm" x="0" y="0" z="0"/>
+</subtraction>
+</solids>
+
+<structure>
+
+<volume name="volInnerVeto">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxInnerVeto"/>
+</volume>
+
+<volume name="volWaterTarget">
+<materialref ref="GdW"/>
+<solidref ref="boxTarget"/>
+</volume>
+
+<volume name="volPMTTargetIn">
+<materialref ref="Glass"/>
+<solidref ref="pmtBowlTargetIn"/>
+</volume>
+
+<volume name="volPMTTargetOut">
+<materialref ref="Glass"/>
+<solidref ref="pmtBowlTargetOut"/>
+</volume>
+
+<volume name="volPMTVacuum">
+<materialref ref="Vacuum"/>
+<solidref ref="ellipVacuum"/>
+</volume>
+
+<volume name="volTargetWall">
+<materialref ref="Polypropylene"/>
+<solidref ref="Alvo"/>
+<physvol name="spaceUnderTarget">
+<volumeref ref="volTargetSpace"/>
+<position name="posTargetSpace_1" unit="mm" x="0." y="0" z="0."/>
+</physvol>
+</volume>
+
+<volume name="volAlvo">
+<materialref ref="Polypropylen"/>
+<solidref ref="Alvo"/>
+<physvol>
+<volumeref ref="volTargetWall"/>
+<positionref ref="posTarget_e"/>
+</physvol>
+</volume>
+
+<volume name="volGridTargetV">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridTargetV"/>
+</volume>
+
+<volume name="volGridTargetH">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridTargetH"/>
+</volume>
+
+<volume name="volGridTargetH1">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridTargetH1"/>
+</volume>
+
+<volume name="volGridTargetH2">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridTargetH2"/>
+</volume>
+
+<volume name="volGridTargetH3">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridTargetH3"/>
+</volume>
+
+<volume name="volBaseTarget">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxBaseTarget"/>
+</volume>
+
+<volume name="volTargetOut">
+<materialref ref="Water"/>
+<solidref ref=" boxTarget"/>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_1" unit="mm" x="BowlX_D_1" y="BowlY_D_1" z="BowlZ_D_1"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_1"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol >
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_2" unit="mm" x="BowlX_D_2" y="BowlY_D_2" z="BowlZ_D_2"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_2"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol >
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_3" unit="mm" x="BowlX_D_3" y="BowlY_D_3" z="BowlZ_D_3"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_3"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_4" unit="mm" x="BowlX_D_4" y="BowlY_D_4" z="BowlZ_D_4"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_4"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_5" unit="mm" x="BowlX_D_5" y="BowlY_D_5" z="BowlZ_D_5"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_5"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_6" unit="mm" x="BowlX_D_6" y="BowlY_D_6" z="BowlZ_D_6"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_6"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_7" unit="mm" x="BowlX_D_7" y="BowlY_D_7" z="BowlZ_D_7"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_7"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol >
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_8" unit="mm" x="BowlX_D_8" y="BowlY_D_8" z="BowlZ_D_8"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_8"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol >
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_9" unit="mm" x="BowlX_D_9" y="BowlY_D_9" z="BowlZ_D_9"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_9"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_10" unit="mm" x="BowlX_D_10" y="BowlY_D_10" z="BowlZ_D_10"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_10"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_11" unit="mm" x="BowlX_D_11" y="BowlY_D_11" z="BowlZ_D_11"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_11"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_12" unit="mm" x="BowlX_D_12" y="BowlY_D_12" z="BowlZ_D_12"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_12"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_13" unit="mm" x="BowlX_D_13" y="BowlY_D_13" z="BowlZ_D_13"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_13"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_14" unit="mm" x="BowlX_D_14" y="BowlY_D_14" z="BowlZ_D_14"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_14"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_15" unit="mm" x="BowlX_D_15" y="BowlY_D_15" z="BowlZ_D_15"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_15"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_D_16" unit="mm" x="BowlX_D_16" y="BowlY_D_16" z="BowlZ_D_16"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_16"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_1" unit="mm" x="BowlX_U_1" y="BowlY_U_1" z="BowlZ_U_1"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_1"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_2" unit="mm" x="BowlX_U_2" y="BowlY_U_2" z="BowlZ_U_2"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_2"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_3" unit="mm" x="BowlX_U_3" y="BowlY_U_3" z="BowlZ_U_3"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_3"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_4" unit="mm" x="BowlX_U_4" y="BowlY_U_4" z="BowlZ_U_4"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_4"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_5" unit="mm" x="BowlX_U_5" y="BowlY_U_5" z="BowlZ_U_5"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_5"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_6" unit="mm" x="BowlX_U_6" y="BowlY_U_6" z="BowlZ_U_6"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_6"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_7" unit="mm" x="BowlX_U_7" y="BowlY_U_7" z="BowlZ_U_7"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_7"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_8" unit="mm" x="BowlX_U_8" y="BowlY_U_8" z="BowlZ_U_8"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_8"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_9" unit="mm" x="BowlX_U_9" y="BowlY_U_9" z="BowlZ_U_9"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_9"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_10" unit="mm" x="BowlX_U_10" y="BowlY_U_10" z="BowlZ_U_10"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_10"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_11" unit="mm" x="BowlX_U_11" y="BowlY_U_11" z="BowlZ_U_11"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_11"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_12" unit="mm" x="BowlX_U_12" y="BowlY_U_12" z="BowlZ_U_12"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_12"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_13" unit="mm" x="BowlX_U_13" y="BowlY_U_13" z="BowlZ_U_13"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_13"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_14" unit="mm" x="BowlX_U_14" y="BowlY_U_14" z="BowlZ_U_14"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_14"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_15" unit="mm" x="BowlX_U_15" y="BowlY_U_15" z="BowlZ_U_15"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_15"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetOut"/>
+<position name="posPMT_U_16" unit="mm" x="BowlX_U_16" y="BowlY_U_16" z="BowlZ_U_16"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_16"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH"/>
+<positionref ref="posGridTargetH1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH"/>
+<positionref ref="posGridTargetH2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH"/>
+<positionref ref="posGridTargetH3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH"/>
+<positionref ref="posGridTargetH4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH1"/>
+<positionref ref="posGridTargetH5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH1"/>
+<positionref ref="posGridTargetH6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH1"/>
+<positionref ref="posGridTargetH7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH1"/>
+<positionref ref="posGridTargetH8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH2"/>
+<positionref ref="posGridTargetH9"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH2"/>
+<positionref ref="posGridTargetH10"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH2"/>
+<positionref ref="posGridTargetH11"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH2"/>
+<positionref ref="posGridTargetH12"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH3"/>
+<positionref ref="posGridTargetH13"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH3"/>
+<positionref ref="posGridTargetH14"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH3"/>
+<positionref ref="posGridTargetH15"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetH3"/>
+<positionref ref="posGridTargetH16"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV9"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV10"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV11"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV12"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV13"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV14"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV15"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridTargetV"/>
+<positionref ref="posGridTargetV16"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volBaseTarget"/>
+<positionref ref="posBaseTarget_e" unit="mm" x="BaseTarget_Xe" y="BaseTarget_Ye" z="BaseTarget_Ze"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volInnerVeto"/>
+<positionref ref="posInner"/>
+</physvol>
+</volume>
+
+<volume name="volTargetIn">
+<materialref ref="Water"/>
+<solidref ref="boxTarget"/>
+<physvol>
+<volumeref ref="volWaterTarget"/>
+<positionref ref="posAlvo"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_1" unit ="mm" x="BowlX_D_1" y="BowlY_D_1" z="BowlZ_D_1"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_1"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_2" unit="mm" x="BowlX_D_2" y="BowlY_D_2" z="BowlZ_D_2"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_2"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_3" unit="mm" x="BowlX_D_3" y="BowlY_D_3" z="BowlZ_D_3"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_3"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_4" unit="mm" x="BowlX_D_4" y="BowlY_D_4" z="BowlZ_D_4"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_4"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_5" unit="mm" x="BowlX_D_5" y="BowlY_D_5" z="BowlZ_D_5"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_5"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_6" unit="mm" x="BowlX_D_6" y="BowlY_D_6" z="BowlZ_D_6"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_6"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_7" unit="mm" x="BowlX_D_7" y="BowlY_D_7" z="BowlZ_D_7"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_7"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_8" unit="mm" x="BowlX_D_8" y="BowlY_D_8" z="BowlZ_D_8"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_8"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_9" unit="mm" x="BowlX_D_9" y="BowlY_D_9" z="BowlZ_D_9"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_9"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_10" unit="mm" x="BowlX_D_10" y="BowlY_D_10" z="BowlZ_D_10"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_10"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_11" unit="mm" x="BowlX_D_11" y="BowlY_D_11" z="BowlZ_D_11"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_11"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_12" unit="mm" x="BowlX_D_12" y="BowlY_D_12" z="BowlZ_D_12"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_12"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_13" unit="mm" x="BowlX_D_13" y="BowlY_D_13" z="BowlZ_D_13"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_13"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_14" unit="mm" x="BowlX_D_14" y="BowlY_D_14" z="BowlZ_D_14"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_14"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_15" unit="mm" x="BowlX_D_15" y="BowlY_D_15" z="BowlZ_D_15"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_15"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_D_16" unit="mm" x="BowlX_D_16" y="BowlY_D_16" z="BowlZ_D_16"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_D_16"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_1" unit="mm" x="BowlX_U_1" y="BowlY_U_1" z="BowlZ_U_1"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_1"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_2" unit="mm" x="BowlX_U_2" y="BowlY_U_2" z="BowlZ_U_2"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_2"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_3" unit="mm" x="BowlX_U_3" y="BowlY_U_3" z="BowlZ_U_3"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_3"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_4" unit="mm" x="BowlX_U_4" y="BowlY_U_4" z="BowlZ_U_4"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_4"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_5" unit="mm" x="BowlX_U_5" y="BowlY_U_5" z="BowlZ_U_5"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_5"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_6" unit="mm" x="BowlX_U_6" y="BowlY_U_6" z="BowlZ_U_6"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_6"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_7" unit="mm" x="BowlX_U_7" y="BowlY_U_7" z="BowlZ_U_7"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_7"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_8" unit="mm" x="BowlX_U_8" y="BowlY_U_8" z="BowlZ_U_8"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_8"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_9" unit="mm" x="BowlX_U_9" y="BowlY_U_9" z="BowlZ_U_9"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_9"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_10" unit="mm" x="BowlX_U_10" y="BowlY_U_10" z="BowlZ_U_10"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_10"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_11" unit="mm" x="BowlX_U_11" y="BowlY_U_11" z="BowlZ_U_11"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_11"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_12" unit="mm" x="BowlX_U_12" y="BowlY_U_12" z="BowlZ_U_12"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_12"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_13" unit="mm" x="BowlX_U_13" y="BowlY_U_13" z="BowlZ_U_13"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+ 
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_13"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_14" unit="mm" x="BowlX_U_14" y="BowlY_U_14" z="BowlZ_U_14"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_14"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_15" unit="mm" x="BowlX_U_15" y="BowlY_U_15" z="BowlZ_U_15"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_15"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTTargetIn"/>
+<position name="posPMT_U_16" unit="mm" x="BowlX_U_16" y="BowlY_U_16" z="BowlZ_U_16"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTVacuum"/>
+<positionref ref="posPMT_U_16"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+<!--Veto Interno do Detector (Inner Veto)-->
+
+<solids>
+
+<box name="boxInner" lunit="mm" x="Inner_X" y="Inner_Y" z="Inner_Z"/>
+<box name="boxVetoExternal" lunit="mm" x="Inner_X+Inner_T" y="Inner_Y" z="Inner_Z+Inner_T"/>
+<box name="boxVetoVoid" lunit="mm" x="Inner_X" y="Inner_Y" z="Inner_Z"/>
+<box name="boxFixacaoPMTInnerUpfull" lunit="mm" x="Inner_X" y="Inner_T" z="Inner_Z"/>
+<box name="boxFixacaoPMTInnerUpVoid" lunit="mm" x="Target_Xe" y="Inner_T" z="Target_Ze"/>
+
+<subtraction name="boxInnerVeto">
+<first ref="boxVetoExternal"/>
+<second ref="boxVetoVoid"/>
+<position name="posInner" unit="mm" x="0" y="0" z="0"/>
+</subtraction>
+
+<box name="boxShieldExternal" lunit="mm" x="shield_X+2*shield_T" y="shield_Y+2*shield_T" z="shield_Z +2*shield_T"/>
+<box name="boxShieldVoid" lunit="mm" x="shield_X" y="shield_Y+eD" z="shield_Z"/>
+<subtraction name="boxShield">
+<first ref="boxShieldExternal"/>
+<second ref="boxShieldVoid"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<ellipsoid name="ellipBowl" ax="Pmt_R" by="Pmt_R" cz="Pmt_H"/>
+<ellipsoid name="ellipVacuum" ax="Pmt_R-Pmt_T" by="Pmt_R-Pmt_T" cz="Pmt_H-Pmt_T"/>
+<eltube name="BasePMT_full" dx="pmtBaseX" dy="pmtBaseY" dz="pmtBaseZ" lunit="mm"/>
+<eltube name="eltubeVacuum" dx="pmtBaseX-Pmt_T" dy="pmtBaseY-Pmt_T" dz="pmtBaseZ-Pmt_T" lunit="mm"/>
+
+<subtraction name="pmtBowl_inf">
+<first ref="ellipBowl"/>
+<second ref="ellipVacuum"/>
+<position name="posVaccumPMT" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+<union name="pmtBowl_full">
+<first ref="pmtBowl_inf"/>
+<second ref="BasePMT"/>
+<position name="posBaseBowl_inf" unit="mm" x="0" y="0" z="-84.5"/>
+</union>
+<subtraction name="pmtBowl">
+<first ref="pmtBowl_full"/>
+<second ref="ellipVacuum"/>
+<position name="pospmtBowl" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+
+<box name="boxTarget_e" lunit="mm" x="Target_Xe" y="Target_Ye" z="Target_Ze"/>
+<subtraction name="Alvo">
+<first ref="boxTarget_e"/>
+<second ref="boxTarget"/>
+<position name="posAlvo" unit="mm" x="0" y="0" z="0"/>
+</subtraction>
+
+<subtraction name="boxFixacaoPMTInnerUp">
+<first ref="boxFixacaoPMTInnerUpfull"/>
+<second ref="boxFixacaoPMTInnerUpVoid"/>
+<position name="posAlvo" unit="mm" x="0" y="0" z="0"/>
+</subtraction> 
+
+</solids>
+
+<!--Veto Externo do Detector (Shield)-->
+
+<structure>
+
+<volume name="volFixacaoPMTInnerUp">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxFixacaoPMTInnerUp"/>
+</volume>
+
+<volume name="volWaterInner">
+<materialref ref="Water"/>
+<solidref ref="boxInner"/>
+</volume>
+
+<volume name="volPMTBowl">
+<materialref ref="Glass"/>
+<solidref ref="pmtBowl"/>
+</volume>
+
+<volume name="volPMTVacuum">
+<materialref ref="Vacuum"/>
+<solidref ref="ellipVacuum"/>
+</volume>
+
+<volume name="volInnerVeto">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxInnerVeto"/>
+
+<physvol>
+<volumeref ref="volFixacaoPMTInnerUp"/>
+<position name="posFixacaoPMTInnerUP" unit="mm" x="0." y="BowlInVetoY_U_1+Inner_T+162." z="0."/>
+</physvol>
+
+<physvol>
+<volumeref ref="volWaterInner"/>
+<position name="posInner"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_D_1" unit="mm" x="BowlInVetoX_D_1" y="BowlInVetoY_D_1" z="BowlInVetoZ_D_1"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_D_2" unit="mm" x="BowlInVetoX_D_2" y="BowlInVetoY_D_2" z="BowlInVetoZ_D_2"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_D_3" unit="mm" x="BowlInVetoX_D_3" y="BowlInVetoY_D_3" z="BowlInVetoZ_D_3"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_D_4" unit="mm" x="BowlInVetoX_D_4" y="BowlInVetoY_D_4" z="BowlInVetoZ_D_4"/>
+<rotationref ref="rotateXP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_U_1" unit="mm" x="BowlInVetoX_U_1" y="BowlInVetoY_U_1" z="BowlInVetoZ_U_1"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_U_2" unit="mm" x="BowlInVetoX_U_2" y="BowlInVetoY_U_2" z="BowlInVetoZ_U_2"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_U_3" unit="mm" x="BowlInVetoX_U_3" y="BowlInVetoY_U_3" z="BowlInVetoZ_U_3"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlInVeto_U_4" unit="mm" x="BowlInVetoX_U_4" y="BowlInVetoY_U_4" z="BowlInVetoZ_U_4"/>
+<rotationref ref="rotateXN90"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+<solids>
+
+<box name="boxGridvetoVsteelf" lunit="mm" x="2*veto_T+2*shield_steel" y="veto_Ye+2*veto_T+2*shield_steel" z="2*veto_T+2*shield_steel"/>
+<box name="boxGridvetoV" lunit="mm" x="2*veto_T" y="veto_Ye+2*veto_T" z="2*veto_T"/>
+<box name="boxGridshieldV" lunit="mm" x="2*shield_T" y="shield_Ye" z="2*shield_T"/>
+<box name="boxGridshieldH" lunit="mm" x="shield_Xe+2*shield_T" y="2*shield_T" z="2*shield_T"/>
+<box name="boxGridshieldH1" lunit="mm" x="2*shield_T" y="2*shield_T" z="shield_Ze+2*shield_T"/>
+<box name="boxGridshieldH2" lunit="mm" x="shield_Xe+2*Target_TX" y="2*shield_T" z="2*shield_T"/>
+<box name="boxGridshieldH3" lunit="mm" x="2*shield_T" y="2*shield_T" z="shield_Ze+2*shield_T"/>
+
+<box name="boxGridshieldVsteelf" lunit="mm" x="2*(shield_T+shield_steel)" y="shield_Ye+2*shield_steel" z="2*(shield_T+shield_steel)"/>
+<box name="boxGridshieldHsteelf" lunit="mm" x="shield_Xe+2*(shield_T+shield_steel)" y="2*(shield_T+shield_steel)" z="2*shield_T+shield_steel"/>
+<box name="boxGridshieldH1steelf" lunit="mm" x="2*(shield_T+shield_steel)" y="2*(shield_T+shield_steel)" z="shield_Ze+2*(shield_T+shield_steel)"/>
+<box name="boxGridshieldH2steelf" lunit="mm" x="shield_Xe+2*(Target_TX+shield_steel)" y="2*(shield_T+shield_steel)" z="2*(shield_T+shield_steel)"/>
+<box name="boxGridshieldH3steelf" lunit="mm" x="2*(shield_T+shield_steel)" y="2*(shield_T+shield_steel)" z="shield_Ze+2*(shield_T+shield_steel)"/>
+
+<subtraction name="boxGridshieldVsteel">
+<first ref="boxGridshieldVsteelf"/>
+<second ref="boxGridshieldV"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridvetoVsteel">
+<first ref="boxGridvetoVsteelf"/>
+<second ref="boxGridvetoV"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldHsteel">
+<first ref="boxGridshieldHsteelf"/>
+<second ref="boxGridshieldH"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldH1steel">
+<first ref="boxGridshieldH1steelf"/>
+<second ref="boxGridshieldH1"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldH2steel">
+<first ref="boxGridshieldH2steelf"/>
+<second ref="boxGridshieldH2"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldH3steel">
+<first ref="boxGridshieldH3steelf"/>
+<second ref="boxGridshieldH3"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<box name="boxShieldExternal" lunit="mm" x="shield_Xe" y="shield_Ye" z="shield_Ze"/>
+<box name="boxShieldVoid" lunit="mm" x="shield_X" y="shield_Y+eD" z="shield_Z"/>
+<subtraction name="boxShield">
+<first ref="boxShieldExternal"/>
+<second ref="boxShieldVoid"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+<box name="boxShieldSteelFrame" lunit="mm" x="shield_Xe+2*shield_steel" y="shield_Ye+2*shield_steel" z="shield_Ze+2*shield_steel"/>
+<box name="boxShieldExternal" lunit="mm" x="shield_Xe" y="shield_Ye" z="shield_Ze"/>
+<subtraction name="boxShieldSteel">
+<first ref="boxShieldSteelFrame"/>
+<second ref="boxShieldExternal"/>
+<position name="posShieldSteel" unit="mm" x="0" y="0." z="0"/>
+</subtraction> 
+
+</solids>
+
+<structure>
+
+<volume name="volShieldSteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxShieldSteel"/>
+</volume>
+
+<volume name="volGridshieldVsteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridshieldVsteel"/>
+</volume>
+
+<volume name="volGridvetoVsteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridvetoVsteel"/>
+</volume>
+
+<volume name="volGridshieldHsteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridshieldHsteel"/>
+</volume>
+
+<volume name="volGridshieldH1steel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridshieldH1steel"/>
+</volume>
+
+<volume name="volGridshieldH2steel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridshieldH2steel"/>
+</volume>
+
+<volume name="volGridshieldH3steel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridshieldH3steel"/>
+</volume>
+
+<volume name="volWaterShield">
+<materialref ref="Water"/>
+<solidref ref="boxShieldVoid"/>
+</volume>
+
+<volume name="volGridshieldV">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldV"/>
+</volume> 
+
+<volume name="volGridvetoV">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridvetoV"/>
+</volume>
+
+
+<volume name="volGridshieldH">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH"/>
+</volume>
+
+<volume name="volGridshieldH1">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH1"/>
+</volume>
+
+<volume name="volGridshieldH2">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH2"/>
+</volume>
+
+<volume name="volGridshieldH3">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH3"/>
+
+</volume>
+
+<volume name="volShieldStruc">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxShield"/>
+</volume>
+
+<volume name="volShield">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxShield"/>
+
+<physvol>
+<volumeref ref="volWaterShield"/>
+<positionref ref="posShield"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volShieldStruc"/>
+<positionref ref="posShield"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV9"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV10"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV11"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV12"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV13"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV14"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV15"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldV"/>
+<positionref ref="posGridshieldV16"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH"/>
+<positionref ref="posGridshieldH1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH"/>
+<positionref ref="posGridshieldH2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH"/>
+<positionref ref="posGridshieldH3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH"/>
+<positionref ref="posGridshieldH4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3"/>
+<positionref ref="posGridshieldH17"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3"/>
+<positionref ref="posGridshieldH18"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3"/>
+<positionref ref="posGridshieldH19"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3"/>
+<positionref ref="posGridshieldH20"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH21"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH22"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH23"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH24"/>
+</physvol>
+
+</volume >
+
+<volume name="volShieldSteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxShieldSteel"/>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV9"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV10"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV11"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV12"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV13"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV14"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV15"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldVsteel"/>
+<positionref ref="posGridshieldV16"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldHsteel"/>
+<positionref ref="posGridshieldH1"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldHsteel"/>
+<positionref ref="posGridshieldH2"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldHsteel"/>
+<positionref ref="posGridshieldH3"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldHsteel"/>
+<positionref ref="posGridshieldH4"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH5"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH6"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH7"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH8"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3steel"/>
+<positionref ref="posGridshieldH17"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3steel"/>
+<positionref ref="posGridshieldH18"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3steel"/>
+<positionref ref="posGridshieldH19"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH3steel"/>
+<positionref ref="posGridshieldH20"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH21"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH22"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH23"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH24"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+
+<!-- Veto Inferior do Detector-->
+
+
+<solids >
+
+<box name="boxGridvetoVsteelf" lunit="mm" x="2*veto_T+2*shield_steel" y="veto_Ye+2*veto_T+2*shield_steel" z="2*veto_T+2*shield_steel"/>
+<box name="boxGridvetoV" lunit="mm" x="2*veto_T" y="veto_Ye+2*veto_T" z="2*veto_T"/>
+<box name="boxVetoInferior" lunit="mm" x="veto_X+2*veto_T" y="veto_Y+2*veto_T" z="veto_Z+2*veto_T"/>
+<box name="boxVetoInferiorSteelf" lunit="mm" x="veto_X+2*(veto_T+shield_steel)" y="veto_Y+2*(veto_T+shield_steel)" z="veto_Z+2*(veto_T+shield_steel)"/>
+<box name="boxVetoVoid" lunit="mm" x="veto_X" y="veto_Y+eD" z="veto_Z"/>
+<subtraction name="boxVeto">
+<first ref="boxVetoInferior"/>
+<second ref="boxVetoVoid"/>
+<position name="posVetoInferior" unit="mm" x="0" y="-(shield_Ye/2+8*shield_T)" z="0"/>
+</subtraction>
+
+<subtraction name="boxVetoInferiorSteel">
+<first ref="boxVetoInferiorSteelf"/>
+<second ref="boxVetoInferior"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+<ellipsoid name="ellipBowl" ax="Pmt_R" by="Pmt_R" cz="Pmt_H"/>
+<ellipsoid name="ellipVacuum" ax="Pmt_R-Pmt_T" by="Pmt_R-Pmt_T" cz="Pmt_H-Pmt_T"/>
+<eltube name="BasePMT_full" dx="pmtBaseX" dy="pmtBaseY" dz="pmtBaseZ" lunit="mm"/>
+<eltube name="eltubeVacuum" dx="pmtBaseX-Pmt_T" dy="pmtBaseY-Pmt_T" dz="pmtBaseZ-Pmt_T" lunit="mm"/>
+
+<subtraction name="pmtBowl_inf">
+<first ref="ellipBowl"/>
+<second ref="ellipVacuum"/>
+<position name="posVaccumPMT" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+<union name="pmtBowl_full">
+<first ref="pmtBowl_inf"/>
+<second ref="BasePMT"/>
+<position name="posBaseBowl_inf" unit="mm" x="0" y="0" z="-84.5"/>
+</union>
+<subtraction name="pmtBowl">
+<first ref="pmtBowl_full"/>
+<second ref="ellipVacuum"/>
+<position name="pospmtBowl" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+</solids>
+
+<structure>
+
+<volume name="volWaterVetoInferior">
+<materialref ref="Water"/>
+<solidref ref="boxVetoVoid"/>
+</volume>
+
+<volume name="volGridvetoV">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridvetoV"/>
+</volume>
+
+<volume name="volGridshieldH1">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH1"/>
+</volume>
+
+<volume name="volGridshieldH2">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH2"/>
+</volume>
+
+<volume name="volVetoInferiorSteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxVetoInferiorSteel"/>
+</volume>
+
+<volume name="volVetoInferior">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxVetoInferior"/>
+
+<physvol>
+<volumeref ref="volWaterVetoInferior"/>
+<positionref ref="posVetoInferior"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH33"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH34"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH35"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH36"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH37"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH38"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH39"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH40"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV33"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV34"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV35"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV36"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV37"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV38"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV39"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV40"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV41"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV42"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV43"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV44"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV45"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV46"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV47"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV48"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_I_1" unit="mm" x="BowlVetoX_I_1" y="BowlVetoY_I_1" z="BowlVetoZ_I_1"/>
+<rotationref ref="rotateYP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_I_2" unit="mm" x="BowlVetoX_I_2" y="BowlVetoY_I_2" z="BowlVetoZ_I_2"/>
+<rotationref ref="rotateYN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_I_3" unit="mm" x="BowlVetoX_I_3" y="BowlVetoY_I_3" z="BowlVetoZ_I_3"/>
+<rotationref ref="rotateXP180"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_I_4" unit="mm" x="BowlVetoX_I_4" y="BowlVetoY_I_4" z="BowlVetoZ_I_4"/>
+<rotationref ref="rotateZN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH33"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH34"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH35"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH36"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH37"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH38"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH39"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH40"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV33"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV34"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV35"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV36"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV37"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV38"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV39"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV40"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV41"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV42"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV43"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV44"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV45"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV46"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV47"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV48"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+<!-- Veto Superior do Detector-->
+
+<solids>
+
+<box name="boxGridvetoVsteelf" lunit="mm" x="2*veto_T+2*shield_steel" y="veto_Ye+2*veto_T+2*shield_steel" z="2*veto_T+2*shield_steel"/>
+<box name="boxGridvetoV" lunit="mm" x="2*veto_T" y="veto_Ye+2*veto_T" z="2*veto_T"/>
+<box name="boxVetoSuperior" lunit="mm" x="veto_X+2*veto_T" y="veto_Y+2*veto_T" z="veto_Z+2*veto_T"/>
+<box name="boxVetoSuperiorSteelf" lunit="mm" x="veto_X+2*(veto_T+shield_steel)" y="veto_Y+2*(veto_T+shield_steel)" z="veto_Z+2*(veto_T+shield_steel)"/>
+<box name="boxVetoVoid" lunit="mm" x="veto_X" y="veto_Y+eD" z="veto_Z"/>
+<subtraction name="boxVeto">
+<first ref="boxVetoSuperior"/>
+<second ref="boxVetoVoid"/>
+<position name="posVetoSuperior" unit="mm" x="0" y="(shield_Ye/2+8*shield_T)" z="0"/>
+</subtraction>
+<subtraction name="boxVetoSuperiorSteel">
+<first ref="boxVetoSuperiorSteelf"/>
+<second ref="boxVetoSuperior"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<ellipsoid name="ellipBowl" ax="Pmt_R" by="Pmt_R" cz="Pmt_H"/>
+<ellipsoid name="ellipVacuum" ax="Pmt_R-Pmt_T" by="Pmt_R-Pmt_T" cz="Pmt_H-Pmt_T"/>
+<eltube name="BasePMT_full" dx="pmtBaseX" dy="pmtBaseY" dz="pmtBaseZ" lunit="mm"/>
+<eltube name="eltubeVacuum" dx="pmtBaseX-Pmt_T" dy="pmtBaseY-Pmt_T" dz="pmtBaseZ-Pmt_T" lunit="mm"/>
+
+<subtraction name="pmtBowl_inf">
+<first ref="ellipBowl"/>
+<second ref="ellipVacuum"/>
+<position name="posVaccumPMT" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+<union name="pmtBowl_full">
+<first ref="pmtBowl_inf"/>
+<second ref="BasePMT"/>
+<position name="posBaseBowl_inf" unit="mm" x="0" y="0" z="-84.5"/>
+</union>
+<subtraction name="pmtBowl">
+<first ref="pmtBowl_full"/>
+<second ref="ellipVacuum"/>
+<position name="pospmtBowl" unit="mm" x="0" y="0" z="-eD"/>
+</subtraction>
+
+<subtraction name="boxGridvetoVsteel">
+<first ref="boxGridvetoVsteelf"/>
+<second ref="boxGridvetoV"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldH1steel">
+<first ref="boxGridshieldH1steelf"/>
+<second ref="boxGridshieldH1"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+
+<subtraction name="boxGridshieldH2steel">
+<first ref="boxGridshieldH2steelf"/>
+<second ref="boxGridshieldH2"/>
+<position name="posShield" unit="mm" x="0" y="0." z="0"/>
+</subtraction>
+</solids>
+
+<structure>
+
+<volume name="volWaterVetoSuperior">
+<materialref ref="Water"/>
+<solidref ref="boxVetoVoid"/>
+</volume>
+
+<volume name="volGridvetoV">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxGridvetoV"/>
+</volume>
+
+<volume name="volGridshieldH1">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH1"/>
+</volume>
+
+<volume name="volGridshieldH2">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxGridshieldH2"/>
+</volume>
+
+<volume name="volVetoSuperiorSteel">
+<materialref ref="STEEL_STRUCTURAL_S460L"/>
+<solidref ref="boxVetoSuperiorSteel"/>
+</volume>
+
+<volume name="volVetoSuperior">
+<materialref ref="Polypropylene"/>
+<solidref ref="boxVetoSuperior"/>
+
+<physvol>
+<volumeref ref="volVetoSuperiorSteel"/>
+<positionref ref="posVetoSuperior"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volWaterVetoSuperior"/>
+<positionref ref="posVetoSuperior"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH25"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH26"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH27"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2"/>
+<positionref ref="posGridshieldH28"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH29"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH30"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH31"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1"/>
+<positionref ref="posGridshieldH32"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV33"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV34"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV35"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV36"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV17"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV18"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV19"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV20"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV21"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV22"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV23"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV24"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV25"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV26"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV27"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV28"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV29"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV30"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV31"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoV"/>
+<positionref ref="posGridshieldV32"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_S_1" unit="mm" x="BowlVetoX_S_1" y="BowlVetoY_S_1" z="BowlVetoZ_S_1"/>
+<rotationref ref="rotateYP90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_S_2" unit="mm" x="BowlVetoX_S_2" y="BowlVetoY_S_2" z="BowlVetoZ_S_2"/>
+<rotationref ref="rotateYN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_S_3" unit="mm" x="BowlVetoX_S_3" y="BowlVetoY_S_3" z="BowlVetoZ_S_3"/>
+<rotationref ref="rotateXP180"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volPMTBowl"/>
+<position name="posBowlVeto_S_4" unit="mm" x="BowlVetoX_S_4" y="BowlVetoY_S_4" z="BowlVetoZ_S_4"/>
+<rotationref ref="rotateZN90"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH25"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH26"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH27"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH2steel"/>
+<positionref ref="posGridshieldH28"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH29"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH30"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH31"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridshieldH1steel"/>
+<positionref ref="posGridshieldH32"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV17"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV18"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV19"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV20"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV21"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV22"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV23"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV24"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV25"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV26"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV27"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV28"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV29"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV30"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV31"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volGridvetoVsteel"/>
+<positionref ref="posGridshieldV32"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+<structure>
+
+<volume name="volWorld">
+<materialref ref="Air"/>
+<solidref ref="boxWorld"/>
+<physvol>
+<volumeref ref="volTargetIn"/>
+<positionref ref="posAlvo"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volTargetOut"/>
+<positionref ref="posAlvo"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volAlvo"/>
+<positionref ref="posAlvo"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volInnerVeto"/>
+<positionref ref="posInner"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volShield"/>
+<positionref ref="posShield"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volShieldSteel"/>
+<positionref ref="posShieldSteel"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volVetoInferior"/>
+<positionref ref="posShield"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volVetoInferiorSteel"/>
+<positionref ref="posVetoInferior"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volVetoSuperior"/>
+<positionref ref="posShield"/>
+</physvol>
+
+<physvol>
+<volumeref ref="volVetoSuperiorSteel"/>
+<positionref ref="posVetoInferior"/>
+</physvol>
+
+</volume>
+
+</structure>
+
+<setup name="Default" version="1.0">
+<world ref="volWorld"/>
+</setup>
+</gdml>
