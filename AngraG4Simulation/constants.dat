@@ -463,8 +463,8 @@ Density_Water 	1.0 		#
 Density_PP	0.855		# polypropylene density g/cm^3
 Content_Hidrogen_H2O 2 		#
 Content_Oxigen_H2O 1  		#
-Frac_Water_GDW 99.7  		#
-Frac_Gd_GDW 0.3 		#
+Frac_Water_GDW 99.8  		#
+Frac_Gd_GDW 0.2 		#
 Frac_Water_BW 99 		#
 Frac_B_BW 1   			#
 Density_Acrilic 1.19 		#
