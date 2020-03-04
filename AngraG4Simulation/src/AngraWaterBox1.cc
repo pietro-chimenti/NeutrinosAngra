@@ -323,6 +323,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   G4Ellipsoid *pmtGlass  = new G4Ellipsoid ("pmtGlass" ,pmt_R, pmt_R, pmt_H, -0.1*mm, pmt_H);
   G4Ellipsoid *pmtVacuum = new G4Ellipsoid ("pmtVacuum",pmt_R-pmt_T, pmt_R-pmt_T,pmt_H-pmt_T,-0.2*mm,pmt_H-pmt_T);
   G4SubtractionSolid * pmtBowl = new G4SubtractionSolid("pmtBowl",pmtGlass,pmtVacuum);
+  G4LogicalVolume* pmtVacuum_log= new G4LogicalVolume(pmtVacuum,man->FindOrBuildMaterial("G4_GALAXY"),"pmtBowl_log",0,0,0);
   G4LogicalVolume* pmtBowl_log = new G4LogicalVolume(pmtBowl,man->FindOrBuildMaterial("G4_GLASS_PLATE"),"pmtBowl_log",0,0,0);
   pmtBowl_log -> SetVisAttributes(bowlVisAttr);
   
@@ -466,7 +467,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
    OpTyvek -> SetMaterialPropertiesTable(OpTyvekSurfaceProperty);
   
   // Applying Border Surfaces to logial volumes.
-  G4LogicalBorderSurface *targetTyvek   = new G4LogicalBorderSurface("TargetTyvek",targetWater_phys,targetStruc_phys,OpTyvek);
+  G4LogicalBorderSurface *targetGore   = new G4LogicalBorderSurface("TargetGore",targetWater_phys,targetStruc_phys,OpGore);
   G4LogicalBorderSurface *shieldTyvek1 = new G4LogicalBorderSurface("shieldTyvek1",shieldWater_phys,shieldStruc_phys,OpTyvek);
   G4LogicalBorderSurface *shieldTyvek2 = new G4LogicalBorderSurface("shieldTyvek2",shieldWater_phys,innerVetoStruc_phys,OpTyvek);
   G4LogicalBorderSurface *innerVTyvek1 = new G4LogicalBorderSurface("innerVTyvek1",innerVetoWater_phys,innerVetoStruc_phys,OpTyvek);
@@ -510,7 +511,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
   // Physical PMTs will be stored douring loops 9 to 12.
   
   vector<G4LogicalBorderSurface*> logialBorderSurface;
-  logialBorderSurface.push_back(targetTyvek);
+  logialBorderSurface.push_back(targetGore);
   logialBorderSurface.push_back(shieldTyvek1);
   logialBorderSurface.push_back(shieldTyvek2);
   logialBorderSurface.push_back(innerVTyvek1);
@@ -541,7 +542,8 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     std::string name("pmtTarget_U");
     name+=numstr;
     name+="_phys";
-    G4VPhysicalVolume *pmtTarget_phys  = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposB,zpos),pmtBowl_log,name.c_str(),targetWater_log,false,0,check);
+    G4VPhysicalVolume *pmtTarget_phys = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposB,zpos),pmtBowl_log,name.c_str(),targetWater_log,false,0,check);
+    G4VPhysicalVolume *pmtVacuum_phys = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposB,zpos),pmtVacuum_log,name.c_str(),targetWater_log,false,0,check);
 
     name = "pmtDome_U";
     name+=numstr;
@@ -549,6 +551,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     G4VPhysicalVolume *pmtDome_phys = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposD,zpos),pmtDome_log,name.c_str(),innerVetoWater_log,false,0,check);
     
     physicalVolumesVector.push_back(pmtTarget_phys);
+    physicalVolumesVector.push_back(pmtVacuum_phys);
     physicalVolumesVector.push_back(pmtDome_phys);
 
     std::string surfaceName("PMTsurface_U");
@@ -615,6 +618,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     name+=numstr;
     name+="_phys";
     G4VPhysicalVolume *pmtBowl_phys  = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposD,zpos),pmtBowl_log,name.c_str(),innerVetoWater_log,false,0,check);
+    G4VPhysicalVolume *pmtVacuum_phys  = new G4PVPlacement(rotBowlUp,G4ThreeVector(xpos,yposD,zpos),pmtVacuum_log,name.c_str(),innerVetoWater_log,false,0,check);
 
     name = "pmtInnerVetoDome_U";
     name+=numstr;
@@ -623,6 +627,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
 
     physicalVolumesVector.push_back(pmtDome_phys);
     physicalVolumesVector.push_back(pmtBowl_phys);
+    physicalVolumesVector.push_back(pmtVacuum_phys);
 
     std::string surfaceName("ivPMTsurface_U");
     surfaceName+=numstr;
@@ -688,6 +693,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
     name+=numstr;
     name+="_phys";
     G4VPhysicalVolume *pmtBowl_phys  = new G4PVPlacement(rotVector[i-1],G4ThreeVector(xposB,0.,zposB),pmtBowl_log,name.c_str(),uBoxVetoWater_log,false,0,check);
+    G4VPhysicalVolume *pmtVacuum_phys  = new G4PVPlacement(rotVector[i-1],G4ThreeVector(xposB,0.,zposB),pmtVacuum_log,name.c_str(),uBoxVetoWater_log,false,0,check);
 
     name = "pmtBoxVetoDome_U";
     name+=numstr;
@@ -696,6 +702,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_1(){
 
     physicalVolumesVector.push_back(pmtDome_phys);
     physicalVolumesVector.push_back(pmtBowl_phys);
+    physicalVolumesVector.push_back(pmtVacuum_phys);
 
     std::string surfaceName("BoxVetoPMTsurface_U");
     surfaceName+=numstr;
