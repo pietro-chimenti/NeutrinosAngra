@@ -10,8 +10,8 @@
 
 void convert(){
 
-  TString    inFile = "/home/drc01/kemp/angra/data/G4/000011.muons_v1_250k_20131001.G4";
-  TString   outFile = "/home/drc01/kemp/angra/data/G4/000011.muons_v1_250k_20131001.root";
+  TString    inFile = "SimulationOutput.G4";
+  TString   outFile = "SimulationOutput.root";
   Int_t       split = 1; // do not change this!
   Int_t compression = 1; // 9 = compact but very slow to read
   Int_t  max_events =-1; // -1 = "read all"

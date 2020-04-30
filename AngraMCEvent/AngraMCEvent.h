@@ -13,7 +13,7 @@
 TDatabasePDG *fPDGTable = new TDatabasePDG();
 
 enum AngraPMTLocation {kTarget=0, kInnerVeto=1, kBoxVeto=2};
-enum AngraPMTLevel    {kUp=0, kDown=1};
+enum AngraPMTLevel    {kAUp=0, kADown=1};
 
 class AngraMCVertex : public TObject {
 

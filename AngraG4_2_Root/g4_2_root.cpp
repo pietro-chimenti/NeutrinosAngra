@@ -18,7 +18,7 @@ int g4_2_root( TString inFile="SimulationOutput.G4", TString outFile="Simulation
   
   gROOT->Reset();
   gSystem->Load("libPhysics");
-  gROOT->ProcessLine(".L /home/drc01/kemp/angra/v1/AngraMCEvent/AngraMCEvent.cxx+");
+//  gROOT->ProcessLine(".L /home/drc01/kemp/angra/v1/AngraMCEvent/AngraMCEvent.cxx+");
 //  gROOT->ProcessLine(".L /home/drc01/kemp/angra/data/run_201310000/snapshot/AngraMCEvent/AngraMCEvent.cxx+");
 
   
@@ -369,10 +369,10 @@ int g4_2_root( TString inFile="SimulationOutput.G4", TString outFile="Simulation
       }
       
       if (pmtName.Contains("U")) {
-	hit->fPMTLevel = kUp;
+	hit->fPMTLevel = kAUp;
 	pmtName = pmtName.ReplaceAll("U","");
       } else if (pmtName.Contains("D")) {
-	hit->fPMTLevel = kDown;
+	hit->fPMTLevel = kADown;
 	pmtName = pmtName.ReplaceAll("D","");
       }
       
