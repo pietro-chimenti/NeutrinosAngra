@@ -3,9 +3,10 @@
 //
 //  AngraSimulation implementation of primary generator action file
 //
-//  Authors: P.Chimenti, R.Lima
+//  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
-//  30-4-2008, v0.01 
+//  30-04-2008, v0.01
+//  23-04-2025, fixing compatibility with Geant4 v13.3.1
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -13,7 +14,7 @@
 //In this file are set the particles involved in the detector's physical processes.
 // Here are also set the particles energies and their charges, the positions where they would interact and the direction of the
 // products of the reactions
-//==================================================================================================== 
+//====================================================================================================
 #include "AngraPrimaryGeneratorAction.hh"
 #include "G4Event.hh"
 #include "G4ParticleGun.hh"
@@ -35,7 +36,7 @@ using namespace CLHEP;
 
 AngraPrimaryGeneratorAction::AngraPrimaryGeneratorAction()
 {
-  AngraPrimaryGeneratorAction(POINT);
+  AngraPrimaryGeneratorAction(POINT_LIKE);
 }
 
 //set the particle
@@ -47,7 +48,7 @@ AngraPrimaryGeneratorAction::AngraPrimaryGeneratorAction(primaryEnum p,std::ofst
   // set the primary generator
   primaryGen=p;
 
-  if(primaryGen==HEPEV){
+  if(primaryGen==HEPEVT){
     const char * dataFileName = AngraMCLog::Instance().GetInHepEvtFile();
     HepEvt = new AngraHEPEvtInterface(dataFileName);
   }
@@ -61,7 +62,7 @@ AngraPrimaryGeneratorAction::AngraPrimaryGeneratorAction(primaryEnum p,std::ofst
 
 AngraPrimaryGeneratorAction::~AngraPrimaryGeneratorAction()
 {
-  if(primaryGen==HEPEV)
+  if(primaryGen==HEPEVT)
     delete HepEvt;
   delete particleGun;
 }
@@ -70,13 +71,13 @@ void AngraPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   switch(primaryGen)
     {
-    case  POINT   : GeneratePoint(anEvent);
+    case  POINT_LIKE : GeneratePoint(anEvent);
       break;
-    case  HEPEV   : GenerateHEPEv(anEvent);
+    case  HEPEVT     : GenerateHEPEv(anEvent);
       break;
 
-    default : printf("ERROR Primary Generator: no valid Primary Generator \n");      
-    }   
+    default : printf("ERROR Primary Generator: no valid Primary Generator \n");
+    }
 }
 
 

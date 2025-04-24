@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  3-08-2009, v0.01 
+//  3-08-2009, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -18,7 +18,11 @@
 #include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
 
+#if defined G4MULTITHREADED
+G4ThreadLocal G4Allocator<AngraPMTHit>* AngraPMTHitAllocator = nullptr;
+#else
 G4Allocator<AngraPMTHit> AngraPMTHitAllocator;
+#endif
 
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 AngraPMTHit::AngraPMTHit()

@@ -6,6 +6,7 @@
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
 //  05-01-2012, v0.02
+//  23-04-2025, fixing compatibility with Geant4 v13.3.1
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -34,7 +35,8 @@
 #include "G4UserLimits.hh"
 
 #include "G4SDManager.hh"
-#include "AngraPMTSD.hh" 
+#include "AngraPMTSD.hh"
+#include "AngraVetoSD.hh"
 #include "AngraConstantMgr.hh"
 
 #define PHOTON_BINS 18
@@ -48,9 +50,9 @@
 using namespace std;
 using namespace CLHEP;
 
-//this is constructor lets you choose 
-AngraDetectorConstruction::AngraDetectorConstruction():trackingLimit(0){;}
-   
+//this is constructor lets you choose
+AngraDetectorConstruction::AngraDetectorConstruction():fPMTLogical(nullptr),trackingLimit(0){;}
+
 AngraDetectorConstruction::AngraDetectorConstruction(geometryEnum g){
 myGeometry=g;
 }
@@ -62,18 +64,45 @@ AngraDetectorConstruction::~AngraDetectorConstruction()
 
 G4VPhysicalVolume* AngraDetectorConstruction::Construct()
 {
-
   G4VPhysicalVolume* rootVolume = NULL;
- 
+
   switch(myGeometry)
     {
     case WATERBOX_1 : rootVolume=ConstructWaterbox_1();
-      break;     
+      break;
     case WATERBOX_2 : rootVolume=ConstructWaterbox_2();
-      break;     
-    default : printf("ERROR Detector Construction: No geometry constructed \n");      
-    }   
+      break;
+    default : printf("ERROR Detector Construction: No geometry constructed \n");
+    }
+
+  // Store the PMT logical volume for later use in ConstructSDandField
+  for (auto logVol : logicalVolumesVector) {
+    if (logVol->GetName() == "pmtBowl_log") {
+      fPMTLogical = logVol;
+      break;
+    }
+  }
+
   return rootVolume;
+}
+
+void AngraDetectorConstruction::ConstructSDandField()
+{
+  // Always use the same instance of the SD manager
+  G4SDManager* SDman = G4SDManager::GetSDMpointer();
+
+  // Create and register the PMT sensitive detector
+  AngraPMTSD* pmtSD = new AngraPMTSD("/pmtSD");
+  SDman->AddNewDetector(pmtSD);
+
+  // Create and register the veto sensitive detector
+  AngraVetoSD* vetoSD = new AngraVetoSD("/vetoSD");
+  SDman->AddNewDetector(vetoSD);
+
+  // Set the sensitive detector for the PMT logical volume
+  if (fPMTLogical) {
+    fPMTLogical->SetSensitiveDetector(pmtSD);
+  }
 }
 
 //==========================================================================================
@@ -87,9 +116,9 @@ void AngraDetectorConstruction::ConstructMaterials()
 
 
   // basic declarations
-  G4double density; 
-  G4String name;     
-  G4String symbol;  
+  G4double density;
+  G4String name;
+  G4String symbol;
   G4int ncomponents;   //numero de componentes numa molécula
   G4int natoms;     //numero de átomos de um determinado elemento num composto
   G4double fractionmass;
@@ -106,12 +135,12 @@ void AngraDetectorConstruction::ConstructMaterials()
   // ========  Materials =======================
 
   // Basic Materials
-  
+
   //Air
   G4Material* Air   = man->FindOrBuildMaterial("G4_AIR");
   //Water
   G4Material* H2O   = man->FindOrBuildMaterial("G4_WATER");
-  
+
   // Composite Materials
 
  // Gadolinium Water
@@ -121,7 +150,7 @@ void AngraDetectorConstruction::ConstructMaterials()
   G4Material* GDW = new G4Material(name="GdW",density=density_water,ncomponents=2);
   GDW->AddMaterial(H2O,fractionmass = frac_h2o_gdw);
   GDW->AddElement (Gd, fractionmass = frac_gd_gdw );
-  
+
   // Polypropylene
   G4double density_pp = AngraConstantMgr::Instance().GetValue("Density_PP")*g/cm3;
   G4Material* PP = new G4Material(name="PP",density= density_pp, ncomponents=2);
@@ -139,8 +168,8 @@ void AngraDetectorConstruction::ConstructMaterials()
   Acrilic->AddElement(H,natoms = content_hidrogen_acrilic);
 
   // ============ Optical Properties ================
-  
-  
+
+
   const G4int N_ACRILIC = AngraConstantMgr::Instance().GetValue("N_Acrilic_Bins");
   G4MaterialPropertyVector *AcrilicRefractive = new G4MaterialPropertyVector();
   G4MaterialPropertyVector *AcrilicAbsLength  = new G4MaterialPropertyVector();
@@ -155,48 +184,48 @@ void AngraDetectorConstruction::ConstructMaterials()
     G4double binEn = 1240./AngraConstantMgr::Instance().GetValue(binName)*eV;
 
     binName = "AbsAcrilic_";
-    binName += num.str();        
+    binName += num.str();
     AcrilicAbsLength->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
 
     binName = "AcrilicRIndex";
-    binName += num.str();        
+    binName += num.str();
     AcrilicRefractive->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
 
     binName = "AcrilicScint_Fast";
-    binName += num.str();        
+    binName += num.str();
     AcrilicScintilFast->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
-    
+
     binName = "AcrilicScint_Slow";
-    binName += num.str();        
+    binName += num.str();
     AcrilicScintilSlow->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
   }
 
 
   G4MaterialPropertiesTable* ScintProp = new G4MaterialPropertiesTable();
-  ScintProp->AddProperty("RINDEX",       AcrilicRefractive );
-  ScintProp->AddProperty("ABSLENGTH",    AcrilicAbsLength  );
-  ScintProp->AddProperty("FASTCOMPONENT",AcrilicScintilFast);
-  ScintProp->AddProperty("SLOWCOMPONENT",AcrilicScintilSlow);
-  ScintProp->AddConstProperty("SCINTILLATIONYIELD",AngraConstantMgr::Instance().GetValue("Scint_Eff")/MeV);
-  ScintProp->AddConstProperty("RESOLUTIONSCALE",   AngraConstantMgr::Instance().GetValue("Scint_Res"));
-  ScintProp->AddConstProperty("FASTTIMECONSTANT",  AngraConstantMgr::Instance().GetValue("Scint_Fast")*ns);
-  ScintProp->AddConstProperty("SLOWTIMECONSTANT",  AngraConstantMgr::Instance().GetValue("Scint_Slow")*ns);
-  ScintProp->AddConstProperty("YIELDRATIO",        AngraConstantMgr::Instance().GetValue("Scint_Ratio"));
+  ScintProp->AddProperty("RINDEX",        AcrilicRefractive, true);
+  ScintProp->AddProperty("ABSLENGTH",     AcrilicAbsLength, true);
+  ScintProp->AddProperty("FASTCOMPONENT", AcrilicScintilFast, true);
+  ScintProp->AddProperty("SLOWCOMPONENT", AcrilicScintilSlow, true);
+  ScintProp->AddConstProperty("SCINTILLATIONYIELD", AngraConstantMgr::Instance().GetValue("Scint_Eff")/MeV, true);
+  ScintProp->AddConstProperty("RESOLUTIONSCALE",    AngraConstantMgr::Instance().GetValue("Scint_Res"), true);
+  ScintProp->AddConstProperty("FASTTIMECONSTANT",   AngraConstantMgr::Instance().GetValue("Scint_Fast")*ns, true);
+  ScintProp->AddConstProperty("SLOWTIMECONSTANT",   AngraConstantMgr::Instance().GetValue("Scint_Slow")*ns, true);
+  ScintProp->AddConstProperty("YIELDRATIO",         AngraConstantMgr::Instance().GetValue("Scint_Ratio"), true);
 
   //Air
   G4MaterialPropertyVector *AirRefractive = new G4MaterialPropertyVector();
   AirRefractive->InsertValues(1240./1000.*eV, AngraConstantMgr::Instance().GetValue("Air_RIndex"));
   AirRefractive->InsertValues(1240./200.*eV,  AngraConstantMgr::Instance().GetValue("Air_RIndex"));
   G4MaterialPropertiesTable* AirProp = new G4MaterialPropertiesTable();
-  AirProp->AddProperty("RINDEX", AirRefractive);
+  AirProp->AddProperty("RINDEX", AirRefractive, true);
   Air->SetMaterialPropertiesTable(AirProp);
-  
+
   //Acrilic
   G4MaterialPropertiesTable* AcrilicProp = new G4MaterialPropertiesTable();
-  AcrilicProp->AddProperty("RINDEX",       AcrilicRefractive );
-  AcrilicProp->AddProperty("ABSLENGTH",    AcrilicAbsLength  );
-  Acrilic->SetMaterialPropertiesTable(AcrilicProp);  
-   
+  AcrilicProp->AddProperty("RINDEX",       AcrilicRefractive, true);
+  AcrilicProp->AddProperty("ABSLENGTH",    AcrilicAbsLength, true);
+  Acrilic->SetMaterialPropertiesTable(AcrilicProp);
+
   // Optical Properties of Water  (Refractive Index from doi:10.1364/AO.12.000555)
   const G4int N_WATER = AngraConstantMgr::Instance().GetValue("N_Water_Bins");
   G4MaterialPropertyVector *WaterRefractive = new G4MaterialPropertyVector();
@@ -210,22 +239,22 @@ void AngraDetectorConstruction::ConstructMaterials()
     G4double binEn = 1240./AngraConstantMgr::Instance().GetValue(binName)*eV;
 
     binName = "RefIndx_";
-    binName += num.str();        
+    binName += num.str();
     WaterRefractive->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName));
 
     binName = "AbsLength_";
-    binName += num.str();        
+    binName += num.str();
     WaterAbsLength->InsertValues(binEn,AngraConstantMgr::Instance().GetValue(binName)*m);
   }
 
   G4MaterialPropertiesTable* OpWaterProperties = new G4MaterialPropertiesTable();
-  OpWaterProperties->AddProperty("RINDEX",   WaterRefractive);
-  OpWaterProperties->AddProperty("ABSLENGTH",WaterAbsLength);
+  OpWaterProperties->AddProperty("RINDEX",   WaterRefractive, true);
+  OpWaterProperties->AddProperty("ABSLENGTH",WaterAbsLength, true);
 
   GDW->SetMaterialPropertiesTable(OpWaterProperties);
   H2O->SetMaterialPropertiesTable(OpWaterProperties);
 
-  
+
   // Materials that
 
   // Glass
@@ -238,7 +267,7 @@ void AngraDetectorConstruction::ConstructMaterials()
   BW->AddMaterial(H2O,fractionmass = frac_water_bw);
   BW->AddElement (B,  fractionmass = frac_b_bw    );
   BW ->SetMaterialPropertiesTable(OpWaterProperties);
- 
+
   // Scintillator
   G4double density_ls          = AngraConstantMgr::Instance().GetValue("Density_LS")*g/cm3;
   G4double content_carbon_ls   = AngraConstantMgr::Instance().GetValue("Content_Carbon_LS");
@@ -259,7 +288,7 @@ void AngraDetectorConstruction::ConstructMaterials()
   LS->SetMaterialPropertiesTable(ScintProp);
   GDLS->SetMaterialPropertiesTable(ScintProp);
   Glass->SetMaterialPropertiesTable(AirProp);
-  
+
 }
 
 

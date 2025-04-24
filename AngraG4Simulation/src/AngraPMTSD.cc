@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  3-08-2009, v0.01 
+//  3-08-2009, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -40,14 +40,11 @@ AngraPMTSD::~AngraPMTSD()
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 void AngraPMTSD::Initialize(G4HCofThisEvent* HCE){
   pmtHitCollection = new AngraPMTHitsCollection
-                      (SensitiveDetectorName,collectionName[0]); 
-  
+                      (SensitiveDetectorName,collectionName[0]);
+
   //Store collection with event and keep ID
-  static G4int HCID = -1;
-  if(HCID<0){ 
-    HCID = GetCollectionID(0); 
-  }
-  HCE->AddHitsCollection( HCID, pmtHitCollection );  
+  G4int HCID = GetCollectionID(0);
+  HCE->AddHitsCollection(HCID, pmtHitCollection);
 }
 
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
@@ -58,20 +55,20 @@ G4bool AngraPMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ROhist){
 G4bool AngraPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* ){
 
   //need to know if this is an optical photon
-  if(aStep->GetTrack()->GetDefinition() 
+  if(aStep->GetTrack()->GetDefinition()
      != G4OpticalPhoton::OpticalPhotonDefinition()) return false;
 
   AngraPMTHit* hit= new AngraPMTHit();
-  G4VPhysicalVolume* physVol=  aStep->GetPostStepPoint()->GetTouchable()->GetVolume();	  
+  G4VPhysicalVolume* physVol=  aStep->GetPostStepPoint()->GetTouchable()->GetVolume();
 
   hit->SetPhysVol(physVol);
   hit->SetTime(aStep->GetPostStepPoint()->GetGlobalTime());
   hit->SetEn(aStep->GetPostStepPoint()->GetTotalEnergy());
   hit->SetPos(aStep->GetPostStepPoint()->GetPosition().x(),aStep->GetPostStepPoint()->GetPosition().y(),aStep->GetPostStepPoint()->GetPosition().z());
   hit->SetTrack(aStep->GetTrack()->GetTrackID());
-  
+
   pmtHitCollection->insert(hit);
- 
+
 
   return true;
 }
@@ -86,8 +83,8 @@ void AngraPMTSD::clear(){
 
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 void AngraPMTSD::DrawAll(){
-} 
+}
 
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 void AngraPMTSD::PrintAll(){
-} 
+}

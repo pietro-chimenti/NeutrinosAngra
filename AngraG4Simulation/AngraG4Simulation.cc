@@ -1,27 +1,29 @@
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 //
-//  AngraSimulation main file
+//  AngraG4Simulation main file
 //
-//  Authors: P.Chimenti, R.Lima
+//  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
-//  30-4-2008, v0.01 
+//  30-04-2008, v0.01
+//   23-04-2025, fixing compatibility with Geant4 v13.3.1
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
 #include "G4RunManager.hh"
+#include "G4MTRunManager.hh"
 #include "G4UImanager.hh"
 #include "G4UIterminal.hh"
 #include "G4UItcsh.hh"
+#include "G4UIExecutive.hh"
 #include "QGSP_BIC_HP.hh"
 #include "G4OpticalPhysics.hh"
 
-#ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
-#endif
 
 #include "AngraDetectorConstruction.hh"
+#include "AngraActionInitialization.hh"
 #include "AngraPrimaryGeneratorAction.hh"
 #include "AngraEventAction.hh"
 #include "AngraTrackingAction.hh"
@@ -31,265 +33,276 @@
 
 #include "CLHEP/Random/Random.h"
 
-#include "unistd.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <unistd.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <filesystem>
+#include <optional>
+#include <cstring>
+
+namespace fs = std::filesystem;
 
 struct AngraConfigurations {
-  int Batch;//0: false, 1: true
-  int Geometry;//0: Copo de caipirinha, 1: chooz etc... (veja o help)
-  int Help;// 0: false, 1: true
-  int Primary;// the random generator seed
-  long Random;// the random generator seed
-  char * ScriptName; // name of the script file to be used in batch
-  char * OutputFileName; // name of the output file
-  char * InputHepFileName; // name of the input HEPEV file, if needed.
+	bool Batch = false;      // 0: false, 1: true
+	int Geometry = 1;        // 0: Copo de caipirinha, 1: chooz etc... (veja o help)
+	bool Help = false;       // 0: false, 1: true
+	int Primary = 0;         // 0: point-like source, 1: HepEvt interface
+	long Random = 123456;    // the random generator seed
+	int nThreads = 0;        // 0 means use sequential mode, >0 means use MT mode with that many threads
+	std::optional<std::string> ScriptName;        // name of the script file to be used in batch
+	std::optional<std::string> OutputFileName;    // name of the output file
+	std::optional<std::string> InputHepFileName;  // name of the input HEPEV file, if needed.
 };
 
-int PrintHelp();
+void PrintHelp();
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
-  
-  // start creating a configuration structure
-  struct AngraConfigurations confs;
-  confs.Batch=0;
-  confs.Geometry=1;
-  confs.Random=0;
-  confs.Primary=0;
-  confs.Help=0;
-  confs.ScriptName=NULL;
-  confs.OutputFileName=NULL;
-  confs.InputHepFileName=NULL;
+	// Create configuration structure with default values
+	AngraConfigurations confs;
 
-  AngraMCLog::Instance().SetHeaderOutLevel( HOL_ALL );
-  AngraMCLog::Instance().SetEventOutLevel( EOL_ALL );
-  AngraMCLog::Instance().SetTrajectoryOutLevel( TROL_NONE );
-  AngraMCLog::Instance().SetTrackOutLevel( TOL_ALL );
-  AngraMCLog::Instance().SetHitsOutLevel( HIOL_ALL );
-  
-
-  // parse the arguments to set configuration parameters
-
-  if( argc==1 ){
-    // if only one argument print help and exit
-      PrintHelp();
-      return 0;
-  }
-
-
-
-  int c;
-  int l_vlevel;
-  while ( (c = getopt( argc, argv, "hbg:s:o:r:p:v:i:" ) ) != -1 ) {
-    
-    switch( c ) {
-      
-    case 'h':
-      confs.Help=1;
-      printf( "Help menu.\n" );
-      PrintHelp();
-      return 0;
-      break;
-      
-    case 'b':
-      confs.Batch=1;
-      printf( "Batch run selected\n");
-      break;
-      
-    case 'g':
-      confs.Geometry=atoi(optarg);
-      printf( "Geometry number %d chosen\n", confs.Geometry );
-      break;
-      
-    case 'p':
-      confs.Primary=atoi(optarg);
-      printf( "Primary generator %d chosen\n", confs.Primary );
-      break;
-      
-    case 's':
-      confs.ScriptName=optarg;
-      printf( "Batch script chosen: %s \n",optarg );
-      break;
-
-    case 'r':
-      confs.Random=atoi(optarg);
-      printf( "Random seed chosen: %s \n",optarg );
-      break;
-      
-    case 'o':
-      confs.OutputFileName=optarg;
-      printf( "Output file name chosen: %s \n",optarg );
-      break;
-
-    case 'i':
-      confs.InputHepFileName=optarg;
-      printf( "Input HepEv file name chosen: %s \n",optarg );
-      break;
-
-    case 'v':
-      l_vlevel=atoi(optarg);
-      switch( l_vlevel ) {
-      case 10:
-	AngraMCLog::Instance().SetHeaderOutLevel( HOL_NONE );
-	break;
-      case 11:
 	AngraMCLog::Instance().SetHeaderOutLevel( HOL_ALL );
-	break;
-      case 20:
-	AngraMCLog::Instance().SetEventOutLevel( EOL_NONE );
-	break;
-      case 21:
 	AngraMCLog::Instance().SetEventOutLevel( EOL_ALL );
-	break;
-      case 30:
 	AngraMCLog::Instance().SetTrajectoryOutLevel( TROL_NONE );
-	break;
-      case 31:
-	AngraMCLog::Instance().SetTrajectoryOutLevel( TROL_ALL );
-	break;
-      case 40:
-	AngraMCLog::Instance().SetTrackOutLevel( TOL_NONE );
-	break;
-      case 41:
 	AngraMCLog::Instance().SetTrackOutLevel( TOL_ALL );
-	break;
-      case 50:
-	AngraMCLog::Instance().SetHitsOutLevel( HIOL_NONE );
-	break;
-      case 51:
 	AngraMCLog::Instance().SetHitsOutLevel( HIOL_ALL );
-	break;
-      default:
-	printf( "Unrecognized Output level \n" );
-      }
-      break;
-      
-    case '?':
-      printf( "Unrecognized option encountered -%c\n", optopt );
-      
-    default:
-      exit(-1);
-      
-    }
-    
-  }
-  
-  for ( c = optind ; c < argc ; c++ ) {
-
-    printf( "Non valid option %s\n", argv[c] );
-
-  }
 
 
-  // set the random generator seed
-  CLHEP::HepRandom::setTheSeed(confs.Random);
-  std::cout << " seed: " << confs.Random << std::endl;
-  std::cout << " random: " <<  CLHEP::RandFlat::shoot(0.,1.)  << std::endl;
+	// Parse the arguments to set configuration parameters
+	// If no arguments are passed, run with default values (no need to do anything special here)
 
-  // mandatory simulation definitions
-  G4String oFile="SimulationOutput.G4";
-  if( confs.OutputFileName != NULL) oFile=G4String(confs.OutputFileName) ;
-  G4cout << oFile << std::endl; 
-  std::ofstream*  outFile = new std::ofstream();
-  outFile->open(oFile);
-  AngraMCLog::Instance().SetOutFile(outFile);
-  
-  if( confs.InputHepFileName!= NULL) {AngraMCLog::Instance().SetInHepEvtFile(confs.InputHepFileName);}
-    else AngraMCLog::Instance().SetInHepEvtFile("event.data");
+	int c;
+	int l_vlevel;
+	while ((c = getopt(argc, argv, "hbg:s:o:r:p:v:i:j:")) != -1) {
+		switch (c) {
+			case 'h':
+				confs.Help = true;
+				std::cout << "Help menu." << std::endl;
+				PrintHelp();
+				return 0;
 
-  G4RunManager* runManager = new G4RunManager;
-  G4VUserDetectorConstruction* detector = new AngraDetectorConstruction(geometryEnum(confs.Geometry));
-  runManager->SetUserInitialization(detector);
-//  G4VUserPhysicsList* physics = new AngraPhysicsList;
-  G4VModularPhysicsList* physics = new QGSP_BIC_HP;
-  physics->RegisterPhysics( new G4OpticalPhysics(0) );
-  runManager->SetUserInitialization(physics);
-  G4VUserPrimaryGeneratorAction* gen_action = new AngraPrimaryGeneratorAction(primaryEnum(confs.Primary),outFile);
-  runManager->SetUserAction(gen_action);
+			case 'b':
+				confs.Batch = true;
+				std::cout << "Batch run selected" << std::endl;
+				break;
 
-  runManager->SetVerboseLevel(5);
+			case 'g':
+				confs.Geometry = std::stoi(optarg);
+				std::cout << "Geometry number " << confs.Geometry << " chosen" << std::endl;
+				break;
 
- 
-  // other user actions
+			case 'p':
+				confs.Primary = std::stoi(optarg);
+				std::cout << "Primary generator " << confs.Primary << " chosen" << std::endl;
+				break;
 
-  G4UserEventAction* event_action = new AngraEventAction(outFile);
-  runManager->SetUserAction(event_action);
-  G4UserTrackingAction* tracking_action = new AngraTrackingAction(outFile);
-  runManager->SetUserAction(tracking_action);
-  G4UserSteppingAction* stepping_action = new AngraSteppingAction();
-  runManager->SetUserAction(stepping_action);
+			case 's':
+				confs.ScriptName = optarg;
+				std::cout << "Batch script chosen: " << *confs.ScriptName << std::endl;
+				break;
 
-  // initializer and run
-  runManager->Initialize();
-  G4UImanager* UI = G4UImanager::GetUIpointer();
-  if (confs.Batch)   // batch mode  
-    {
-     G4String command = "/control/execute ";
-     G4String fileName;
-     if( confs.ScriptName == NULL)  fileName = "run1.mac";
-     else fileName = confs.ScriptName;
-     std::cout << "command = " <<  command+fileName << std::endl;
-     UI->ApplyCommand(command+fileName);
-    }
-    
-  else           // interactive mode
-    { 
-#ifdef G4VIS_USE
-      G4VisManager* visManager = new G4VisExecutive;
-      visManager->Initialize();
-#endif    
-     
-      G4UIsession * session = 0;
-#ifdef G4UI_USE_TCSH
-      session = new G4UIterminal(new G4UItcsh);      
-#else
-      session = new G4UIterminal();
-#endif
-      G4String command = "/control/execute ";
-      G4String fileName;
-      if( confs.ScriptName == NULL)  fileName = "vis.mac";
-      else fileName = confs.ScriptName;
-      UI->ApplyCommand(command+fileName);
-      session->SessionStart();
-      delete session;
-     
-#ifdef G4VIS_USE
-      delete visManager;
-#endif     
-    }
+			case 'r':
+				confs.Random = std::stol(optarg);
+				std::cout << "Random seed chosen: " << optarg << std::endl;
+				break;
 
-  delete runManager;
+			case 'o':
+				confs.OutputFileName = optarg;
+				std::cout << "Output file name chosen: " << *confs.OutputFileName << std::endl;
+				break;
 
-  return 0;
+			case 'i':
+				confs.InputHepFileName = optarg;
+				std::cout << "Input HepEv file name chosen: " << *confs.InputHepFileName << std::endl;
+				break;
+
+			case 'j':
+				confs.nThreads = std::stoi(optarg);
+				std::cout << "Number of threads chosen: " << confs.nThreads << std::endl;
+				break;
+
+			case 'v':
+				l_vlevel = std::stoi(optarg);
+				switch (l_vlevel) {
+					case 10:
+						AngraMCLog::Instance().SetHeaderOutLevel(HOL_NONE);
+						break;
+					case 11:
+						AngraMCLog::Instance().SetHeaderOutLevel(HOL_ALL);
+						break;
+					case 20:
+						AngraMCLog::Instance().SetEventOutLevel(EOL_NONE);
+						break;
+					case 21:
+						AngraMCLog::Instance().SetEventOutLevel(EOL_ALL);
+						break;
+					case 30:
+						AngraMCLog::Instance().SetTrajectoryOutLevel(TROL_NONE);
+						break;
+					case 31:
+						AngraMCLog::Instance().SetTrajectoryOutLevel(TROL_ALL);
+						break;
+					case 40:
+						AngraMCLog::Instance().SetTrackOutLevel(TOL_NONE);
+						break;
+					case 41:
+						AngraMCLog::Instance().SetTrackOutLevel(TOL_ALL);
+						break;
+					case 50:
+						AngraMCLog::Instance().SetHitsOutLevel(HIOL_NONE);
+						break;
+					case 51:
+						AngraMCLog::Instance().SetHitsOutLevel(HIOL_ALL);
+						break;
+					default:
+						std::cout << "Unrecognized Output level" << std::endl;
+				}
+				break;
+
+			case '?':
+				std::cout << "Unrecognized option encountered -" << static_cast<char>(optopt) << std::endl;
+				std::cout << "Printing help information:" << std::endl;
+				PrintHelp();
+				return 0;
+				break;  // Not reached due to return, but good practice
+
+			default:
+				std::cout << "Unknown error in command line parsing" << std::endl;
+				PrintHelp();
+				return 0;
+		}
+	}
+
+	// Check for any remaining arguments
+	if (optind < argc) {
+		std::cout << "Non-option arguments encountered:" << std::endl;
+		for (int i = optind; i < argc; i++) {
+			std::cout << "  " << argv[i] << std::endl;
+		}
+		std::cout << "Printing help information:" << std::endl;
+		PrintHelp();
+		return 0;
+	}
+
+
+	// Set the random generator seed
+	CLHEP::HepRandom::setTheSeed(confs.Random);
+	std::cout << " seed: " << confs.Random << std::endl;
+	std::cout << " random: " << CLHEP::RandFlat::shoot(0., 1.) << std::endl;
+
+	// Mandatory simulation definitions
+	G4String oFile = "SimulationOutput.G4";
+	if (confs.OutputFileName.has_value()) {
+		oFile = G4String(confs.OutputFileName->c_str());
+	}
+	G4cout << oFile << std::endl;
+
+	auto outFile = new std::ofstream();
+	outFile->open(oFile);
+	AngraMCLog::Instance().SetOutFile(outFile);
+
+	if (confs.InputHepFileName.has_value()) {
+		// Need to create a persistent copy of the string for C API
+		char* inputFileName = new char[confs.InputHepFileName->length() + 1];
+		std::strcpy(inputFileName, confs.InputHepFileName->c_str());
+		AngraMCLog::Instance().SetInHepEvtFile(inputFileName);
+	} else {
+		AngraMCLog::Instance().SetInHepEvtFile(const_cast<char*>("event.data"));
+	}
+
+	// Create run manager - either sequential or MT depending on command line option
+	G4RunManager* runManager = nullptr;
+	if (confs.nThreads > 0) {
+		// Multi-threaded mode
+		auto mtRunManager = new G4MTRunManager;
+		mtRunManager->SetNumberOfThreads(confs.nThreads);
+		G4cout << "Running in multi-threaded mode with " << confs.nThreads << " threads" << G4endl;
+		runManager = mtRunManager;
+	} else {
+		// Sequential mode
+		runManager = new G4RunManager;
+		G4cout << "Running in sequential mode" << G4endl;
+	}
+
+	// Initialize detector construction
+	G4VUserDetectorConstruction* detector = new AngraDetectorConstruction(geometryEnum(confs.Geometry));
+	runManager->SetUserInitialization(detector);
+
+	// Initialize physics list
+	G4VModularPhysicsList* physics = new QGSP_BIC_HP;
+	physics->RegisterPhysics(new G4OpticalPhysics(0));
+	runManager->SetUserInitialization(physics);
+
+	// Initialize action initialization
+	G4VUserActionInitialization* actionInit = new AngraActionInitialization(primaryEnum(confs.Primary), outFile);
+	runManager->SetUserInitialization(actionInit);
+
+	runManager->SetVerboseLevel(5);
+
+	// Initialize and run
+	runManager->Initialize();
+	G4UImanager* UI = G4UImanager::GetUIpointer();
+
+	if (confs.Batch) {
+		// Batch mode
+		G4String command = "/control/execute ";
+		G4String fileName = confs.ScriptName.value_or("run1.mac");
+		std::cout << "command = " << command + fileName << std::endl;
+		UI->ApplyCommand(command + fileName);
+	} else {
+		// Interactive mode
+		// Initialize visualization
+		G4VisManager* visManager = new G4VisExecutive;
+		visManager->Initialize();
+
+		// Initialize UI executive
+		G4UIExecutive* ui = new G4UIExecutive(argc, argv);
+
+		// Execute macro file
+		G4String command = "/control/execute ";
+		G4String fileName = confs.ScriptName.value_or("vis_qt.mac"); // Use Qt visualization by default
+		UI->ApplyCommand(command + fileName);
+
+		// Start UI session
+		ui->SessionStart();
+		delete ui;
+
+		// Clean up visualization
+		delete visManager;
+	}
+
+	delete runManager;
+
+	return 0;
 }
 
-int PrintHelp(){
-  printf( "The possible options are:\n" );
-  printf( "-h          : this menu\n" );
-  printf( "-b          : BATCH mode\n" );
-  printf( "-r SEED     : SEED of random engine\n" );
-  printf( "-g GEOMETRY : GEOMETRY is 1 for New Geometry (need constants.wb1.dat -> constans.dat)\n" );
-  printf( "            :             2 for Old Geometry (need constants.wb2.dat -> constans.dat)\n" );
-  printf( "-p PRIMARY  : PRIMARY is 0 for point-like source\n" );
-  printf( "            : 1 for HepEvt interface -  needs 'event.data' \n" );
-  printf( "-i FILENAME : FILENAME is the name of the HepEvt file, instead of 'event.data' \n" );
-  printf( "-s SCRIPT   : SCRIPT is the name of the G4script\n" );
-  printf( "-o FILENAME : FILENAME is the name of file used to store the simulation results \n" );
-  printf( "            : default value is 'SimulationOutput.G4' \n");
-  printf( "-v OUTLEVEL : OUTLEVEL is the verbosity level of output (multiple choices possible): \n" );
-  printf( "            : 10 for header info to NONE \n" );
-  printf( "            : 11 for header info to ALL \n" );
-  printf( "            : 20 for event info to NONE \n" );
-  printf( "            : 21 for event info to ALL \n" );
-  printf( "            : 30 for trajectory info to NONE \n" );
-  printf( "            : 31 for trajectory info to ALL \n" );
-  printf( "            : 40 for track info to NONE \n" );
-  printf( "            : 41 for track info to ALL \n" );
-  printf( "            : 50 for hits info to NONE \n" );
-  printf( "            : 51 for hits info to ALL \n" );
-
-  return 0;
+void PrintHelp() {
+	std::cout << "The possible options are:\n"
+			  << "-h          : this menu\n"
+			  << "-b          : BATCH mode\n"
+			  << "-r SEED     : SEED of random engine\n"
+			  << "-g GEOMETRY : GEOMETRY is 1 for New Geometry (need constants.wb1.dat -> constans.dat)\n"
+			  << "            :             2 for Old Geometry (need constants.wb2.dat -> constans.dat)\n"
+			  << "-p PRIMARY  : PRIMARY is 0 for point-like source\n"
+			  << "            : 1 for HepEvt interface -  needs 'event.data'\n"
+			  << "-i FILENAME : FILENAME is the name of the HepEvt file, instead of 'event.data'\n"
+			  << "-j NTHREADS : NTHREADS is the number of threads for multithreading (0 for sequential mode)\n"
+			  << "-s SCRIPT   : SCRIPT is the name of the G4script\n"
+			  << "-o FILENAME : FILENAME is the name of file used to store the simulation results\n"
+			  << "            : default value is 'SimulationOutput.G4'\n"
+			  << "-v OUTLEVEL : OUTLEVEL is the verbosity level of output (multiple choices possible):\n"
+			  << "            : 10 for header info to NONE\n"
+			  << "            : 11 for header info to ALL\n"
+			  << "            : 20 for event info to NONE\n"
+			  << "            : 21 for event info to ALL\n"
+			  << "            : 30 for trajectory info to NONE\n"
+			  << "            : 31 for trajectory info to ALL\n"
+			  << "            : 40 for track info to NONE\n"
+			  << "            : 41 for track info to ALL\n"
+			  << "            : 50 for hits info to NONE\n"
+			  << "            : 51 for hits info to ALL" << std::endl;
 }
+
 
 

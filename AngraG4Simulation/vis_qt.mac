@@ -1,17 +1,18 @@
-# vis.mac file of AngraSimulation
+# vis_qt.mac file of AngraSimulation for Qt visualization
 #
 # Authors: P.Chimenti, R.Lima, G. Valdiviesso
-#
-# 30-04-2008: v0.01
+# Updated for Qt visualization
 #  23-04-2025, fixing compatibility with Geant4 v13.3.1
 #
+
 /control/verbose 2
 /run/verbose 2
 
-# two tested visualization options: OpenGL or HepRep
-/vis/open OGLIX 600x600-0+0
-#/vis/open HepRepFile
-
+# Use Qt visualization
+/vis/open OGL
+# Alternative Qt drivers:
+#/vis/open OGLIQt
+#/vis/open OGLSQt
 
 # Geometry
 /vis/drawVolume
@@ -19,11 +20,10 @@
 /vis/viewer/zoom 1.7
 
 # tracks
-/vis/scene/add/trajectories
+/vis/scene/add/trajectories rich
 /vis/scene/endOfEventAction accumulate
 
-#Particle gun
-
+# Particle gun
 /gun/position 0 0 0 mm
 #/gun/position (G4ThreeVector(CLHEP::RandGauss::shoot(),CLHEP::RandGauss::shoot(),CLHEP::RandGauss::shoot()))
 /gun/particle  e-
@@ -31,4 +31,4 @@
 
 # beam
 /run/verbose 1
-/run/beamOn 1
+/run/beamOn 100

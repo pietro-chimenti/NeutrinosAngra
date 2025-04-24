@@ -28,7 +28,7 @@
 	   --->  AngraDetectorConstruction.hh : as above
 
 
-30-4-2008  V0.01  
+30-04-2008  V0.01  
 	   First version of visualization
 	   First version of geometry
 
