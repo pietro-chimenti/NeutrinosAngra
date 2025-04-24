@@ -1,3 +1,11 @@
 # Initialize kernel
 /run/initialize
+
+# Particle gun settings
+/gun/position 0 0 0 mm
+/gun/particle e-
+/gun/energy 1 MeV
+/gun/direction -1 0 0
+
+# Run simulation
 /run/beamOn 1000

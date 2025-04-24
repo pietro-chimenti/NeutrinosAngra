@@ -5,12 +5,12 @@
 //
 //  Authors: P.Chimenti
 //
-//  24-03-2010, v0.01 
+//  24-03-2010, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 //==============================================================
-//In this file is the Class responsible for managing the constants 
+//In this file is the Class responsible for managing the constants
 //of the detector descriptions (dimensions, optical constants etc.)
 //==============================================================
 
@@ -19,8 +19,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <map>
+#include "globals.hh"
 
 class AngraConstantMgr
 {
@@ -34,7 +34,7 @@ public:
     return CMGRsingleton;
   }
 
-  float GetValue(std::string key);
+  float GetValue(const G4String& key);
 
 private:
   AngraConstantMgr() {}                                  // Private constructor
@@ -42,10 +42,10 @@ private:
   AngraConstantMgr(const AngraConstantMgr&);                 // Prevent copy-construction
   AngraConstantMgr& operator=(const AngraConstantMgr&);      // Prevent assignment
   bool Init();
-  
+
   static bool setup;
   std::ifstream *inFile;
-  std::map<std::string,float> constants;
+  std::map<G4String,float> constants;
 };
 
 #endif
