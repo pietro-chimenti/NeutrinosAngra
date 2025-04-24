@@ -3,9 +3,9 @@
 //
 //  AngraConstantMgr implementation file
 //
-//  Authors: P.Chimenti 
+//  Authors: P.Chimenti
 //
-//  25-3-2010, v0.01 
+//  25-3-2010, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -26,13 +26,13 @@ bool AngraConstantMgr::Init()
 // inFile->open("constantsCopia.dat");
  inFile->open("constants.dat");
 
-  std::string key;
+  G4String key;
 
   float value;
   (*inFile) >> key;
   while(key.length()>0){
     (*inFile) >> value;
-    constants[key]=value;  
+    constants[key]=value;
     (*inFile).ignore(INT_MAX, '\n');
     key.clear();
     (*inFile) >> key;
@@ -40,7 +40,7 @@ bool AngraConstantMgr::Init()
   return true;
 }
 
-float AngraConstantMgr::GetValue(std::string key)
+float AngraConstantMgr::GetValue(const G4String& key)
 {
 return constants[key];
 }

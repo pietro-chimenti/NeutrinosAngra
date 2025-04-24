@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  03-07-2010, v0.01 
+//  03-07-2010, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -16,7 +16,11 @@
 #include "G4Colour.hh"
 #include "G4VisAttributes.hh"
 
+#if defined G4MULTITHREADED
+G4ThreadLocal G4Allocator<AngraVetoHit>* AngraVetoHitAllocator = nullptr;
+#else
 G4Allocator<AngraVetoHit> AngraVetoHitAllocator;
+#endif
 
 AngraVetoHit::AngraVetoHit() {}
 
@@ -71,7 +75,7 @@ void AngraVetoHit::Print()
   G4cout << "  trackID: " << trackID << " Volume Name " << volName
          << "  energy deposit: " << G4BestUnit(edep,"Energy")
 	 << "  position: " << G4BestUnit(pos,"Length")
-	 << "  local position: " << G4BestUnit(localPos,"Length") 
+	 << "  local position: " << G4BestUnit(localPos,"Length")
          << "  local time: " << G4BestUnit(ltime,"Time")
          << "  global time: " << G4BestUnit(gtime,"Time") << G4endl;
 }

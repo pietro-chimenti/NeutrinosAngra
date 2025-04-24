@@ -1,0 +1,64 @@
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# Build directories
+build/
+build_*/
+bin/
+lib/
+install/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+!cmake_uninstall.cmake.in
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Geant4 specific
+*.heprep
+*.wrl
+*.eps
+*.root
+*.dat.?*
+*.out.*
+core.*
+
+# Backup files
+*~
+*.bak
+*.swp
+*.tmp
+
+# OS specific
+.DS_Store
+Thumbs.db

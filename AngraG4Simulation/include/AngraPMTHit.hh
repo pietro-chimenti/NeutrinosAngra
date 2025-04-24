@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  3-8-2009, v0.01 
+//  3-8-2009, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -22,12 +22,12 @@
 #include "G4RotationMatrix.hh"
 #include "G4VPhysicalVolume.hh"
 
-class G4VTouchable;
+#include "G4VTouchable.hh"
 
 class AngraPMTHit : public G4VHit
 {
 public:
-  
+
   AngraPMTHit();
   ~AngraPMTHit();
   AngraPMTHit(const AngraPMTHit &right);
@@ -37,7 +37,7 @@ public:
 
   inline void *operator new(size_t);
   inline void operator delete(void *aHit);
-  
+
   inline void SetPhysVol(G4VPhysicalVolume* physVol){this->physVol=physVol;}
   inline G4VPhysicalVolume* GetPMTPhysVol(){return physVol;}
 
@@ -65,16 +65,35 @@ private:
 
 typedef G4THitsCollection<AngraPMTHit> AngraPMTHitsCollection;
 
+#include "G4AutoLock.hh"
+#if defined G4MULTITHREADED
+extern G4ThreadLocal G4Allocator<AngraPMTHit>* AngraPMTHitAllocator;
+#else
 extern G4Allocator<AngraPMTHit> AngraPMTHitAllocator;
+#endif
 
 inline void* AngraPMTHit::operator new(size_t){
   void *aHit;
+#if defined G4MULTITHREADED
+  if (!AngraPMTHitAllocator) {
+    AngraPMTHitAllocator = new G4Allocator<AngraPMTHit>;
+  }
+  aHit = (void *) AngraPMTHitAllocator->MallocSingle();
+#else
   aHit = (void *) AngraPMTHitAllocator.MallocSingle();
+#endif
   return aHit;
 }
 
 inline void AngraPMTHit::operator delete(void *aHit){
+#if defined G4MULTITHREADED
+  if (!AngraPMTHitAllocator) {
+    AngraPMTHitAllocator = new G4Allocator<AngraPMTHit>;
+  }
+  AngraPMTHitAllocator->FreeSingle((AngraPMTHit*) aHit);
+#else
   AngraPMTHitAllocator.FreeSingle((AngraPMTHit*) aHit);
+#endif
 }
 
 #endif

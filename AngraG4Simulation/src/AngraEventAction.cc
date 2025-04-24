@@ -3,14 +3,15 @@
 //
 //  AngraSimulation implementation of event action file
 //
-//  Authors: P.Chimenti, R.Lima
+//  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
-//  25-6-2008, v0.01 
+//  25-6-2008, v0.01
+//  23-04-2025, fixing compatibility with Geant4 v13.3.1
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 //==============================================================================
-// At the moment just for saving Trajectories and Hits 
+// At the moment just for saving Trajectories and Hits
 //==============================================================================
 #include "AngraEventAction.hh"
 
@@ -21,10 +22,11 @@
 #include "G4ios.hh"
 #include "G4SDManager.hh"
 #include "AngraPMTHit.hh"
+#include "AngraVetoHit.hh"
 #include "AngraMCLog.hh"
 
 
- 
+
 void AngraEventAction::BeginOfEventAction(const G4Event* evt)
 {
   AngraMCLog::Instance().SaveEvent(evt);
@@ -32,33 +34,40 @@ void AngraEventAction::BeginOfEventAction(const G4Event* evt)
 
 void AngraEventAction::EndOfEventAction(const G4Event* evt)
 {
-
   G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
-  
+
   AngraMCLog::Instance().SaveTrajectories(trajectoryContainer);
 
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
-  G4int pmtCollID=SDman->GetCollectionID("pmtHitCollection");
+
+  // Get collection IDs only once per thread
+  if (pmtCollID < 0) {
+    pmtCollID = SDman->GetCollectionID("pmtHitCollection");
+  }
+
   G4HCofThisEvent* HCE = evt->GetHCofThisEvent();
   AngraPMTHitsCollection* PHC = 0;
+
   // now Hits:
-  if(HCE){
+  if (HCE && pmtCollID >= 0) {
     PHC = (AngraPMTHitsCollection*)(HCE->GetHC(pmtCollID));
-  }
-  if(PHC){
-    AngraMCLog::Instance().SaveHits(PHC);
+    if (PHC) {
+      AngraMCLog::Instance().SaveHits(PHC);
+    }
   }
 
-  G4int vetoCollID=SDman->GetCollectionID("vetoHitCollection");
+  // Get veto collection ID only once per thread
+  if (vetoCollID < 0) {
+    vetoCollID = SDman->GetCollectionID("vetoHitCollection");
+  }
+
   AngraVetoHitsCollection* VHC = 0;
-  if(HCE){
+  if (HCE && vetoCollID >= 0) {
     VHC = (AngraVetoHitsCollection*)(HCE->GetHC(vetoCollID));
+    if (VHC) {
+      AngraMCLog::Instance().SaveHits(VHC);
+    }
   }
-  if(VHC){
-    AngraMCLog::Instance().SaveHits(VHC);
-  }
-
-
 }
 
 
