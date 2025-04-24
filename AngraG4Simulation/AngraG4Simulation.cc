@@ -33,9 +33,6 @@
 
 #include "CLHEP/Random/Random.h"
 
-#include <iostream>
-#include <iomanip>
-#include <cstring>
 #include "AngraCommandLineParser.hh"
 
 int main(int argc, char** argv)
@@ -51,15 +48,15 @@ int main(int argc, char** argv)
 
 	// Set the random generator seed
 	CLHEP::HepRandom::setTheSeed(confs.Random);
-	std::cout << " seed: " << confs.Random << std::endl;
-	std::cout << " random: " << CLHEP::RandFlat::shoot(0., 1.) << std::endl;
+	G4cout << " seed: " << confs.Random << "\n";
+	G4cout << " random: " << CLHEP::RandFlat::shoot(0., 1.) << G4endl;
 
 	// Mandatory simulation definitions
 	G4String oFile = "SimulationOutput.G4";
 	if (confs.OutputFileName.has_value()) {
 		oFile = G4String(confs.OutputFileName->c_str());
 	}
-	G4cout << oFile << std::endl;
+	G4cout << oFile << G4endl;
 
 	auto outFile = new std::ofstream();
 	outFile->open(oFile);
@@ -111,7 +108,7 @@ int main(int argc, char** argv)
 		// Batch mode
 		G4String command = "/control/execute ";
 		G4String fileName = confs.ScriptName.value_or("run1.mac");
-		std::cout << "command = " << command + fileName << std::endl;
+		G4cout << "command = " << command + fileName << G4endl;
 		UI->ApplyCommand(command + fileName);
 	} else {
 		// Interactive mode
