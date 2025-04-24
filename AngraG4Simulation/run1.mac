@@ -8,4 +8,4 @@
 /gun/direction -1 0 0
 
 # Run simulation
-/run/beamOn 1000
+/run/beamOn 10000

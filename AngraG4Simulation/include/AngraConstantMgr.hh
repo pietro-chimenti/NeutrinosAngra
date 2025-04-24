@@ -22,14 +22,23 @@
 #include <map>
 #include "globals.hh"
 
+#include "G4Threading.hh"
+#include "G4AutoLock.hh"
+
 class AngraConstantMgr
 {
 public:
   static AngraConstantMgr& Instance()
   {
+    // Use a single instance for all threads since constants are read-only after initialization
     static AngraConstantMgr CMGRsingleton;
+    static G4Mutex setupMutex = G4MUTEX_INITIALIZER;
+
     if(setup==false){
-      setup=CMGRsingleton.Init();
+      G4AutoLock lock(&setupMutex);
+      if(setup==false) {
+        setup=CMGRsingleton.Init();
+      }
     }
     return CMGRsingleton;
   }

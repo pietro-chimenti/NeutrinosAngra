@@ -18,6 +18,7 @@
 #include "G4UItcsh.hh"
 #include "G4UIExecutive.hh"
 #include "QGSP_BIC_HP.hh"
+#include "QGSP_BIC.hh"
 #include "G4OpticalPhysics.hh"
 
 #include "G4VisExecutive.hh"
@@ -46,10 +47,10 @@ int main(int argc, char** argv)
 	}
 
 
-	// Set the random generator seed
+	// Set the random generator seed for the master thread
+	// Worker threads will get different seeds automatically
 	CLHEP::HepRandom::setTheSeed(confs.Random);
-	G4cout << " seed: " << confs.Random << "\n";
-	G4cout << " random: " << CLHEP::RandFlat::shoot(0., 1.) << G4endl;
+	G4cout << " Master seed: " << confs.Random << G4endl;
 
 	// Mandatory simulation definitions
 	G4String oFile = "SimulationOutput.G4";
@@ -90,15 +91,30 @@ int main(int argc, char** argv)
 	runManager->SetUserInitialization(detector);
 
 	// Initialize physics list
-	G4VModularPhysicsList* physics = new QGSP_BIC_HP;
-	physics->RegisterPhysics( new G4OpticalPhysics );
+	// Use a more efficient physics list for multithreading
+	G4VModularPhysicsList* physics = nullptr;
+
+	if (confs.nThreads > 0) {
+		// For multithreaded mode, use a more efficient physics list
+		physics = new QGSP_BIC; // Less detailed but faster than QGSP_BIC_HP
+	} else {
+		// For sequential mode, use the original physics list
+		physics = new QGSP_BIC_HP;
+	}
+
+	physics->RegisterPhysics(new G4OpticalPhysics());
+
+	// Set production cut to optimize performance
+	physics->SetDefaultCutValue(1.0 * CLHEP::mm);
+
 	runManager->SetUserInitialization(physics);
 
 	// Initialize action initialization
 	G4VUserActionInitialization* actionInit = new AngraActionInitialization(primaryEnum(confs.Primary), outFile);
 	runManager->SetUserInitialization(actionInit);
 
-	runManager->SetVerboseLevel(5);
+	// Set a lower verbosity level for better performance
+	runManager->SetVerboseLevel(1);
 
 	// Initialize and run
 	runManager->Initialize();
@@ -130,6 +146,15 @@ int main(int argc, char** argv)
 
 		// Clean up visualization
 		delete visManager;
+	}
+
+	// Merge output files if running in multithreaded mode
+	if (confs.nThreads > 0) {
+		G4String outputFile = "SimulationOutput.G4";
+		if (confs.OutputFileName) {
+			outputFile = *confs.OutputFileName;
+		}
+		AngraMCLog::MergeOutputFiles(outputFile);
 	}
 
 	delete runManager;

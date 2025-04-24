@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  09-02-2010, v0.01 
+//  09-02-2010, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -24,6 +24,8 @@
 #include "AngraVetoHit.hh"
 #include "G4Track.hh"
 #include "G4VProcess.hh"
+#include "G4Threading.hh"
+#include "G4AutoLock.hh"
 
 #include <iostream>
 #include <fstream>
@@ -35,17 +37,24 @@ enum TrajectoryOutLevelEnum {TROL_NONE,TROL_ALL};
 enum TrackOutLevelEnum {TOL_NONE,TOL_ALL};
 enum HitsOutLevelEnum {HIOL_NONE,HIOL_ALL};
 
-
 class AngraMCLog
 {
 public:
   static AngraMCLog& Instance()
   {
-    static AngraMCLog MCLsingleton;
-    if(setup==false){
-      setup=MCLsingleton.Init();
+    static G4ThreadLocal AngraMCLog* instance = nullptr;
+    static G4Mutex mutex = G4MUTEX_INITIALIZER;
+
+    if (!instance) {
+      G4AutoLock lock(&mutex);
+      if (!instance) {
+        instance = new AngraMCLog();
+        if (setup == false) {
+          setup = instance->Init();
+        }
+      }
     }
-    return MCLsingleton;
+    return *instance;
   }
 
   bool Init();
@@ -53,7 +62,13 @@ public:
   bool SetInHepEvtFile(char * hepevFile);
   char* GetInHepEvtFile();
 
-  bool SaveHeader();  
+  // Merge thread-specific output files into a single file
+  static bool MergeOutputFiles(const G4String& outputFileName);
+
+  // Get the thread-specific output file name
+  static G4String GetThreadOutputFileName(G4int threadId);
+
+  bool SaveHeader();
   bool SaveEvent(const G4Event* evt);
   bool SaveTrajectories(G4TrajectoryContainer* trajectoryContainer);
   bool SaveHits(AngraPMTHitsCollection* PHC);
@@ -79,7 +94,7 @@ private:
   ~AngraMCLog() {}
   AngraMCLog(const AngraMCLog&);                 // Prevent copy-construction
   AngraMCLog& operator=(const AngraMCLog&);      // Prevent assignment
-  
+
   static bool setup;
   std::ostream *outFile;
   char * inputHepEvtFile;
