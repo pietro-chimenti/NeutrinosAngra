@@ -6,7 +6,7 @@
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
 //  30-04-2008, v0.01
-//  23-04-2025, fixing compatibility with Geant4 v13.3.1
+//  23-04-2025, fixing compatibility with Geant4 v11.3.0
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -148,13 +148,14 @@ int main(int argc, char** argv)
 		delete visManager;
 	}
 
-	// Merge output files if running in multithreaded mode
-	if (confs.nThreads > 0) {
-		G4String outputFile = "SimulationOutput.G4";
-		if (confs.OutputFileName) {
-			outputFile = *confs.OutputFileName;
-		}
+	// Merge output files if running in multithreaded mode AND output file name was specified
+	if (confs.nThreads > 0 && confs.OutputFileName.has_value()) {
+		G4String outputFile = *confs.OutputFileName;
+		G4cout << "Merging thread output files into " << outputFile << G4endl;
 		AngraMCLog::MergeOutputFiles(outputFile);
+	} else if (confs.nThreads > 0) {
+		G4cout << "No output file name specified with -o option. Thread output files will be preserved." << G4endl;
+		G4cout << "Thread output files are named SimulationOutput_threadX.G4 where X is the thread number." << G4endl;
 	}
 
 	delete runManager;

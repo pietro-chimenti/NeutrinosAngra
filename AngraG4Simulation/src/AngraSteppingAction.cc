@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti
 //
-//  04-08-2008, v0.01 
+//  04-08-2008, v0.01
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -38,16 +38,16 @@ AngraSteppingAction::~AngraSteppingAction()
 
 //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 void AngraSteppingAction::UserSteppingAction(const G4Step * theStep){
- 
+
   G4Track* theTrack = theStep->GetTrack();
   G4StepPoint* thePostPoint = theStep->GetPostStepPoint();
   G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
   G4OpBoundaryProcessStatus boundaryStatus=Undefined;
   static G4OpBoundaryProcess* boundary=NULL;
-  
+
   //find the boundary process only once
   if(!boundary){
-    G4ProcessManager* pm 
+    G4ProcessManager* pm
       = theStep->GetTrack()->GetDefinition()->GetProcessManager();
     G4int nprocesses = pm->GetProcessListLength();
     G4ProcessVector* pv = pm->GetProcessList();
@@ -74,12 +74,12 @@ void AngraSteppingAction::UserSteppingAction(const G4Step * theStep){
 	break;
       case Detection:
 	{
-	  //	std::cout << " Detected " <<  
-	  //thePostPoint->GetPosition().x() <<  " " << 
+	  //	G4cout << " Detected " <<
+	  //thePostPoint->GetPosition().x() <<  " " <<
 	  //thePostPoint->GetPosition().y() <<  " " <<
 	  //thePostPoint->GetPosition().z() <<  " " <<
-	  //std::endl;
-	  
+	  //G4endl;
+
 	  G4SDManager* SDman = G4SDManager::GetSDMpointer();
 	  G4String sdName="/pmtSD";
 	  AngraPMTSD* pmtSD = (AngraPMTSD*)SDman
@@ -99,7 +99,7 @@ void AngraSteppingAction::UserSteppingAction(const G4Step * theStep){
       }
     }
   }
-  
+
 }
 
 

@@ -18,7 +18,7 @@
 #include "G4Allocator.hh"
 #include "G4ThreeVector.hh"
 
-#include <string>
+#include "globals.hh"
 #include <iostream>
 #include <sstream>
 
@@ -41,7 +41,7 @@ class AngraVetoHit : public G4VHit
   public:
 
       void SetTrackID  (G4int track)      { trackID = track; };
-      void SetVolName  (std::string   vn)      { volName = vn; };
+      void SetVolName  (G4String   vn)      { volName = vn; };
       void SetEdep     (G4double de)      { edep = de; };
       void SetPos      (G4ThreeVector xyz){ pos = xyz; };
       void SetLocalPos      (G4ThreeVector xyz){ localPos = xyz; };
@@ -49,7 +49,7 @@ class AngraVetoHit : public G4VHit
       void SetGlobalTime (G4double t){ gtime = t;};
 
       G4int GetTrackID()    { return trackID; };
-      std::string GetVolName(){ return volName; };
+      G4String GetVolName(){ return volName; };
       G4double GetEdep()    { return edep; };
       G4ThreeVector GetPos(){ return pos; };
       G4ThreeVector GetLocalPos(){ return localPos; };
@@ -60,7 +60,7 @@ class AngraVetoHit : public G4VHit
   private:
 
       G4int         trackID;
-      std::string   volName;
+      G4String   volName;
       G4double      edep;
       G4ThreeVector pos;
       G4ThreeVector localPos;

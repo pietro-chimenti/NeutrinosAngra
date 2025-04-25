@@ -7,7 +7,7 @@
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
 //  27-12-2011, v0.02
-//  23-04-2025, fixing compatibility with Geant4 v13.3.1
+//  23-04-2025, fixing compatibility with Geant4 v11.3.0
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -45,12 +45,11 @@
 #include "AngraVetoSD.hh"
 #include "AngraConstantMgr.hh"
 
-#include <string>
+#include "globals.hh"
 #include <iostream>
 #include <sstream>
 #include <vector>
 
-using namespace std;
 using namespace CLHEP;
 
 G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
@@ -108,10 +107,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 	// pmt's quantum efficiency
 	G4MaterialPropertyVector *PMTEfficiency = new G4MaterialPropertyVector();
 	for(int i = 0; i<N_PMT_BINS; i++){
-		ostringstream num;
+		std::ostringstream num;
 		num << i;
-		string numStr=num.str();
-		string binName("OpPMT_");
+		G4String numStr=num.str();
+		G4String binName("OpPMT_");
 		binName += numStr;
 		G4double binEn = 1240./AngraConstantMgr::Instance().GetValue(binName)*eV; // reads bin wavelenght
 
@@ -128,10 +127,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 	G4MaterialPropertyVector *GoreBackscatter   = new G4MaterialPropertyVector();
 	G4MaterialPropertyVector *GoreLambertian    = new G4MaterialPropertyVector();
 	for(int i = 0; i<N_GORE_BINS; i++){
-		ostringstream num,lamb;
+		std::ostringstream num,lamb;
 		num << i;
-		string numStr=num.str();
-		string binName("OpGore_");
+		G4String numStr=num.str();
+		G4String binName("OpGore_");
 		binName += numStr;
 		G4double binEn = 1240./AngraConstantMgr::Instance().GetValue(binName)*eV;
 		G4double binProp;
@@ -176,7 +175,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 	G4RotationMatrix *rot4 = new G4RotationMatrix;
 	G4double theta = atan(shield_Z/shield_X);
 
-	vector<G4RotationMatrix*> rotVector;
+	std::vector<G4RotationMatrix*> rotVector;
 	rotVector.push_back(rot1);
 	rotVector.push_back(rot2);
 	rotVector.push_back(rot3);
@@ -239,10 +238,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		0.,0.);
 	 experimentalHall_log->SetUserLimits(trackingLimit);
 
-	std::cout << "limits " << std::endl;
-	std::cout << AngraConstantMgr::Instance().GetValue("StepLimit")*mm << std::endl;
-	std::cout << AngraConstantMgr::Instance().GetValue("TrackLimit")*mm << std::endl;
-	std::cout << AngraConstantMgr::Instance().GetValue("TimeLimit")*mm << std::endl;
+	G4cout << "limits " << G4endl;
+	G4cout << AngraConstantMgr::Instance().GetValue("StepLimit")*mm << G4endl;
+	G4cout << AngraConstantMgr::Instance().GetValue("TrackLimit")*mm << G4endl;
+	G4cout << AngraConstantMgr::Instance().GetValue("TimeLimit")*mm << G4endl;
 
 
 	// Geometry::Structure and Water Volumes
@@ -348,10 +347,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 	G4MaterialPropertyVector *TyvekLambertian   = new G4MaterialPropertyVector();
 
 	for(int i = 0; i<N_PHOTON_BINS; i++){
-		ostringstream num;
+		std::ostringstream num;
 		num << i;
-		string numStr=num.str();
-		string binName("PEnergy_");
+		G4String numStr=num.str();
+		G4String binName("PEnergy_");
 		binName += numStr;
 		G4double binEnergy = AngraConstantMgr::Instance().GetValue(binName);
 		G4double binProp;
@@ -507,7 +506,7 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 	physicalVolumesVector.push_back(thinWallDR_phys);
 	// Physical PMTs will be stored douring loops 9 to 12.
 
-	vector<G4LogicalBorderSurface*> logialBorderSurface;
+	std::vector<G4LogicalBorderSurface*> logialBorderSurface;
 	logialBorderSurface.push_back(targetGore);
 	logialBorderSurface.push_back(shieldTyvek1);
 	logialBorderSurface.push_back(shieldTyvek2);
@@ -550,10 +549,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtBowl_phys);
 		physicalVolumesVector.push_back(pmtDome_phys);
 
-		std::string surfaceName("PMTsurface_U");
+		G4String surfaceName("PMTsurface_U");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), targetWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, targetWater_phys,pmtBowl_phys,OpPMTSurface);
 	}
 
 	// 10. Placing the BOTTOM PMT's inside thetarget.
@@ -585,10 +584,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtBowl_phys);
 		physicalVolumesVector.push_back(pmtDome_phys);
 
-		std::string surfaceName("PMTsurface_D");
+		G4String surfaceName("PMTsurface_D");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), targetWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, targetWater_phys,pmtBowl_phys,OpPMTSurface);
 
 	}
 
@@ -623,10 +622,11 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtDome_phys);
 		physicalVolumesVector.push_back(pmtBowl_phys);
 
-		std::string surfaceName("ivPMTsurface_U");
+		G4String surfaceName("ivPMTsurface_U");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), innerVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, innerVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
 
 	}
 
@@ -659,10 +659,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtDome_phys);
 		physicalVolumesVector.push_back(pmtBowl_phys);
 
-		std::string surfaceName("ivPMTsurface_D");
+		G4String surfaceName("ivPMTsurface_D");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), innerVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, innerVetoWater_phys,pmtBowl_phys,OpPMTSurface);
 
 	}
 
@@ -733,10 +733,11 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtDome_phys);
 		physicalVolumesVector.push_back(pmtBowl_phys);
 
-		std::string surfaceName("BoxVetoPMTsurface_U");
+		G4String surfaceName("BoxVetoPMTsurface_U");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), uBoxVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, uBoxVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
 
 	}
 
@@ -804,10 +805,10 @@ G4VPhysicalVolume* AngraDetectorConstruction::ConstructWaterbox_2(){
 		physicalVolumesVector.push_back(pmtDome_phys);
 		physicalVolumesVector.push_back(pmtBowl_phys);
 
-		std::string surfaceName("BoxVetoPMTsurface_D");
+		G4String surfaceName("BoxVetoPMTsurface_D");
 		surfaceName+=numstr;
-		G4LogicalBorderSurface* PMTSurface;
-		PMTSurface = new G4LogicalBorderSurface(surfaceName.c_str(), bBoxVetoWater_phys,pmtBowl_phys,OpPMTSurface);
+
+		[[maybe_unused]] auto PMTSurface = new G4LogicalBorderSurface(surfaceName, bBoxVetoWater_phys,pmtBowl_phys,OpPMTSurface);
 
 	}
 

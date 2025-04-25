@@ -6,7 +6,7 @@
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
 //  30-04-2008, v0.01
-//  23-04-2025, fixing compatibility with Geant4 v13.3.1
+//  23-04-2025, fixing compatibility with Geant4 v11.3.0
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------

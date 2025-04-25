@@ -5,7 +5,7 @@
 //
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
-//  23-04-2025, fixing compatibility with Geant4 v13.3.1
+//  23-04-2025, fixing compatibility with Geant4 v11.3.0
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 #include <iostream>
+#include "globals.hh"
 
 bool ParseCommandLine(int argc, char** argv, AngraConfigurations& config) {
     // Set default log levels
@@ -36,48 +37,48 @@ bool ParseCommandLine(int argc, char** argv, AngraConfigurations& config) {
         switch (c) {
             case 'h':
                 config.Help = true;
-                std::cout << "Help menu." << std::endl;
+                G4cout << "Help menu." << G4endl;
                 PrintHelp();
                 return false;  // Exit program
 
             case 'b':
                 config.Batch = true;
-                std::cout << "Batch run selected" << std::endl;
+                G4cout << "Batch run selected" << G4endl;
                 break;
 
             case 'g':
                 config.Geometry = std::stoi(optarg);
-                std::cout << "Geometry number " << config.Geometry << " chosen" << std::endl;
+                G4cout << "Geometry number " << config.Geometry << " chosen" << G4endl;
                 break;
 
             case 'p':
                 config.Primary = std::stoi(optarg);
-                std::cout << "Primary generator " << config.Primary << " chosen" << std::endl;
+                G4cout << "Primary generator " << config.Primary << " chosen" << G4endl;
                 break;
 
             case 's':
                 config.ScriptName = optarg;
-                std::cout << "Batch script chosen: " << *config.ScriptName << std::endl;
+                G4cout << "Batch script chosen: " << *config.ScriptName << G4endl;
                 break;
 
             case 'r':
                 config.Random = std::stol(optarg);
-                std::cout << "Random seed chosen: " << optarg << std::endl;
+                G4cout << "Random seed chosen: " << optarg << G4endl;
                 break;
 
             case 'o':
                 config.OutputFileName = optarg;
-                std::cout << "Output file name chosen: " << *config.OutputFileName << std::endl;
+                G4cout << "Output file name chosen: " << *config.OutputFileName << G4endl;
                 break;
 
             case 'i':
                 config.InputHepFileName = optarg;
-                std::cout << "Input HepEv file name chosen: " << *config.InputHepFileName << std::endl;
+                G4cout << "Input HepEv file name chosen: " << *config.InputHepFileName << G4endl;
                 break;
 
             case 'j':
                 config.nThreads = std::stoi(optarg);
-                std::cout << "Number of threads chosen: " << config.nThreads << std::endl;
+                G4cout << "Number of threads chosen: " << config.nThreads << G4endl;
                 break;
 
             case 'v':
@@ -114,18 +115,18 @@ bool ParseCommandLine(int argc, char** argv, AngraConfigurations& config) {
                         AngraMCLog::Instance().SetHitsOutLevel(HIOL_ALL);
                         break;
                     default:
-                        std::cout << "Unrecognized Output level" << std::endl;
+                        G4cout << "Unrecognized Output level" << G4endl;
                 }
                 break;
 
             case '?':
-                std::cout << "Unrecognized option encountered -" << static_cast<char>(optopt) << std::endl;
-                std::cout << "Printing help information:" << std::endl;
+                G4cout << "Unrecognized option encountered -" << static_cast<char>(optopt) << G4endl;
+                G4cout << "Printing help information:" << G4endl;
                 PrintHelp();
                 return false;  // Exit program
 
             default:
-                std::cout << "Unknown error in command line parsing" << std::endl;
+                G4cout << "Unknown error in command line parsing" << G4endl;
                 PrintHelp();
                 return false;  // Exit program
         }
@@ -133,11 +134,11 @@ bool ParseCommandLine(int argc, char** argv, AngraConfigurations& config) {
 
     // Check for any remaining arguments
     if (optind < argc) {
-        std::cout << "Non-option arguments encountered:" << std::endl;
+        G4cout << "Non-option arguments encountered:" << G4endl;
         for (int i = optind; i < argc; i++) {
-            std::cout << "  " << argv[i] << std::endl;
+            G4cout << "  " << argv[i] << G4endl;
         }
-        std::cout << "Printing help information:" << std::endl;
+        G4cout << "Printing help information:" << G4endl;
         PrintHelp();
         return false;  // Exit program
     }
@@ -146,7 +147,7 @@ bool ParseCommandLine(int argc, char** argv, AngraConfigurations& config) {
 }
 
 void PrintHelp() {
-    std::cout << "The possible options are:\n"
+    G4cout << "The possible options are:\n"
               << "-h          : this menu\n"
               << "-b          : BATCH mode\n"
               << "-r SEED     : SEED of random engine\n"
@@ -169,5 +170,5 @@ void PrintHelp() {
               << "            : 40 for track info to NONE\n"
               << "            : 41 for track info to ALL\n"
               << "            : 50 for hits info to NONE\n"
-              << "            : 51 for hits info to ALL" << std::endl;
+              << "            : 51 for hits info to ALL" << G4endl;
 }

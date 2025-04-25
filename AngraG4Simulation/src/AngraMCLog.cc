@@ -3,9 +3,10 @@
 //
 //  AngraMCLog implementation file
 //
-//  Authors: P.Chimenti
+//  Authors: P.Chimenti, G. Valdiviesso
 //
 //  9-2-2010, v0.01
+// 23-04-2025, implementing thread-safe output file merging
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -23,6 +24,11 @@
 #include <regex>
 #include <algorithm>
 #include <string>
+#include <map>
+#include <queue>
+#include <utility>
+#include <limits>
+#include <sstream>
 
 using namespace CLHEP;
 
@@ -225,6 +231,26 @@ bool AngraMCLog::MergeOutputFiles(const G4String& outputFileName)
 
   G4cout << "Merging output files into " << outputFileName << G4endl;
 
+  // Get the number of threads
+  G4int numThreads = G4Threading::GetNumberOfRunningWorkerThreads();
+
+  // Check if there are any thread files to merge
+  bool foundThreadFiles = false;
+  for (G4int threadId = 0; threadId < numThreads; ++threadId) {
+    G4String threadFileName = GetThreadOutputFileName(threadId);
+    std::ifstream testFile(threadFileName);
+    if (testFile.is_open()) {
+      foundThreadFiles = true;
+      testFile.close();
+      break;
+    }
+  }
+
+  if (!foundThreadFiles) {
+    G4cout << "No thread output files found to merge." << G4endl;
+    return false;
+  }
+
   // Open the output file
   std::ofstream outFile(outputFileName);
   if (!outFile.is_open()) {
@@ -235,84 +261,73 @@ bool AngraMCLog::MergeOutputFiles(const G4String& outputFileName)
   // Write header
   outFile << "STANDARD" << G4endl;
 
-  // Get the number of threads
-  G4int numThreads = G4Threading::GetNumberOfRunningWorkerThreads();
+  // Count of total events processed
+  G4int totalEvents = 0;
 
-  // Vector to store all events from all threads
-  std::vector<std::pair<G4int, std::string>> allEvents;
+  // Set buffer size for more efficient I/O
+  const std::size_t bufferSize = 65536; // 64KB buffer for better performance
+  char* outBuffer = new char[bufferSize];
+  outFile.rdbuf()->pubsetbuf(outBuffer, bufferSize);
 
   // Process each thread's output file
   for (G4int threadId = 0; threadId < numThreads; ++threadId) {
     G4String threadFileName = GetThreadOutputFileName(threadId);
 
     // Open the thread's output file
-    std::ifstream threadFile(threadFileName);
+    std::ifstream threadFile(threadFileName, std::ios::binary);
     if (!threadFile.is_open()) {
       G4cerr << "Warning: Could not open thread output file " << threadFileName << G4endl;
       continue;
     }
 
-    // Skip header
+    // Skip header line
     std::string line;
-    while (std::getline(threadFile, line)) {
-      if (line == "STANDARD") {
-        continue;
-      }
+    std::getline(threadFile, line);
 
-      // Check if this is the start of an event
-      if (line.find("EVENT") != std::string::npos) {
-        // Extract event ID
-        std::regex eventRegex("EVENT\\s+(\\d+)");
-        std::smatch match;
-        if (std::regex_search(line, match, eventRegex) && match.size() > 1) {
-          G4int eventId = std::stoi(match[1].str());
+    // Process the file line by line to count events, but use efficient copying
+    std::string content;
+    G4int threadEvents = 0;
 
-          // Read the entire event
-          std::string eventContent = line + "\n";
-          std::string eventLine;
-          bool inEvent = true;
+    // Read the entire file content after the header
+    std::stringstream buffer;
+    buffer << threadFile.rdbuf();
+    content = buffer.str();
 
-          while (inEvent && std::getline(threadFile, eventLine)) {
-            // Check if this is the start of a new event
-            if (eventLine.find("EVENT") != std::string::npos) {
-              // Put the line back
-              threadFile.seekg(-eventLine.length() - 1, std::ios_base::cur);
-              inEvent = false;
-            } else {
-              eventContent += eventLine + "\n";
-            }
-          }
-
-          // Store the event
-          allEvents.push_back(std::make_pair(eventId, eventContent));
-        }
-      }
+    // Count events in the content
+    size_t pos = 0;
+    while ((pos = content.find(" EVENT ", pos)) != std::string::npos) {
+      threadEvents++;
+      pos += 7; // Move past " EVENT "
     }
 
-    // Close the thread's output file
+    // Write the content to the output file
+    outFile << content;
+
+    // Update total events count
+    totalEvents += threadEvents;
+
+    // Close the file
     threadFile.close();
 
-    // Remove the thread's output file
-    if (std::remove(threadFileName.c_str()) != 0) {
-      G4cerr << "Warning: Could not remove thread output file " << threadFileName << G4endl;
+    // Remove the thread's output file only if we successfully processed it
+    if (threadEvents > 0) {
+      if (std::remove(threadFileName.c_str()) != 0) {
+        G4cerr << "Warning: Could not remove thread output file " << threadFileName << G4endl;
+      }
+    } else {
+      G4cout << "Preserving thread output file " << threadFileName << " (no events processed)" << G4endl;
     }
-  }
 
-  // Sort events by event ID
-  std::sort(allEvents.begin(), allEvents.end(),
-            [](const std::pair<G4int, std::string>& a, const std::pair<G4int, std::string>& b) {
-              return a.first < b.first;
-            });
-
-  // Write all events to the output file
-  for (const auto& event : allEvents) {
-    outFile << event.second;
+    G4cout << "Processed " << threadEvents << " events from thread " << threadId << G4endl;
   }
 
   // Close the output file
   outFile.close();
 
-  G4cout << "Successfully merged " << allEvents.size() << " events into " << outputFileName << G4endl;
+  // Clean up the output buffer
+  delete[] outBuffer;
+
+  G4cout << "Successfully merged " << totalEvents << " events into " << outputFileName << G4endl;
 
   return true;
 }

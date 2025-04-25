@@ -6,7 +6,7 @@
 //  Authors: P.Chimenti, R.Lima, G. Valdiviesso
 //
 //  30-04-2008, v0.01
-//  23-04-2025, fixing compatibility with Geant4 v13.3.1
+//  23-04-2025, fixing compatibility with Geant4 v11.3.0
 //
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -136,14 +136,14 @@ void AngraPrimaryGeneratorAction::GeneratePoint(G4Event* anEvent)
 		auto position = particleGun->GetParticlePosition();
 		auto direction = particleGun->GetParticleMomentumDirection();
 		auto energy = particleGun->GetParticleEnergy();
-/*
+
 		G4cout << "EVENT: " << anEvent->GetEventID() << G4endl;
 		G4cout << "  Particle: " << particle->GetParticleName() << G4endl;
 		G4cout << "  Position: " << position.x() << " " << position.y() << " " << position.z() << " mm" << G4endl;
 		G4cout << "  Direction: " << direction.x() << " " << direction.y() << " " << direction.z() << G4endl;
 		G4cout << "  Energy: " << energy/CLHEP::MeV << " MeV" << G4endl;
 		G4cout << G4endl;
-		*/
+
 	}
 }
 
